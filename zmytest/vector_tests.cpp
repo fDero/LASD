@@ -285,13 +285,44 @@ void vector_resize_t1(){
 
 
 
-void vector_resize_t1(){
+
+void vector_resize_t2(){
     lasd::Vector<int> numbers = lasd::Vector<int>(4);
     numbers[0] = 8;  numbers[1] = 7;
     numbers[2] = 9;  numbers[3] = 0;
-    numbers.Resize(3);
- 
+    numbers.Resize(0);
+    numbers.Resize(1);
+    numbers.Resize(0);
+    expect_exception<std::length_error>([&numbers](){ numbers.Front() = 0; });
 }
+
+
+
+
+
+void vector_clear_t1(){
+    lasd::Vector<int> numbers = lasd::Vector<int>(4);
+    numbers[0] = 8;  numbers[1] = 7;
+    numbers[2] = 9;  numbers[3] = 0;
+    numbers.Clear();
+    expect_exception<std::length_error>([&numbers](){ numbers.Front() = 0; });
+}
+
+
+
+
+
+void vector_clear_t2(){
+    lasd::Vector<int> numbers = lasd::Vector<int>(4);
+    numbers[0] = 8;  numbers[1] = 7;
+    numbers[2] = 9;  numbers[3] = 0;
+    numbers.Clear();
+    expect_exception<std::out_of_range>([&numbers](){ numbers[0] = 0; });
+}
+
+
+
+
 
 void execute_vector_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for lasd::Vector<T> ↓↓↓ \n");
@@ -316,6 +347,9 @@ void execute_vector_tests(){
        {"vector_mutable_preorder_map",         vector_mutable_preorder_map},
        {"vector_sort_test",                    vector_sort_test},
        {"vector_resize_t1",                    vector_resize_t1},
+       {"vector_resize_t2",                    vector_resize_t2},
+       {"vector_clear_t1",                     vector_clear_t1},
+       {"vector_clear_t2",                     vector_clear_t2},
     };
     execute_tests(vector_test_procedures);  
 }

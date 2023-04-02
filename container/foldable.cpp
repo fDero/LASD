@@ -1,0 +1,32 @@
+
+// FRANCESCO DE ROSA N86004379  
+
+#pragma once
+
+#include "testable.hpp"
+#include <functional>
+#include "foldable.hpp"
+
+namespace lasd {
+
+    template <typename Data> bool FoldableContainer<Data>::Exists(const Data& target) const noexcept {
+        //TEMPORARY -- TODO: IMPLEMENT THIS IN TERMS OF FOLDS
+        return false;
+    }
+
+    template <typename Data> void PreOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
+        PreOrderFold(functor, accumulator); 
+    }
+
+    template <typename Data> void PostOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
+        PostOrderFold(functor, accumulator); 
+    }
+
+    template <typename Data> void InOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
+        InOrderFold(functor, accumulator); 
+    }
+
+    template <typename Data> void BreadthFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
+        BreadthOrderFold(functor, accumulator); 
+    }
+}

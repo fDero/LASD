@@ -121,28 +121,20 @@ namespace lasd {
         return tail->value;
     }
 
-    template<typename Data> void List<Data>::PreOrderFold(FoldFunctor functor, void* accumulator) const {
-        for (Node* it = head; it != nullptr; it = it->next) functor(it->value,accumulator);
+    template<typename Data> void List<Data>::PreOrderMap(MapFunctor functor) const { 
+        for (Node* it = head; it != nullptr; it = it->next) functor(it->value); 
     }
-
-    template<typename Data> void List<Data>::PostOrderFold(FoldFunctor functor, void* accumulator) const {
-        for (Node* it = tail; it != nullptr; it = it->prev) functor(it->value,accumulator);
-    }
-
-    template<typename Data> void List<Data>::PreOrderMap(MapFunctor functor) const {
-        for (Node* it = head; it != nullptr; it = it->next) functor(it->value);
-    }
-
-    template<typename Data> void List<Data>::PostOrderMap(MapFunctor functor) const {
-        for (Node* it = tail; it != nullptr; it = it->prev) functor(it->value);
-    }
-
-    template<typename Data> void List<Data>::PostOrderMap(MutableMapFunctor functor) {
-        for (Node* it = tail; it != nullptr; it = it->prev) functor(it->value);
+    
+    template<typename Data> void List<Data>::PostOrderMap(MapFunctor functor) const { 
+        for (Node* it = tail; it != nullptr; it = it->prev) functor(it->value); 
     }
 
     template<typename Data> void List<Data>::PreOrderMap(MutableMapFunctor functor) {
         for (Node* it = head; it != nullptr; it = it->next) functor(it->value);
+    }
+
+    template<typename Data> void List<Data>::PostOrderMap(MutableMapFunctor functor) {
+        for (Node* it = tail; it != nullptr; it = it->prev) functor(it->value);
     }
 
     template<typename Data> bool List<Data>::Exists(const Data& target) const noexcept {

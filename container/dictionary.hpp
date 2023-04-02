@@ -21,26 +21,18 @@ namespace lasd {
       virtual bool operator==(const DictionaryContainer&) const noexcept = delete;
       virtual bool operator!=(const DictionaryContainer&) const noexcept = delete;
       
-      //bool Insert(const Data&) = 0;
-      //bool Insert(Data&&) = 0;
-      //bool Remove(const Data&) = 0;
+      virtual bool Insert(const Data&) = 0;
+      virtual bool Insert(Data&&) = 0;
+      virtual bool Remove(const Data&) = 0;
+
+      virtual bool InsertAll(const MappableContainer<Data>&);
+      virtual bool InsertAll(const MutableMappableContainer<Data>&);
+      virtual bool RemoveAll(const MappableContainer<Data>& source);
       
-      //bool InsertAll(const MappableContainer<Data>&) = 0;
-      //bool InsertAll(const MutableMappableContainer<Data>&&) = 0;
-      //bool RemoveALl(const MappableContainer<Data>&) = 0;
-      
-      //bool InsertSome(const MappableContainer<Data>&) = 0;
-      //bool InsertSome(const MutableMappableContainer<Data>&&) = 0;
-      //bool RemoveSome(const MappableContainer<Data>&) = 0;      
+      virtual bool InsertSome(const MappableContainer<Data>& source);
+      virtual bool InsertSome(const MutableMappableContainer<Data>& source);
+      virtual bool RemoveSome(const MappableContainer<Data>& source);
   };
 }
 
-
-
-      // type InsertAll(argument) specifiers; // Copy of the value; From MappableContainer; True if all are inserted
-      // type InsertAll(argument) specifiers; // Move of the value; From MutableMappableContainer; True if all are inserted
-      // type RemoveAll(argument) specifiers; // From MappableContainer; True if all are removed
-
-      // type InsertSome(argument) specifiers; // Copy of the value; From MappableContainer; True if some is inserted
-      // type InsertSome(argument) specifiers; // Move of the value; From MutableMappableContainer; True if some is inserted
-      // type RemoveSome(argument) specifiers; // From MappableContainer; True if some is removed
+#include "dictionary.cpp"

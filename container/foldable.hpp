@@ -21,8 +21,10 @@ namespace lasd {
       virtual FoldableContainer& operator=(const FoldableContainer&) = delete;
       virtual FoldableContainer& operator=(FoldableContainer&&) = delete;
 
+      virtual bool Exists(const Data&) const noexcept override;
+
       using FoldFunctor = typename std::function<void(const Data&, void*)>;
-      virtual void Fold(FoldFunctor functor, void* returnvalue) const = 0;
+      virtual void Fold(FoldFunctor functor, void* accumulator) const = 0;
   };
 
   
@@ -43,13 +45,10 @@ namespace lasd {
 
       
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
-      virtual void PreOrderFold(FoldFunctor functor, void* returnvalue) const = 0;
-      virtual void Fold(FoldFunctor functor, void* returnvalue) const override { PreOrderFold(functor, returnvalue); };
+      virtual void PreOrderFold(FoldFunctor functor, void* accumulator) const = 0;
+      virtual void Fold(FoldFunctor functor, void* accumulator) const override;
   };
 
-  
-  
-  
   template <typename Data> class PostOrderFoldableContainer : public virtual FoldableContainer<Data>{
     public:
       PostOrderFoldableContainer() = default;
@@ -64,8 +63,8 @@ namespace lasd {
       virtual PostOrderFoldableContainer& operator=(PostOrderFoldableContainer&&) = delete;
 
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
-      virtual void PostOrderFold(FoldFunctor functor, void* returnvalue) const = 0;
-      virtual void Fold(FoldFunctor functor, void* returnvalue) const override { PostOrderFold(functor, returnvalue); }
+      virtual void PostOrderFold(FoldFunctor functor, void* accumulator) const = 0;
+      virtual void Fold(FoldFunctor functor, void* accumulator) const override;
   };
 
   
@@ -85,8 +84,8 @@ namespace lasd {
       virtual InOrderFoldableContainer& operator=(InOrderFoldableContainer&&) = delete;
 
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
-      virtual void InOrderFold(FoldFunctor functor, void* returnvalue) const = 0;
-      virtual void Fold(FoldFunctor functor, void* returnvalue) const override { InOrderFold(functor, returnvalue); };
+      virtual void InOrderFold(FoldFunctor functor, void* accumulator) const = 0;
+      virtual void Fold(FoldFunctor functor, void* accumulator) const override;
   };
 
 
@@ -106,7 +105,9 @@ namespace lasd {
       virtual BreadthFoldableContainer& operator=(BreadthFoldableContainer&&) = delete;
 
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
-      virtual void BreadthFold(FoldFunctor functor, void* returnvalue) const = 0;
-      virtual void Fold(FoldFunctor functor, void* returnvalue) const override { BreadthFold(functor, returnvalue); }
+      virtual void BreadthFold(FoldFunctor functor, void* accumulator) const = 0;
+      virtual void Fold(FoldFunctor functor, void* accumulator) const override;
   };
 }
+
+#include "foldable.cpp"
