@@ -64,27 +64,15 @@ namespace lasd {
     }
   }
 
-  template<typename Data> void LinearContainer<Data>::PreOrderFold(FoldFunctor functor, void* returnvalue) const {
-    for (int i = 0; i < size; i++) functor(this->operator[](i), returnvalue); 
-  }
-
-  template<typename Data> void LinearContainer<Data>::PostOrderFold(FoldFunctor functor, void* returnvalue) const {
-    for (int i = size-1; i >= 0; i--) functor(this->operator[](i), returnvalue);
-  }
-
-  template<typename Data> void LinearContainer<Data>::PreOrderMap(MapFunctor functor) const {
-    for (int i = 0; i < size; i++) functor(this->operator[](i));
-  }
-
   template<typename Data> void LinearContainer<Data>::PreOrderMap(MutableMapFunctor functor) {
     for (int i = 0; i < size; i++) functor(this->operator[](i));
-  }
-
-  template<typename Data> void LinearContainer<Data>::PostOrderMap(MapFunctor functor) const {
-    for (int i = size-1; i >= 0; i--) functor(this->operator[](i));
   }
 
   template<typename Data> void LinearContainer<Data>::PostOrderMap(MutableMapFunctor functor) {
     for (int i = size-1; i >= 0; i--) functor(this->operator[](i));
   }
+
+  template<typename Data> void LinearContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { PreOrderFold(functor,accumulator); }
+  template<typename Data> void LinearContainer<Data>::Map(MapFunctor functor) const { PreOrderMap(functor); }
+  template<typename Data> void LinearContainer<Data>::Map(MutableMapFunctor functor) { PreOrderMap(functor); }
 }

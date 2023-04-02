@@ -47,7 +47,7 @@ namespace lasd {
       using MapFunctor = typename MappableContainer<Data>::MapFunctor;
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       virtual void PreOrderMap(MapFunctor) const = 0;
-      virtual void Map(MapFunctor functor) const override;
+      virtual void Map(MapFunctor) const override;
       virtual void PreOrderFold(FoldFunctor, void*) const override;
   };
 
@@ -122,7 +122,7 @@ namespace lasd {
       using MapFunctor = typename MappableContainer<Data>::MapFunctor;
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       virtual void BreadthMap(MapFunctor) const = 0;
-      virtual void Map(MapFunctor functor) const override;
+      virtual void Map(MapFunctor) const override;
       virtual void BreadthFold(FoldFunctor, void*) const override;
   };
 
@@ -171,7 +171,8 @@ namespace lasd {
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       using MutableMapFunctor = typename MutableMappableContainer<Data>::MutableMapFunctor;
       virtual void PreOrderMap(MutableMapFunctor) = 0;
-      virtual void Map(MutableMapFunctor functor) override;
+      virtual void PreOrderMap(MapFunctor) const override;
+      virtual void Map(MutableMapFunctor) override;
   };
 
 
@@ -194,7 +195,8 @@ namespace lasd {
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       using MutableMapFunctor = typename MutableMappableContainer<Data>::MutableMapFunctor;
       virtual void PostOrderMap(MutableMapFunctor) = 0;
-      virtual void Map(MutableMapFunctor functor) override;
+      virtual void PostOrderMap(MapFunctor) const override;
+      virtual void Map(MutableMapFunctor) override;
   };
 
 
@@ -219,7 +221,8 @@ namespace lasd {
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       using MutableMapFunctor = typename MutableMappableContainer<Data>::MutableMapFunctor;
       virtual void InOrderMap(MutableMapFunctor) = 0;
-      virtual void Map(MutableMapFunctor functor) override;
+      virtual void InOrderMap(MapFunctor) const override;
+      virtual void Map(MutableMapFunctor) override;
   };
 
 
@@ -244,7 +247,8 @@ namespace lasd {
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       using MutableMapFunctor = typename MutableMappableContainer<Data>::MutableMapFunctor;
       virtual void BreadthMap(MutableMapFunctor) = 0;
-      virtual void Map(MutableMapFunctor functor) override;
+      virtual void BreadthMap(MapFunctor) const override;
+      virtual void Map(MutableMapFunctor) override;
   };
 }
 

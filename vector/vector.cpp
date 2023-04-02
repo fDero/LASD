@@ -26,9 +26,9 @@ namespace lasd {
     }
 
     template<typename Data> Vector<Data>::Vector(Vector&& vector){
-        size = vector.size;
-        std::swap(storage,vector.storage);
+        storage = vector.storage;
         vector.storage = nullptr;
+        size = vector.size;
     }
 
     template<typename Data, typename Mappable> Vector<Data> build_vector_from_mappable(const Mappable& source){

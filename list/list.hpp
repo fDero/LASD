@@ -49,19 +49,18 @@ namespace lasd {
       virtual bool operator==(const List&) const;
       virtual bool operator!=(const List&) const;
       
-      // Specific member functions (inherited from DictionaryContainer)
       virtual bool Insert(const Data&) { throw true; }
       virtual bool Insert(Data&&) { throw true; }
       virtual bool Remove(const Data&) { throw true; }
 
       void InsertAtFront(const Data&);
-      // type InsertAtFront(argument) specifier; // Move of the value    
-      // type RemoveFromFront() specifier; // (must throw std::length_error when empty)
-      // type FrontNRemove() specifier; // (must throw std::length_error when empty)
-      // type InsertAtBack(argument) specifier; // Copy of the value
-      // type InsertAtBack(argument) specifier; // Move of the value
+      // void InsertAtFront(Data&&);    
       void InsertAtBack(const Data&);
       //void InsertAtBack(Data&&);
+      
+
+      // type RemoveFromFront() specifier; // (must throw std::length_error when empty)
+      // type FrontNRemove() specifier; // (must throw std::length_error when empty)
       
       
       void Clear() override; 
@@ -77,13 +76,9 @@ namespace lasd {
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       using MapFunctor = typename MappableContainer<Data>::MapFunctor;
       using MutableMapFunctor = typename MutableMappableContainer<Data>::MutableMapFunctor;
-      void PreOrderMap(MapFunctor) const override;
-      void PostOrderMap(MapFunctor) const override;
+      
       void PreOrderMap(MutableMapFunctor) override;
       void PostOrderMap(MutableMapFunctor) override;
-      void Fold(FoldFunctor functor, void* accumulator) const override { LinearContainer<Data>::PreOrderFold(functor, accumulator); }
-      void Map(MapFunctor functor) const override { PreOrderMap(functor); }
-      void Map(MutableMapFunctor functor) override { PreOrderMap(functor); }
     };
 }
 

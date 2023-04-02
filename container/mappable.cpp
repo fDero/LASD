@@ -51,21 +51,24 @@ namespace lasd {
     // since although we are performing a mutable mapping, we are doing so by iterating a function wich takes a const reference argument
     // therefore the values do not change hence we mark the method as const
 
-/*
+
     template <typename Data> void MutablePreOrderMappableContainer<Data>::PreOrderMap(MapFunctor functor) const {
-        const_cast<MutablePreOrderMappableContainer<Data>*>(this)->PreOrderMap(???);
+        MutableMapFunctor mf = [functor](Data& x){ functor(x); };
+        const_cast<MutablePreOrderMappableContainer<Data>*>(this)->PreOrderMap(mf);
     }
 
     template <typename Data> void MutablePostOrderMappableContainer<Data>::PostOrderMap(MapFunctor functor) const {
-        //((const PostOrderMappableContainer<Data>&)(*this)).PostOrderMap([functor](Data& value){ functor(value); });
+        MutableMapFunctor mf = [functor](Data& x){ functor(x); };
+        const_cast<MutablePostOrderMappableContainer<Data>*>(this)->PostOrderMap(mf);
     }
 
     template <typename Data> void MutableInOrderMappableContainer<Data>::InOrderMap(MapFunctor functor) const {
-        //((const InOrderMappableContainer<Data>&)(*this)).InOrderMap([functor](Data& value){ functor(value); });
+        MutableMapFunctor mf = [functor](Data& x){ functor(x); };
+        const_cast<MutableInOrderMappableContainer<Data>*>(this)->PostOrderMap(mf);
     }
 
     template <typename Data> void MutableBreadthMappableContainer<Data>::BreadthMap(MapFunctor functor) const {
-        //((const BreadthMappableContainer<Data>&)(*this)).BreadthMap([functor](Data& value){ functor(value); });
-    }
-  */  
+        MutableMapFunctor mf = [functor](Data& x){ functor(x); };
+        const_cast<MutableBreadthMappableContainer<Data>*>(this)->PostOrderMap(mf);
+    }  
 }

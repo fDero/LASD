@@ -10,8 +10,10 @@
 namespace lasd {
 
     template <typename Data> bool FoldableContainer<Data>::Exists(const Data& target) const noexcept {
-        //TEMPORARY -- TODO: IMPLEMENT THIS IN TERMS OF FOLDS
-        return false;
+        bool found = false;
+        auto search = [target](const Data& value, void* flag){ *((bool*)flag) |= (value == target); };
+        Fold(search,&found);
+        return found;
     }
 
     template <typename Data> void PreOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
