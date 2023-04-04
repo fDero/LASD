@@ -30,6 +30,20 @@ void integer_vector_values_initiaization(){
 
 
 
+void copy_assignment_test(){
+    auto xs = lasd::Vector<std::string>(10);
+    xs[0] = "A"; xs[1] = "B"; xs[2] = "C"; xs[3] = "D"; xs[4] = "E";
+    xs[5] = "F"; xs[6] = "G"; xs[7] = "H"; xs[8] = "I"; xs[9] = "L";
+    auto ys = xs;
+    expect(ys[0] == xs[0]); expect(ys[5] == xs[5]);
+    expect(ys[1] == xs[1]); expect(ys[6] == xs[6]);
+    expect(ys[2] == xs[2]); expect(ys[7] == xs[7]);
+    expect(ys[3] == xs[3]); expect(ys[8] == xs[8]);
+    expect(ys[4] == xs[4]); expect(ys[9] == xs[9]);
+}
+
+
+
 void integer_vector_fold_and_map(){
   int sum = 0;
   lasd::Vector<int> xs = lasd::Vector<int>(6);
@@ -328,6 +342,7 @@ void execute_vector_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for lasd::Vector<T> ↓↓↓ \n");
     UnitTest vector_test_procedures {
        {"integer_vector_values_initiaization", integer_vector_values_initiaization}, 
+       {"copy_assignment_test",                copy_assignment_test}, 
        {"integer_vector_fold_and_map",         integer_vector_fold_and_map},
        {"vector_index_out_of_bounds",          vector_index_out_of_bounds},
        {"empty_vector_front_method_call_t1",   empty_vector_front_method_call_t1},

@@ -68,8 +68,8 @@ namespace lasd {
       virtual SortableLinearContainer& operator=(const SortableLinearContainer&) = delete;
       virtual SortableLinearContainer& operator=(SortableLinearContainer&&) = delete;
 
-      virtual bool operator==(const SortableLinearContainer&) const noexcept;
-      virtual bool operator!=(const SortableLinearContainer&) const noexcept;
+      using LinearContainer<Data>::operator==;
+      using LinearContainer<Data>::operator!=;
 
       virtual void Sort();
   };

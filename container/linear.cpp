@@ -7,19 +7,15 @@
 
 namespace lasd {
 
-  template<typename DirectAccessContainer> bool compare_linear_access_containers(const DirectAccessContainer& c1, const DirectAccessContainer& c2){
-    if(c1.Size() != c2.Size()) return false;
-    for (int i = 0; i < c1.Size(); i++)
-      if (c1[i] != c2[i]) return false;
+  template<typename Data> bool LinearContainer<Data>::operator==(const LinearContainer<Data>& sequence) const noexcept {
+    if(size != sequence.size) return false;
+    for (int i = 0; i < sequence.size; i++)
+      if (this->operator[](i) != sequence.operator[](i)) return false;
     return true;
   }
 
-  template<typename Data> bool LinearContainer<Data>::operator==(const LinearContainer<Data>& sequence) const noexcept {
-    return compare_linear_access_containers(*this, sequence);
-  }
-
   template<typename Data> bool LinearContainer<Data>::operator!=(const LinearContainer<Data>& sequence) const noexcept {
-    return not compare_linear_access_containers(*this, sequence);
+    return not this->operator==(sequence);
   }
 
   template<typename Data> const Data& LinearContainer<Data>::Front() const {
@@ -40,14 +36,6 @@ namespace lasd {
   template<typename Data> Data& LinearContainer<Data>::Back() {
     if (size == 0) throw std::length_error("Back() method invoked on an empty container");
     return this->operator[](size-1);
-  }
-
-  template<typename Data> bool SortableLinearContainer<Data>::operator==(const SortableLinearContainer<Data>& sequence) const noexcept {
-    return compare_linear_access_containers(*this, sequence);
-  }
-
-  template<typename Data> bool SortableLinearContainer<Data>::operator!=(const SortableLinearContainer<Data>& sequence) const noexcept {
-    return not compare_linear_access_containers(*this, sequence);
   }
 
   template<typename Data> bool LinearContainer<Data>::Exists(const Data& target) const noexcept {

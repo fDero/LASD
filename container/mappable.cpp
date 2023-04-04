@@ -17,10 +17,10 @@ namespace lasd {
     template <typename Data> void MutableInOrderMappableContainer<Data>::Map(MutableMapFunctor functor)   { InOrderMap(functor); }
     template <typename Data> void MutableBreadthMappableContainer<Data>::Map(MutableMapFunctor functor)   { BreadthOrderMap(functor); }
 
-    template <typename Data> void PreOrderMappableContainer<Data>::Map(MapFunctor functor) const  { PreOrderMap(functor); }
-    template <typename Data> void PostOrderMappableContainer<Data>::Map(MapFunctor functor) const { PostOrderMap(functor); }
-    template <typename Data> void InOrderMappableContainer<Data>::Map(MapFunctor functor) const   { InOrderMap(functor); }
-    template <typename Data> void BreadthMappableContainer<Data>::Map(MapFunctor functor) const   { BreadthOrderMap(functor); }
+    template <typename Data> void PreOrderMappableContainer<Data>::Map(MapFunctor functor)  const  { PreOrderMap(functor); }
+    template <typename Data> void PostOrderMappableContainer<Data>::Map(MapFunctor functor) const  { PostOrderMap(functor); }
+    template <typename Data> void InOrderMappableContainer<Data>::Map(MapFunctor functor)   const  { InOrderMap(functor); }
+    template <typename Data> void BreadthMappableContainer<Data>::Map(MapFunctor functor)   const  { BreadthOrderMap(functor); }
 
 
 

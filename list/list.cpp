@@ -41,7 +41,26 @@ namespace lasd {
         size++;
     }
 
+    template<typename Data> void List<Data>::InsertAtBack(Data&& value){ 
+        Node* node = new Node(value);
+        node->prev = tail;
+        if (tail != nullptr) tail->next = node; 
+        else head = node;
+        tail = node;
+        size++;
+    }
+
     template<typename Data> void List<Data>::InsertAtFront(const Data& value){ 
+        Node* node = new Node(value);
+        node->next = head;
+        if (tail != nullptr) head->prev = node; 
+        else tail = node;
+        head = node;
+        size++;
+    }
+
+    
+    template<typename Data> void List<Data>::InsertAtFront(Data&& value){ 
         Node* node = new Node(value);
         node->next = head;
         if (tail != nullptr) head->prev = node; 
@@ -67,7 +86,8 @@ namespace lasd {
     }
 
     template<typename Data> List<Data>& List<Data>::operator=(const List<Data>& list) {
-        for (Node* it = list.head; it != nullptr; it = it->next) this->InsertAtBack(it->value);
+        Clear();
+        list.Map([this](const Data& value){ this->InsertAtBack(value); });
     }
 
     template<typename Data> List<Data>& List<Data>::operator=(List<Data>&& list) {
@@ -129,9 +149,70 @@ namespace lasd {
         for (Node* it = tail; it != nullptr; it = it->prev) functor(it->value);
     }
 
+
     template<typename Data> bool List<Data>::Exists(const Data& target) const noexcept {
         for (Node* it = head; it != nullptr; it = it->next) 
             if(it->value == target) return true;
         return false;
+    }
+
+    template <typename Data> bool List<Data>::Insert(const Data& value){
+        for (Node* it = head; it != nullptr; it = it->next) 
+            if (it->value == value) 
+                return false;
+        InsertAtBack(value);
+        return true;
+    }
+
+    template <typename Data> bool List<Data>::Insert(Data&& value){
+        for (Node* it = head; it != nullptr; it = it->next) 
+            if (it->value == value) 
+                return false;
+        InsertAtBack(value);
+        return true;
+    }
+
+    template <typename Data> bool List<Data>::Remove(const Data& value){
+        for (Node* it = head; it != nullptr; it = it->next) 
+            if (it->value == value) {
+                if (it->prev != nullptr) it->prev->next = it->next;
+                if (it->next != nullptr) it->next->prev = it->prev;
+                delete it;
+                size--;
+                return true; 
+            }
+        return false;
+    }
+
+    template <typename Data> void List<Data>::RemoveFromFront(){
+        if (size == 0) throw std::length_error("RemoveFromFront() method invoked on empty list");
+        if (size == 1) return Clear();
+        head = head->next;
+        delete head->prev;
+        head->prev = nullptr;
+        size--;   
+    }
+
+    template <typename Data> void List<Data>::RemoveFromBack(){
+        if (size == 0) throw std::length_error("RemoveFromBack() method invoked on empty list");
+        if (size == 1) return Clear();
+        tail = tail->prev;
+        delete tail->next;
+        tail->next = nullptr;
+        size--;   
+    }
+
+    template <typename Data> Data List<Data>::FrontNRemove(){
+        if (size == 0) throw std::length_error("FrontNRemove() method invoked on empty list");
+        Data tmp = std::move(head->value);
+        RemoveFromFront();
+        return tmp;   
+    }
+
+    template <typename Data> Data List<Data>::BackNRemove(){
+        if (size == 0) throw std::length_error("BackNRemove() method invoked on empty list");
+        Data tmp = std::move(tail->value);
+        RemoveFromBack();
+        return tmp;
     }
 }

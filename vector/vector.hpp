@@ -12,7 +12,7 @@ template <typename Data>
 class Vector : public virtual ResizableContainer, public virtual SortableLinearContainer<Data> {
   protected:
     using Container::size;
-    Data* storage;
+    Data* storage = nullptr;
     
   public:
 
@@ -21,19 +21,18 @@ class Vector : public virtual ResizableContainer, public virtual SortableLinearC
     Vector(Vector&&);
     Vector(sizetype);
     Vector(const MappableContainer<Data>&);
-    Vector(const MutableMappableContainer<Data>&);
-    ~Vector();
+    Vector(MutableMappableContainer<Data>&&);
+    virtual ~Vector();
 
     virtual Vector& operator=(const Vector&);
     virtual Vector& operator=(Vector&&);
 
-    const Data& operator[](sizetype) const;
-    Data& operator[](sizetype);
+    virtual const Data& operator[](sizetype) const override;
+    virtual Data& operator[](sizetype) override;
 
-    virtual bool operator==(const Vector&);
-    virtual bool operator!=(const Vector&);
-    
-    virtual void Clear() override;
+    using LinearContainer<Data>::operator==;
+    using LinearContainer<Data>::operator!=;
+
     virtual void Resize(sizetype) override;
   };
 }

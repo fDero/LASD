@@ -1,7 +1,7 @@
 
 // FRANCESCO DE ROSA N86004379  
 
-#pragma once
+#pragma once 
 
 namespace lasd {
 
@@ -24,8 +24,8 @@ namespace lasd {
       virtual Container& operator=(const Container&) = delete;
       virtual Container& operator=(Container&&) = delete;
 
-      bool Empty() const { return (size == 0); }
-      int Size() const { return size; }
+      bool Empty() const noexcept { return (size == 0); }
+      int Size() const noexcept { return size; }
   };
 
   
@@ -64,5 +64,6 @@ namespace lasd {
       virtual ResizableContainer& operator=(ResizableContainer&&) = delete; 
 
       virtual void Resize(sizetype newSize) = 0;
+      virtual void Clear() override { Resize(0); }
   };
 }

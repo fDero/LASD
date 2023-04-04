@@ -38,47 +38,49 @@ namespace lasd {
       List(List&&);
       List(const MappableContainer<Data>&);
       List(const MutableMappableContainer<Data>&);
-      ~List();
+      virtual ~List();
 
       List& operator=(const List&);
       List& operator=(List&&);
 
-      const Data& operator[](sizetype) const;
-      Data& operator[](sizetype);
+      const Data& operator[](sizetype) const override;
+      Data& operator[](sizetype) override;
 
       virtual bool operator==(const List&) const;
       virtual bool operator!=(const List&) const;
       
-      virtual bool Insert(const Data&) { throw true; }
-      virtual bool Insert(Data&&) { throw true; }
-      virtual bool Remove(const Data&) { throw true; }
+      virtual bool Insert(const Data&) override;
+      virtual bool Insert(Data&&) override;
+      virtual bool Remove(const Data&) override;
 
-      void InsertAtFront(const Data&);
-      // void InsertAtFront(Data&&);    
-      void InsertAtBack(const Data&);
-      //void InsertAtBack(Data&&);
+      virtual void InsertAtFront(const Data&);
+      void InsertAtFront(Data&&);    
       
+      virtual void InsertAtBack(const Data&);
+      virtual void InsertAtBack(Data&&);
+  
+      virtual void RemoveFromFront();
+      virtual void RemoveFromBack();
 
-      // type RemoveFromFront() specifier; // (must throw std::length_error when empty)
-      // type FrontNRemove() specifier; // (must throw std::length_error when empty)
+      virtual Data FrontNRemove();
+      virtual Data BackNRemove();
       
-      
-      void Clear() override; 
+      virtual void Clear() override; 
 
-      const Data& Front() const;
-      Data& Front();
+      virtual const Data& Front() const;
+      virtual Data& Front();
 
-      const Data& Back() const;
-      Data& Back();
+      virtual const Data& Back() const;
+      virtual Data& Back();
 
-      bool Exists(const Data&) const noexcept override;
+      virtual bool Exists(const Data&) const noexcept override;
 
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       using MapFunctor = typename MappableContainer<Data>::MapFunctor;
       using MutableMapFunctor = typename MutableMappableContainer<Data>::MutableMapFunctor;
       
-      void PreOrderMap(MutableMapFunctor) override;
-      void PostOrderMap(MutableMapFunctor) override;
+      virtual void PreOrderMap(MutableMapFunctor) override;
+      virtual void PostOrderMap(MutableMapFunctor) override;
     };
 }
 
