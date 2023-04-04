@@ -115,9 +115,11 @@ namespace lasd {
     }
 
     template<typename Data> void List<Data>::Clear(){
-        for (Node* it = head; it != nullptr; it = it->next) delete it->prev;
+        for (Node* it = head; it != nullptr; it = it->next) delete it->prev;  
         delete tail;
         size = 0;
+        head = nullptr;
+        tail = nullptr;
     }
 
     template<typename Data> const Data& List<Data>::Front() const {

@@ -54,7 +54,7 @@ namespace lasd {
       virtual bool Remove(const Data&) override;
 
       virtual void InsertAtFront(const Data&);
-      void InsertAtFront(Data&&);    
+      virtual void InsertAtFront(Data&&);    
       
       virtual void InsertAtBack(const Data&);
       virtual void InsertAtBack(Data&&);
