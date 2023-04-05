@@ -16,7 +16,7 @@ namespace lasd {
         return every_single_item_was_inserted;
     }
 
-    template <typename Data> bool DictionaryContainer<Data>::InsertAll(const MutableMappableContainer<Data>& source) {
+    template <typename Data> bool DictionaryContainer<Data>::InsertAll(MutableMappableContainer<Data>&& source) {
         bool every_single_item_was_inserted = true;
         auto functor = [this](const Data& value, void* flag){ *((bool*)flag) &= this->Insert(value); };
         source.Fold(functor, &every_single_item_was_inserted);
@@ -37,7 +37,7 @@ namespace lasd {
         return at_least_one_item_was_inserted;
     };
       
-    template <typename Data> bool DictionaryContainer<Data>::InsertSome(const MutableMappableContainer<Data>& source) {
+    template <typename Data> bool DictionaryContainer<Data>::InsertSome(MutableMappableContainer<Data>&& source) {
         bool at_least_one_item_was_inserted = false;
         auto functor = [this](const Data& value, void* flag){ *((bool*)flag) |= this->Insert(value); };
         source.Fold(functor, &at_least_one_item_was_inserted);

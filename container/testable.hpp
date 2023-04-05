@@ -13,8 +13,8 @@ namespace lasd {
       TestableContainer(TestableContainer&&) = default;
       virtual ~TestableContainer() = default;
 
-      bool virtual operator==(const Container& container) const noexcept = delete;
-      bool virtual operator!=(const Container& contaner) const noexcept = delete;
+      bool virtual operator==(const Container&) const noexcept = delete;
+      bool virtual operator!=(const Container&) const noexcept = delete;
 
       Container& operator=(const Container&) = delete;
       Container& operator=(Container&&) = delete;

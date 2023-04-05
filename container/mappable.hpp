@@ -15,8 +15,8 @@ namespace lasd {
       MappableContainer(MappableContainer&&) = default;
       virtual ~MappableContainer() = default;
 
-      bool virtual operator==(const MappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const MappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const MappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const MappableContainer&) const noexcept = delete;
 
       virtual MappableContainer& operator=(const MappableContainer&) = delete;
       virtual MappableContainer& operator=(MappableContainer&&) = delete;
@@ -38,8 +38,8 @@ namespace lasd {
       PreOrderMappableContainer(PreOrderMappableContainer&&) = default;
       virtual ~PreOrderMappableContainer() = default;
 
-      bool virtual operator==(const PreOrderMappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const PreOrderMappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const PreOrderMappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const PreOrderMappableContainer&) const noexcept = delete;
 
       virtual PreOrderMappableContainer& operator=(const PreOrderMappableContainer&) = delete;
       virtual PreOrderMappableContainer& operator=(PreOrderMappableContainer&&) = delete;
@@ -63,8 +63,8 @@ namespace lasd {
       PostOrderMappableContainer(PostOrderMappableContainer&&) = default;
       virtual ~PostOrderMappableContainer() = default;
 
-      bool virtual operator==(const PostOrderMappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const PostOrderMappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const PostOrderMappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const PostOrderMappableContainer&) const noexcept = delete;
 
       virtual PostOrderMappableContainer& operator=(const PostOrderMappableContainer&) = delete;
       virtual PostOrderMappableContainer& operator=(PostOrderMappableContainer&&) = delete;
@@ -88,8 +88,8 @@ namespace lasd {
       InOrderMappableContainer(InOrderMappableContainer&&) = default;
       virtual ~InOrderMappableContainer() = default;
 
-      bool virtual operator==(const InOrderMappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const InOrderMappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const InOrderMappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const InOrderMappableContainer&) const noexcept = delete;
 
       virtual InOrderMappableContainer& operator=(const InOrderMappableContainer&) = delete;
       virtual InOrderMappableContainer& operator=(InOrderMappableContainer&&) = delete;
@@ -137,8 +137,8 @@ namespace lasd {
       MutableMappableContainer(MutableMappableContainer&&) = default;
       virtual ~MutableMappableContainer() = default;
 
-      bool virtual operator==(const MutableMappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const MutableMappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const MutableMappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const MutableMappableContainer&) const noexcept = delete;
 
       virtual MutableMappableContainer& operator=(const MutableMappableContainer&) = delete;
       virtual MutableMappableContainer& operator=(MutableMappableContainer&&) = delete;
@@ -161,8 +161,8 @@ namespace lasd {
       MutablePreOrderMappableContainer(MutablePreOrderMappableContainer&&) = default;
       virtual ~MutablePreOrderMappableContainer() = default;
 
-      bool virtual operator==(const MutablePreOrderMappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const MutablePreOrderMappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const MutablePreOrderMappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const MutablePreOrderMappableContainer&) const noexcept = delete;
 
       virtual MutablePreOrderMappableContainer& operator=(const MutablePreOrderMappableContainer&) = delete;
       virtual MutablePreOrderMappableContainer& operator=(MutablePreOrderMappableContainer&&) = delete;
@@ -185,8 +185,8 @@ namespace lasd {
       MutablePostOrderMappableContainer(MutablePostOrderMappableContainer&&) = default;
       virtual ~MutablePostOrderMappableContainer() = default;
 
-      bool virtual operator==(const MutablePostOrderMappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const MutablePostOrderMappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const MutablePostOrderMappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const MutablePostOrderMappableContainer&) const noexcept = delete;
 
       virtual MutablePostOrderMappableContainer& operator=(const MutablePostOrderMappableContainer&) = delete;
       virtual MutablePostOrderMappableContainer& operator=(MutablePostOrderMappableContainer&&) = delete;
@@ -211,8 +211,8 @@ namespace lasd {
       MutableInOrderMappableContainer(MutableInOrderMappableContainer&&) = default;
       virtual ~MutableInOrderMappableContainer() = default;
 
-      bool virtual operator==(const MutableInOrderMappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const MutableInOrderMappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const MutableInOrderMappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const MutableInOrderMappableContainer&) const noexcept = delete;
 
       virtual MutableInOrderMappableContainer& operator=(const MutableInOrderMappableContainer&) = delete;
       virtual MutableInOrderMappableContainer& operator=(MutableInOrderMappableContainer&&) = delete;
@@ -237,8 +237,8 @@ namespace lasd {
       MutableBreadthMappableContainer(MutableBreadthMappableContainer&&) = default;
       virtual ~MutableBreadthMappableContainer() = default;
 
-      bool virtual operator==(const MutableBreadthMappableContainer& container) const noexcept = delete;
-      bool virtual operator!=(const MutableBreadthMappableContainer& contaner) const noexcept = delete;
+      bool virtual operator==(const MutableBreadthMappableContainer&) const noexcept = delete;
+      bool virtual operator!=(const MutableBreadthMappableContainer&) const noexcept = delete;
 
       virtual MutableBreadthMappableContainer& operator=(const MutableBreadthMappableContainer&) = delete;
       virtual MutableBreadthMappableContainer& operator=(MutableBreadthMappableContainer&&) = delete;

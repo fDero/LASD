@@ -21,7 +21,7 @@ namespace lasd {
       virtual LinearContainer& operator=(LinearContainer&&) = delete;
 
       virtual bool operator==(const LinearContainer&) const noexcept;
-      virtual bool operator!=(const LinearContainer&) const noexcept;
+      inline virtual bool operator!=(const LinearContainer&) const noexcept;
       
       virtual const Data& operator[](sizetype) const = 0;
       virtual Data& operator[](sizetype) = 0; 
@@ -47,9 +47,9 @@ namespace lasd {
       virtual void PreOrderMap(MutableMapFunctor) override;
       virtual void PostOrderMap(MutableMapFunctor) override;
       
-      virtual void Fold(FoldFunctor functor, void* accumulator) const override;
-      virtual void Map(MapFunctor) const override;
-      virtual void Map(MutableMapFunctor) override;
+      virtual inline void Fold(FoldFunctor functor, void* accumulator) const override;
+      virtual inline void Map(MapFunctor) const override;
+      virtual inline void Map(MutableMapFunctor) override;
   };
 
 

@@ -81,13 +81,14 @@ namespace lasd {
         return (at == nullptr) and (bt == nullptr);
     }
 
-    template<typename Data> bool List<Data>::operator!=(const List<Data>& list) const { 
+    template<typename Data> bool inline List<Data>::operator!=(const List<Data>& list) const { 
         return not (this->operator==(list));
     }
 
     template<typename Data> List<Data>& List<Data>::operator=(const List<Data>& list) {
         Clear();
         list.Map([this](const Data& value){ this->InsertAtBack(value); });
+        return *this;
     }
 
     template<typename Data> List<Data>& List<Data>::operator=(List<Data>&& list) {
@@ -96,6 +97,7 @@ namespace lasd {
         size = list.size; 
         list.head = nullptr;
         list.tail = nullptr;
+        return *this;
     }
 
     template<typename Data> const Data& List<Data>::operator[](sizetype index) const {
@@ -177,9 +179,9 @@ namespace lasd {
     template <typename Data> bool List<Data>::Remove(const Data& value){
         for (Node* it = head; it != nullptr; it = it->next) 
             if (it->value == value) {
-                if (it->prev != nullptr) it->prev->next = it->next;
-                if (it->next != nullptr) it->next->prev = it->prev;
-                delete it;
+                if (it != head) it->prev->next = it->next; else head = head->next;
+                if (it != tail) it->next->prev = it->prev; else tail = tail->prev;
+                delete it; 
                 size--;
                 return true; 
             }

@@ -14,7 +14,7 @@ namespace lasd {
     return true;
   }
 
-  template<typename Data> bool LinearContainer<Data>::operator!=(const LinearContainer<Data>& sequence) const noexcept {
+  template<typename Data> bool inline LinearContainer<Data>::operator!=(const LinearContainer<Data>& sequence) const noexcept {
     return not this->operator==(sequence);
   }
 
@@ -60,7 +60,7 @@ namespace lasd {
     for (int i = size-1; i >= 0; i--) functor(this->operator[](i));
   }
 
-  template<typename Data> void LinearContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { PreOrderFold(functor,accumulator); }
-  template<typename Data> void LinearContainer<Data>::Map(MapFunctor functor) const { PreOrderMap(functor); }
-  template<typename Data> void LinearContainer<Data>::Map(MutableMapFunctor functor) { PreOrderMap(functor); }
+  template<typename Data> void inline LinearContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { PreOrderFold(functor,accumulator); }
+  template<typename Data> void inline LinearContainer<Data>::Map(MapFunctor functor) const { PreOrderMap(functor); }
+  template<typename Data> void inline LinearContainer<Data>::Map(MutableMapFunctor functor) { PreOrderMap(functor); }
 }

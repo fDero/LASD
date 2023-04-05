@@ -1,8 +1,5 @@
 
-#ifndef STACKLST_HPP
-#define STACKLST_HPP
-
-/* ************************************************************************** */
+#pragma once
 
 #include "../stack.hpp"
 #include "../../list/list.hpp"
@@ -13,8 +10,7 @@ namespace lasd {
 
 /* ************************************************************************** */
 
-template <typename Data>
-class StackLst {
+template <typename Data> class StackLst {
                   // Must extend Stack<Data>,
                   //             List<Data>
 
@@ -33,13 +29,9 @@ public:
   // Default constructor
   // StackLst() specifier;
 
-  /* ************************************************************************ */
-
   // Specific constructor
   // StackLst(argument) specifiers; // A stack obtained from a MappableContainer
   // StackLst(argument) specifiers; // A stack obtained from a MutableMappableContainer
-
-  /* ************************************************************************ */
 
   // Copy constructor
   // StackLst(argument);
@@ -47,12 +39,8 @@ public:
   // Move constructor
   // StackLst(argument);
 
-  /* ************************************************************************ */
-
   // Destructor
   // ~StackLst() specifier;
-
-  /* ************************************************************************ */
 
   // Copy assignment
   // type operator=(argument);
@@ -60,13 +48,9 @@ public:
   // Move assignment
   // type operator=(argument);
 
-  /* ************************************************************************ */
-
   // Comparison operators
   // type operator==(argument) specifiers;
   // type operator!=(argument) specifiers;
-
-  /* ************************************************************************ */
 
   // Specific member functions (inherited from Stack)
 
@@ -77,18 +61,12 @@ public:
   // type Push(argument) specifiers; // Override Stack member (copy of the value)
   // type Push(argument) specifiers; // Override Stack member (move of the value)
 
-  /* ************************************************************************ */
-
   // Specific member function (inherited from ClearableContainer)
 
   // using List<Data>::Clear;
 
 };
 
-/* ************************************************************************** */
-
 }
 
 #include "stacklst.cpp"
-
-#endif

@@ -14,18 +14,18 @@ namespace lasd {
       sizetype size = 0;
     public:
       Container() = default;
-      Container(const Container& container) = default;
-      Container(Container&& container) = default;
+      Container(const Container&) = default;
+      Container(Container&&) = default;
       virtual ~Container() = default; 
 
-      virtual bool operator==(const Container& container) const noexcept = delete;
-      virtual bool operator!=(const Container& contaner) const noexcept = delete;
+      virtual bool operator==(const Container&) const = delete;
+      virtual bool operator!=(const Container&) const = delete;
 
       virtual Container& operator=(const Container&) = delete;
       virtual Container& operator=(Container&&) = delete;
 
-      bool Empty() const noexcept { return (size == 0); }
-      int Size() const noexcept { return size; }
+      inline bool Empty() const noexcept { return (size == 0); }
+      inline int Size() const noexcept { return size; }
   };
 
   
@@ -34,12 +34,12 @@ namespace lasd {
   class ClearableContainer : public virtual Container {
     public: 
       ClearableContainer() = default;
-      ClearableContainer(const ClearableContainer& container) = default;
-      ClearableContainer(ClearableContainer&& container) = default;
+      ClearableContainer(const ClearableContainer&) = default;
+      ClearableContainer(ClearableContainer&&) = default;
       virtual ~ClearableContainer() = default; 
 
-      virtual bool operator==(const ClearableContainer& container) const noexcept = delete;
-      virtual bool operator!=(const ClearableContainer& contaner) const noexcept = delete;
+      virtual bool operator==(const ClearableContainer&) const = delete;
+      inline virtual bool operator!=(const ClearableContainer&) const = delete;
 
       virtual ClearableContainer& operator=(const ClearableContainer&) = delete;
       virtual ClearableContainer& operator=(ClearableContainer&&) = delete;
@@ -53,17 +53,17 @@ namespace lasd {
   class ResizableContainer : public virtual ClearableContainer {
     public:
       ResizableContainer() = default;
-      ResizableContainer(const ResizableContainer& container) = default;
-      ResizableContainer(ResizableContainer&& container) = default;
+      ResizableContainer(const ResizableContainer&) = default;
+      ResizableContainer(ResizableContainer&&) = default;
       virtual ~ResizableContainer() = default; 
 
-      virtual bool operator==(const ResizableContainer& container) const noexcept = delete;
-      virtual bool operator!=(const ResizableContainer& contaner) const noexcept = delete;
+      virtual bool operator==(const ResizableContainer&) const noexcept = delete;
+      inline virtual bool operator!=(const ResizableContainer&) const noexcept = delete;
 
       virtual ResizableContainer& operator=(const ResizableContainer&) = delete;
       virtual ResizableContainer& operator=(ResizableContainer&&) = delete; 
 
       virtual void Resize(sizetype newSize) = 0;
-      virtual void Clear() override { Resize(0); }
+      inline virtual void Clear() override { Resize(0); }
   };
 }

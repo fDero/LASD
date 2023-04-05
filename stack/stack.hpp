@@ -1,63 +1,33 @@
 
-#ifndef STACK_HPP
-#define STACK_HPP
+// FRANCESCO DE ROSA N86004379
 
-/* ************************************************************************** */
+#pragma once
 
 #include "../container/container.hpp"
 
-/* ************************************************************************** */
-
 namespace lasd {
 
-/* ************************************************************************** */
+  template <typename Data> class Stack : public virtual ClearableContainer {
+    public:
+      Stack() = default;
+      Stack(const Stack&) = default;
+      Stack(Stack&&) = default;
+      virtual ~Stack() = default; 
 
-template <typename Data>
-class Stack {
-              // Must extend ClearableContainer
+      virtual bool operator==(const Stack&) const = delete;
+      virtual bool operator!=(const Stack&) const = delete;
 
-private:
-
-  // ...
-
-protected:
-
-  // ...
-
-public:
-
-  // Destructor
-  // ~Stack() specifiers
-
-  /* ************************************************************************ */
-
-  // Copy assignment
-  // type operator=(argument); // Copy assignment of abstract types should not be possible.
-
-  // Move assignment
-  // type operator=(argument); // Move assignment of abstract types should not be possible.
-
-  /* ************************************************************************ */
-
-  // Comparison operators
-  // type operator==(argument) specifiers; // Comparison of abstract types might not be possible.
-  // type operator!=(argument) specifiers; // Comparison of abstract types might not be possible.
-
-  /* ************************************************************************ */
-
-  // Specific member functions
-
-  // type Top() specifiers; // (non-mutable version; concrete function must throw std::length_error when empty)
-  // type Top() specifiers; // (mutable version; concrete function must throw std::length_error when empty)
-  // type Pop() specifiers; // (concrete function must throw std::length_error when empty)
-  // type TopNPop() specifiers; // (concrete function must throw std::length_error when empty)
-  // type Push(argument) specifiers; // Copy of the value
-  // type Push(argument) specifiers; // Move of the value
-
-};
-
-/* ************************************************************************** */
-
+      virtual Stack& operator=(const Stack&) = delete;
+      virtual Stack& operator=(Stack&&) = delete;
+  
+      virtual const Data& Top() const = 0;  // (non-mutable version; concrete function must throw std::length_error when empty)
+      virtual Data& Top() = 0;              // (mutable version; concrete function must throw std::length_error when empty)
+      virtual void Pop() = 0;               // (concrete function must throw std::length_error when empty)
+    
+      virtual Data TopNPop();
+      virtual void Push(const Data&) = 0;
+      virtual void Push(Data&&) = 0;
+  };
 }
 
-#endif
+#include "stack.cpp"

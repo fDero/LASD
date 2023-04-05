@@ -22,9 +22,9 @@ namespace lasd {
         Node* prev = nullptr;
 
         Node() = delete;
+        Node(Node&& node) { value = std::move(node.value); };
         Node(const Data& input) { value = input; }
         Node(const Node&) = default;
-        Node(Node&&) = default;
         ~Node() = default;
       };
 
@@ -47,7 +47,7 @@ namespace lasd {
       Data& operator[](sizetype) override;
 
       virtual bool operator==(const List&) const;
-      virtual bool operator!=(const List&) const;
+      virtual inline bool operator!=(const List&) const;
       
       virtual bool Insert(const Data&) override;
       virtual bool Insert(Data&&) override;

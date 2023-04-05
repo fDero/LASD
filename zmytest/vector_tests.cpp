@@ -44,6 +44,50 @@ void copy_assignment_test(){
 
 
 
+void copy_constructor_test(){
+    auto xs = lasd::Vector<std::string>(10);
+    xs[0] = "A"; xs[1] = "B"; xs[2] = "C"; xs[3] = "D"; xs[4] = "E";
+    xs[5] = "F"; xs[6] = "G"; xs[7] = "H"; xs[8] = "I"; xs[9] = "L";
+    auto ys = lasd::Vector<std::string>(xs);
+    expect(ys[0] == xs[0]); expect(ys[5] == xs[5]);
+    expect(ys[1] == xs[1]); expect(ys[6] == xs[6]);
+    expect(ys[2] == xs[2]); expect(ys[7] == xs[7]);
+    expect(ys[3] == xs[3]); expect(ys[8] == xs[8]);
+    expect(ys[4] == xs[4]); expect(ys[9] == xs[9]);
+}
+
+
+
+
+
+void move_assignment_test(){
+    auto xs = lasd::Vector<std::string>(10);
+    xs[0] = "A"; xs[1] = "B"; xs[2] = "C"; xs[3] = "D"; xs[4] = "E";
+    xs[5] = "F"; xs[6] = "G"; xs[7] = "H"; xs[8] = "I"; xs[9] = "L";
+    auto ys = std::move(xs);
+    expect(ys[0] == "A"); expect(ys[5] == "F");
+    expect(ys[1] == "B"); expect(ys[6] == "G");
+    expect(ys[2] == "C"); expect(ys[7] == "H");
+    expect(ys[3] == "D"); expect(ys[8] == "I");
+    expect(ys[4] == "E"); expect(ys[9] == "L");
+}
+
+
+
+void move_constructor_test(){
+    auto xs = lasd::Vector<std::string>(10);
+    xs[0] = "A"; xs[1] = "B"; xs[2] = "C"; xs[3] = "D"; xs[4] = "E";
+    xs[5] = "F"; xs[6] = "G"; xs[7] = "H"; xs[8] = "I"; xs[9] = "L";
+    auto ys = lasd::Vector<std::string>(std::move(xs));
+    expect(ys[0] == "A"); expect(ys[5] == "F");
+    expect(ys[1] == "B"); expect(ys[6] == "G");
+    expect(ys[2] == "C"); expect(ys[7] == "H");
+    expect(ys[3] == "D"); expect(ys[8] == "I");
+    expect(ys[4] == "E"); expect(ys[9] == "L");
+}
+
+
+
 void integer_vector_fold_and_map(){
   int sum = 0;
   lasd::Vector<int> xs = lasd::Vector<int>(6);
@@ -52,7 +96,7 @@ void integer_vector_fold_and_map(){
   xs[4] = 4; xs[5] = 5;
 
   xs.Map([](int& value){ value = value * value; });
-  xs.Fold([](const int& value, void* accumulator){ (int&)*((int*)accumulator) += value; }, &sum);
+  xs.Fold([](const int& value, void* accumulator){ *((int*)accumulator) += value; }, &sum);
   
   expect(xs[0] == 0);
   expect(xs[1] == 1);
@@ -62,7 +106,6 @@ void integer_vector_fold_and_map(){
   expect(xs[5] == 25);
   expect(sum == 55);
 }
-
 
 
 
@@ -77,14 +120,12 @@ void vector_index_out_of_bounds(){
 
 
 
-
 void empty_vector_front_method_call_t1(){
     expect_exception<std::length_error>([](){ 
         lasd::Vector<int> xs = lasd::Vector<int>(0); 
         xs.Front(); }
     );
 }
-
 
 
 
@@ -110,7 +151,6 @@ void empty_vector_front_method_call_t3(){
 
 
 
-
 void empty_vector_back_method_call_t1(){
     expect_exception<std::length_error>([](){ 
         lasd::Vector<int> xs = lasd::Vector<int>(0);
@@ -121,14 +161,12 @@ void empty_vector_back_method_call_t1(){
 
 
 
-
 void empty_vector_back_method_call_t2(){
     expect_exception<std::length_error>([](){ 
         lasd::Vector<int> xs = lasd::Vector<int>();
         xs.Back();
     });
 }
-
 
 
 
@@ -144,7 +182,6 @@ void empty_vector_back_method_call_t3(){
 
 
 
-
 void empty_vectors_comparison(){
     lasd::Vector<int> xs;
     lasd::Vector<int> ys;
@@ -155,14 +192,12 @@ void empty_vectors_comparison(){
 
 
 
-
 void different_sizes_vector_comparison(){
     lasd::Vector<int> xs = lasd::Vector<int>(5);
     lasd::Vector<int> ys = lasd::Vector<int>(7);
     expect(xs != ys);
     expect(not (xs == ys));
 }
-
 
 
 
@@ -179,8 +214,6 @@ void non_trivial_vector_comparison(){
 
 
 
-
-
 void vector_postorder_fold(){
     lasd::Vector<std::string> words = lasd::Vector<std::string>(3);
     words[0] = "aa"; words[1] = "bb"; words[2] = "cc";
@@ -189,7 +222,6 @@ void vector_postorder_fold(){
     words.PostOrderFold(concatenation, &postorder_concatenation);
     expect(postorder_concatenation == "ccbbaa");
 }
-
 
 
 
@@ -206,8 +238,6 @@ void vector_preorder_fold(){
 
 
 
-
-
 void vector_postorder_map(){
     lasd::Vector<std::string> words = lasd::Vector<std::string>(3);
     words[0] = "aa"; words[1] = "bb"; words[2] = "cc";
@@ -220,7 +250,6 @@ void vector_postorder_map(){
 
 
 
-
 void vector_preorder_map(){
     lasd::Vector<std::string> words = lasd::Vector<std::string>(3);
     words[0] = "aa"; words[1] = "bb"; words[2] = "cc";
@@ -229,9 +258,6 @@ void vector_preorder_map(){
     words.PreOrderMap(concatenation);
     expect(post_order_concatenation == "aabbcc");
 }
-
-
-
 
 
 
@@ -252,7 +278,6 @@ void vector_mutable_postorder_map(){
 
 
 
-
 void vector_mutable_preorder_map(){
     lasd::Vector<std::string> words = lasd::Vector<std::string>(3);
     words[0] = "aa"; words[1] = "bb"; words[2] = "cc";
@@ -268,7 +293,6 @@ void vector_mutable_preorder_map(){
 
 
 
-
 void vector_sort_test(){
     lasd::Vector<int> numbers = lasd::Vector<int>(4);
     numbers[0] = 8;  numbers[1] = 7;
@@ -277,7 +301,6 @@ void vector_sort_test(){
     expect(numbers[0] == 0); expect(numbers[1] == 7);
     expect(numbers[2] == 8); expect(numbers[3] == 9);
 }
-
 
 
 
@@ -299,7 +322,6 @@ void vector_resize_t1(){
 
 
 
-
 void vector_resize_t2(){
     lasd::Vector<int> numbers = lasd::Vector<int>(4);
     numbers[0] = 8;  numbers[1] = 7;
@@ -309,7 +331,6 @@ void vector_resize_t2(){
     numbers.Resize(0);
     expect_exception<std::length_error>([&numbers](){ numbers.Front() = 0; });
 }
-
 
 
 
@@ -325,7 +346,6 @@ void vector_clear_t1(){
 
 
 
-
 void vector_clear_t2(){
     lasd::Vector<int> numbers = lasd::Vector<int>(4);
     numbers[0] = 8;  numbers[1] = 7;
@@ -337,12 +357,32 @@ void vector_clear_t2(){
 
 
 
+void vector_clear_t3(){
+    lasd::Vector<int> numbers = lasd::Vector<int>();
+    numbers.Clear();
+    expect_exception<std::length_error>([&numbers](){ numbers.Front() = 0; });
+}
+
+
+
+
+void vector_clear_t4(){
+    lasd::Vector<int> numbers = lasd::Vector<int>();
+    numbers.Clear();
+    expect_exception<std::out_of_range>([&numbers](){ numbers[0] = 0; });
+}
+
+
+
 
 void execute_vector_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for lasd::Vector<T> ↓↓↓ \n");
     UnitTest vector_test_procedures {
        {"integer_vector_values_initiaization", integer_vector_values_initiaization}, 
        {"copy_assignment_test",                copy_assignment_test}, 
+       {"move_assignment_test",                move_assignment_test}, 
+       {"copy_constructor_test",               copy_constructor_test}, 
+       {"move_constructor_test",               move_constructor_test}, 
        {"integer_vector_fold_and_map",         integer_vector_fold_and_map},
        {"vector_index_out_of_bounds",          vector_index_out_of_bounds},
        {"empty_vector_front_method_call_t1",   empty_vector_front_method_call_t1},
@@ -365,6 +405,8 @@ void execute_vector_tests(){
        {"vector_resize_t2",                    vector_resize_t2},
        {"vector_clear_t1",                     vector_clear_t1},
        {"vector_clear_t2",                     vector_clear_t2},
+       {"vector_clear_t3",                     vector_clear_t3},
+       {"vector_clear_t4",                     vector_clear_t4},
     };
     execute_tests(vector_test_procedures);  
 }

@@ -36,6 +36,65 @@ void list_back_insertions(){
 
 
 
+void list_copy_constructor(){
+    lasd::List<std::string> xs = lasd::List<std::string>();
+    xs.InsertAtBack("aa");
+    xs.InsertAtBack("bb");
+    xs.InsertAtBack("cc");
+    lasd::List<std::string> ys = lasd::List<std::string>(xs);
+    expect(ys.Front() == "aa");
+    expect(ys.Back() == "cc");
+    expect(ys.Size() == 3);
+}
+
+
+
+
+void list_copy_assignment(){
+    lasd::List<std::string> xs = lasd::List<std::string>();
+    xs.InsertAtBack("aa");
+    xs.InsertAtBack("bb");
+    xs.InsertAtBack("cc");
+    lasd::List<std::string> ys = xs;
+    expect(ys.Front() == "aa");
+    expect(ys.Back() == "cc");
+    expect(ys.Size() == 3);
+}
+
+
+
+
+void list_move_assignment(){
+    lasd::List<std::string> xs = lasd::List<std::string>();
+    xs.InsertAtBack("aa");
+    xs.InsertAtBack("bb");
+    xs.InsertAtBack("cc");
+    lasd::List<std::string> ys = std::move(xs);
+    expect(ys.Front() == "aa");
+    expect(ys.Back() == "cc");
+    expect(ys.Size() == 3);
+}
+
+
+
+
+void list_comparison(){
+    lasd::List<int> xs = lasd::List<int>();
+    lasd::List<int> ys = lasd::List<int>();
+    lasd::List<int> as = lasd::List<int>();
+    as.InsertAtBack(1);
+    as.InsertAtBack(2);
+    lasd::List<int> bs = lasd::List<int>(as);
+    expect(xs == ys);
+    expect(not (xs != ys));
+    expect(as == bs);
+    expect(not (as != bs));
+    expect(xs != bs);
+    expect(not (xs == bs));
+}
+
+
+
 
 void list_access_by_index(){
     lasd::List<int> xs = lasd::List<int>();
@@ -46,7 +105,6 @@ void list_access_by_index(){
     expect(xs[1] == 2);
     expect(xs[2] == 3);
 }
-
 
 
 
@@ -76,7 +134,6 @@ void list_index_out_bounds_t1(){
 
 
 
-
 void list_index_out_bounds_t2(){
     expect_exception<std::out_of_range>([](){
         lasd::List<int> xs = lasd::List<int>();
@@ -100,7 +157,6 @@ void list_index_out_bounds_t3(){
 
 
 
-
 void empty_list_front_method(){
     expect_exception<std::length_error>([](){
         lasd::List<int> xs = lasd::List<int>();
@@ -111,14 +167,12 @@ void empty_list_front_method(){
 
 
 
-
 void empty_list_back_method(){
     expect_exception<std::length_error>([](){
         lasd::List<int> xs = lasd::List<int>();
         xs.Back() = 10;
     });
 }
-
 
 
 
@@ -137,7 +191,6 @@ void list_preorder_fold(){
 
 
 
-
 void list_postorder_fold(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
@@ -148,7 +201,6 @@ void list_postorder_fold(){
     words.PostOrderFold(concatenation, &postorder_concatenated_words);
     expect(postorder_concatenated_words == "ccbbaa");
 }
-
 
 
 
@@ -167,7 +219,6 @@ void list_preorder_map(){
 
 
 
-
 void list_postorder_map(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
@@ -178,8 +229,6 @@ void list_postorder_map(){
     words.PostOrderMap(concatenation);
     expect(postorder_concatenated_words == "ccbbaa");
 }
-
-
 
 
 
@@ -201,7 +250,6 @@ void list_preorder_mutable_map(){
 
 
 
-
 void list_postorder_mutable_map(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
@@ -219,10 +267,6 @@ void list_postorder_mutable_map(){
 
 
 
-
-
-
-
 void list_insert_dictionary_test(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
@@ -232,8 +276,6 @@ void list_insert_dictionary_test(){
     expect(words.Insert("dd"));
     expect(words.Size() == 4);
 }
-
-
 
 
 
@@ -251,7 +293,6 @@ void list_remove_dictionary_test(){
 
 
 
-
 void list_insert_front_test(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
@@ -265,7 +306,6 @@ void list_insert_front_test(){
 
 
 
-
 void list_clear_t1(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
@@ -273,7 +313,6 @@ void list_clear_t1(){
     expect(words.Size() == 0);
     expect(words.Empty());  
 }
-
 
 
 
@@ -291,7 +330,6 @@ void list_remove_back_t1(){
 
 
 
-
 void list_remove_back_t2(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
@@ -299,7 +337,6 @@ void list_remove_back_t2(){
     expect(words.Size() == 0);
     expect(words.Empty());
 }
-
 
 
 
@@ -314,7 +351,6 @@ void list_remove_back_t3(){
 
 
 
-
 void list_remove_front_t1(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
@@ -324,7 +360,6 @@ void list_remove_front_t1(){
     expect(words.Size() == 2);
     expect(words.Front() == "bb");
 }
-
 
 
 
@@ -439,11 +474,116 @@ void list_insert_some_t3(){
 
 
 
+void list_remove_all_t1(){
+    lasd::List<int> values = lasd::List<int>();
+    values.InsertAtBack(5);
+    values.InsertAtBack(6);
+    lasd::List<int> source = lasd::List<int>();
+    source.InsertAtBack(5);
+    source.InsertAtBack(6);
+    expect(source.RemoveAll(values));
+    expect(source.Empty());
+}
+
+
+
+void list_remove_all_t2(){
+    lasd::List<int> values = lasd::List<int>();
+    values.InsertAtBack(7);
+    values.InsertAtBack(8);
+    values.InsertAtBack(9);
+    lasd::List<int> source = lasd::List<int>();
+    source.InsertAtBack(8);
+    source.InsertAtBack(9);
+    expect(not source.RemoveAll(values));
+    expect(source.Empty());
+}
+
+
+
+
+void list_remove_all_t3(){
+    lasd::List<int> values = lasd::List<int>();
+    values.InsertAtBack(7);
+    values.InsertAtBack(8);
+    values.InsertAtBack(9);
+    lasd::List<int> source = lasd::List<int>();
+    source.InsertAtBack(0);
+    source.InsertAtBack(9);
+    expect(not source.RemoveAll(values));
+    expect(source.Size() == 1);
+}
+
+
+
+
+void list_remove_some_t1(){
+    lasd::List<int> values = lasd::List<int>();
+    values.InsertAtBack(7);
+    values.InsertAtBack(8);
+    values.InsertAtBack(9);
+    lasd::List<int> source = lasd::List<int>();
+    source.InsertAtBack(5);
+    source.InsertAtBack(6);
+    expect(not source.RemoveSome(values));
+    expect(source.Size() == 2);
+}
+
+
+
+
+void list_remove_some_t2(){
+    lasd::List<int> values = lasd::List<int>();
+    values.InsertAtBack(8);
+    values.InsertAtBack(9);
+    lasd::List<int> source = lasd::List<int>();
+    source.InsertAtBack(8);
+    source.InsertAtBack(9);
+    expect(source.RemoveSome(values));
+    expect(source.Empty());
+}
+
+
+
+void list_remove_some_t3(){
+    lasd::List<int> values = lasd::List<int>();
+    values.InsertAtBack(7);
+    values.InsertAtBack(8);
+    values.InsertAtBack(9);
+    lasd::List<int> source = lasd::List<int>();
+    source.InsertAtBack(0);
+    source.InsertAtBack(9);
+    expect(source.RemoveSome(values));
+    expect(source.Size() == 1);
+}
+
+
+
+
+void list_front_back_n_remove(){
+    lasd::List<int> xs = lasd::List<int>();
+    xs.InsertAtBack(7);
+    xs.InsertAtBack(8);
+    xs.InsertAtBack(9);
+    int xf = xs.FrontNRemove();
+    int xb = xs.BackNRemove();
+    expect(xf == 7);
+    expect(xb == 9);
+    expect(xs.Front() == 8);
+    expect(xs.Back() == 8);
+    expect(xs.Size() == 1);
+}
+
+
 
 void execute_list_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for lasd::List<T> ↓↓↓ \n");
     UnitTest list_test_procedures {
        {"empty_list_allocation",        empty_list_allocation}, 
+       {"list_copy_constructor",        list_copy_constructor},
+       {"list_copy_assignment",         list_copy_assignment},
+       {"list_move_assignment",         list_move_assignment},
+       {"list_comparison",              list_comparison},
        {"list_back_insertions",         list_back_insertions},
        {"list_access_by_index",         list_access_by_index},
        {"list_front_back_use",          list_front_back_use},
@@ -473,6 +613,13 @@ void execute_list_tests(){
        {"list_insert_some_t1",          list_insert_some_t1},
        {"list_insert_some_t2",          list_insert_some_t2},
        {"list_insert_some_t3",          list_insert_some_t3},
+       {"list_remove_all_t1",           list_remove_all_t1},
+       {"list_remove_all_t2",           list_remove_all_t2},
+       {"list_remove_all_t3",           list_remove_all_t3},
+       {"list_remove_some_t1",          list_remove_some_t1},
+       {"list_remove_some_t2",          list_remove_some_t2},
+       {"list_remove_some_t3",          list_remove_some_t3},
+       {"list_front_back_n_remove",     list_front_back_n_remove},
     };
     execute_tests(list_test_procedures);  
 }

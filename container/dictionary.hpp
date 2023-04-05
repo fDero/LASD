@@ -26,11 +26,11 @@ namespace lasd {
       virtual bool Remove(const Data&) = 0;
 
       virtual bool InsertAll(const MappableContainer<Data>&);
-      virtual bool InsertAll(const MutableMappableContainer<Data>&);
-      virtual bool RemoveAll(const MappableContainer<Data>& source);
+      virtual bool InsertAll(MutableMappableContainer<Data>&&);
+      virtual bool RemoveAll(const MappableContainer<Data>&);
       
-      virtual bool InsertSome(const MappableContainer<Data>& source);
-      virtual bool InsertSome(const MutableMappableContainer<Data>& source);
+      virtual bool InsertSome(const MappableContainer<Data>&);
+      virtual bool InsertSome(MutableMappableContainer<Data>&&);
       virtual bool RemoveSome(const MappableContainer<Data>& source);
   };
 }

@@ -16,19 +16,19 @@ namespace lasd {
         return found;
     }
 
-    template <typename Data> void PreOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
+    template <typename Data> inline void PreOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
         PreOrderFold(functor, accumulator); 
     }
 
-    template <typename Data> void PostOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
+    template <typename Data> inline void PostOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
         PostOrderFold(functor, accumulator); 
     }
 
-    template <typename Data> void InOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
+    template <typename Data> inline void InOrderFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
         InOrderFold(functor, accumulator); 
     }
 
-    template <typename Data> void BreadthFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
+    template <typename Data> inline void BreadthFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
         BreadthOrderFold(functor, accumulator); 
     }
 }
