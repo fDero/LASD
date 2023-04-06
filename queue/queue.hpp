@@ -13,7 +13,10 @@ namespace lasd {
       Queue() = default;
       Queue(const Queue&) = default;
       Queue(Queue&&) = default;
+      Queue(const MappableContainer<Data>&);
+      Queue(MutableMappableContainer<Data>&&);
       virtual ~Queue() = default;
+
       
       virtual bool operator==(const Queue&) const noexcept = delete;
       virtual bool operator!=(const Queue&) const noexcept = delete;

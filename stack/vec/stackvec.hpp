@@ -1,109 +1,55 @@
 
-#ifndef STACKVEC_HPP
-#define STACKVEC_HPP
+// FRANCESCO DE ROSA N86004379
 
-/* ************************************************************************** */
+#pragma once
 
 #include "../stack.hpp"
 #include "../../vector/vector.hpp"
 
-/* ************************************************************************** */
-
 namespace lasd {
 
-/* ************************************************************************** */
+  template <typename Data> class StackVec : public virtual Stack<Data>, virtual Vector<Data> {
+    protected:
+      using Vector<Data>::size;
+      using Vector<Data>::storage;
+      sizetype actual_length = 0;
+    public:
+      
+      StackVec();
+      StackVec(const StackVec&);
+      StackVec(StackVec&&);
+      virtual ~StackVec(); 
+      
+      virtual inline StackVec& operator=(const StackVec&);
+      virtual inline StackVec& operator=(StackVec&&);
 
-template <typename Data>
-class StackVec {
-                  // Must extend Stack<Data>,
-                  //             Vector<Data>
+      virtual inline bool operator==(const StackVec&) const noexcept;
+      virtual inline bool operator!=(const StackVec&) const noexcept;
 
-private:
+      using Vector<Data>::Size;
+      using Vector<Data>::Empty;
+      
+      virtual inline void Clear() override;
+      virtual void Resize(sizetype) override;
 
-  // ...
+      using Vector<Data>::Map;
+      using Vector<Data>::PreOrderMap;
+      using Vector<Data>::PostOrderMap;
 
-protected:
+      using Vector<Data>::Fold;
+      using Vector<Data>::PreOrderFold;
+      using Vector<Data>::PostOrderFold;
 
-  // using Vector<Data>::???;
+      virtual void Push(const Data&) override;
+      virtual void Push(Data&&) override;
 
-  // ...
-
-public:
-
-  // Default constructor
-  // StackVec() specifier;
-
-  /* ************************************************************************ */
-
-  // Specific constructor
-  // StackVec(argument) specifiers; // A stack obtained from a MappableContainer
-  // StackVec(argument) specifiers; // A stack obtained from a MutableMappableContainer
-
-  /* ************************************************************************ */
-
-  // Copy constructor
-  // StackVec(argument);
-
-  // Move constructor
-  // StackVec(argument);
-
-  /* ************************************************************************ */
-
-  // Destructor
-  // ~StackVec() specifier;
-
-  /* ************************************************************************ */
-
-  // Copy assignment
-  // type operator=(argument);
-
-  // Move assignment
-  // type operator=(argument);
-
-  /* ************************************************************************ */
-
-  // Comparison operators
-  // type operator==(argument) specifiers;
-  // type operator!=(argument) specifiers;
-
-  /* ************************************************************************ */
-
-  // Specific member functions (inherited from Stack)
-
-  // type Top() specifiers; // Override Stack member (non-mutable version; must throw std::length_error when empty)
-  // type Top() specifiers; // Override Stack member (non-mutable version; must throw std::length_error when empty)
-  // type Pop() specifiers; // Override Stack member (must throw std::length_error when empty)
-  // type TopNPop() specifiers; // Override Stack member (must throw std::length_error when empty)
-  // type Push(argument) specifiers; // Override Stack member (copy of the value)
-  // type Push(argument) specifiers; // Override Stack member (move of the value)
-
-  /* ************************************************************************ */
-
-  // Specific member functions (inherited from Container)
-
-  // type Empty() specifiers; // Override Container member
-
-  // type Size() specifiers; // Override Container member
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from ClearableContainer)
-
-  // type Clear() specifiers; // Override ClearableContainer member
-
-protected:
-
-  // Auxiliary member functions
-
-  // type Expand() specifiers;
-  // type Reduce() specifiers;
-
-};
-
-/* ************************************************************************** */
-
+      virtual inline void Pop() override;
+ 
+      virtual const Data& Top() const override;
+      virtual Data& Top() override;
+      
+      using Stack<Data>::TopNPop;
+  };
 }
 
 #include "stackvec.cpp"
-
-#endif

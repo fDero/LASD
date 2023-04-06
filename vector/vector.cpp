@@ -54,7 +54,7 @@ namespace lasd {
 
     template<typename Data> Vector<Data>& Vector<Data>::operator=(Vector&& vector){
         size = vector.size;
-        std::swap(storage,vector.storage);
+        storage = vector.storage;
         vector.storage = nullptr;
         return *this;
     }   

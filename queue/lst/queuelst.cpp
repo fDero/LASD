@@ -20,8 +20,19 @@ namespace lasd {
 
     template <typename Data> inline void QueueLst<Data>::Enqueue(const Data& value) { List<Data>::InsertAtBack(value); }
     template <typename Data> inline void QueueLst<Data>::Enqueue(Data&& value) { List<Data>::InsertAtBack(value); }
-    template <typename Data> inline void QueueLst<Data>::Dequeue() { List<Data>::RemoveFromFront(); }
+    
+    template <typename Data> inline void QueueLst<Data>::Dequeue() { 
+        if (size == 0) throw std::length_error("Dequeue() method called on empty queue");
+        List<Data>::RemoveFromFront(); 
+    }
      
-    template <typename Data> inline const Data& QueueLst<Data>::Head() const { return List<Data>::Front(); }
-    template <typename Data> inline Data& QueueLst<Data>::Head() { return List<Data>::Front(); }
+    template <typename Data> inline const Data& QueueLst<Data>::Head() const { 
+        if (size == 0) throw std::length_error("Head() method called on empty queue");
+        return List<Data>::Front(); 
+    }
+    
+    template <typename Data> inline Data& QueueLst<Data>::Head() { 
+        if (size == 0) throw std::length_error("Head() method called on empty queue");
+        return List<Data>::Front(); 
+    }
 }
