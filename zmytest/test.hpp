@@ -24,10 +24,8 @@ template<typename Exception> void expect_exception(TestProcedure action) {
 void execute_tests(const UnitTest& tests);
 void execute_vector_tests();
 void execute_list_tests();
-void execute_stack_vc_tests();
-void execute_stack_lst_tests();
-void execute_queue_vc_tests();
-void execute_queue_lst_tests();
+void execute_stack_tests();
+void execute_queue_tests();
 
 
 std::string bold_red(const std::string& text);

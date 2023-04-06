@@ -156,22 +156,19 @@ namespace lasd {
 
     template<typename Data> bool List<Data>::Exists(const Data& target) const noexcept {
         for (Node* it = head; it != nullptr; it = it->next) 
-            if(it->value == target) return true;
+            if(it->value == target) 
+                return true;
         return false;
     }
 
     template <typename Data> bool List<Data>::Insert(const Data& value){
-        for (Node* it = head; it != nullptr; it = it->next) 
-            if (it->value == value) 
-                return false;
+        if (Exists(value)) return false;
         InsertAtBack(value);
         return true;
     }
 
     template <typename Data> bool List<Data>::Insert(Data&& value){
-        for (Node* it = head; it != nullptr; it = it->next) 
-            if (it->value == value) 
-                return false;
+        if (Exists(value)) return false;
         InsertAtBack(value);
         return true;
     }

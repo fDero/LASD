@@ -21,7 +21,6 @@ void integer_vector_values_initiaization(){
     xs[0] = 0; xs[1] = 1;
     xs[2] = 2; xs[3] = 3;
     xs[4] = 4; xs[5] = 5;
-
     expect(xs[0] == 0);  expect(xs[1] == 1);
     expect(xs[2] == 2);  expect(xs[3] == 3);
     expect(xs[4] == 4);  expect(xs[5] == 5);

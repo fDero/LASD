@@ -1,6 +1,8 @@
 
 // FRANCESCO DE ROSA N86004379
 
+#pragma once
+
 #include "stack.hpp"
 
 namespace lasd {

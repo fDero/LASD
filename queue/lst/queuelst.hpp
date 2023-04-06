@@ -1,94 +1,59 @@
 
-#ifndef QUEUELST_HPP
-#define QUEUELST_HPP
+// FRANCESCO DE ROSA N86004379
 
-/* ************************************************************************** */
+#pragma once
 
 #include "../queue.hpp"
 #include "../../list/list.hpp"
 
-/* ************************************************************************** */
-
 namespace lasd {
 
-/* ************************************************************************** */
+template <typename Data> class QueueLst : public virtual Queue<Data> , virtual List<Data> {
+  protected:
+    using List<Data>::Node;
+    using List<Data>::size;
+  public:
+      QueueLst();
+      QueueLst(const QueueLst&);
+      QueueLst(QueueLst&&);
+      virtual ~QueueLst(); 
+      
+      virtual inline QueueLst& operator=(const QueueLst&);
+      virtual inline QueueLst& operator=(QueueLst&&);
 
-template <typename Data>
-class QueueLst {
-                  // Must extend Queue<Data>,
-                  //             List<Data>
+      virtual inline bool operator==(const QueueLst&) const noexcept;
+      virtual inline bool operator!=(const QueueLst&) const noexcept;
 
-private:
+      using List<Data>::Clear;
+      using List<Data>::Size;
+      using List<Data>::Empty;
 
-  // ...
+      using List<Data>::Map;
+      using List<Data>::PreOrderMap;
+      using List<Data>::PostOrderMap;
 
-protected:
+      using List<Data>::Fold;
+      using List<Data>::PreOrderFold;
+      using List<Data>::PostOrderFold;
 
-  // using List<Data>::???;
+      using List<Data>::Insert;
+      using List<Data>::InsertAll;
+      using List<Data>::InsertSome;
 
-  // ...
+      using List<Data>::Remove;
+      using List<Data>::RemoveAll;
+      using List<Data>::RemoveSome;
 
-public:
+      virtual inline void Enqueue(const Data&) override;
+      virtual inline void Enqueue(Data&&) override;
 
-  // Default constructor
-  // QueueLst() specifier;
-
-  /* ************************************************************************ */
-
-  // Specific constructor
-  // QueueLst(argument) specifiers; // A queue obtained from a MappableContainer
-  // QueueLst(argument) specifiers; // A queue obtained from a MutableMappableContainer
-
-  /* ************************************************************************ */
-
-  // Copy constructor
-  // QueueLst(argument);
-
-  // Move constructor
-  // QueueLst(argument);
-
-  /* ************************************************************************ */
-
-  // Destructor
-  // ~QueueLst() specifier;
-
-  /* ************************************************************************ */
-
-  // Copy assignment
-  // type operator=(argument);
-
-  // Move assignment
-  // type operator=(argument);
-
-  /* ************************************************************************ */
-
-  // Comparison operators
-  // type operator==(argument) specifiers;
-  // type operator!=(argument) specifiers;
-
-  /* ************************************************************************ */
-
-  // Specific member functions (inherited from Queue)
-
-  // type Head() specifiers; // Override Queue member (non-mutable version; must throw std::length_error when empty)
-  // type Head() specifiers; // Override Queue member (mutable version; must throw std::length_error when empty)
-  // type Dequeue() specifiers; // Override Queue member (must throw std::length_error when empty)
-  // type HeadNDequeue() specifiers; // Override Queue member (must throw std::length_error when empty)
-  // type Enqueue(argument) specifiers; // Override Queue member (copy of the value)
-  // type Enqueue(argument) specifiers; // Override Queue member (move of the value)
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from ClearableContainer)
-
-  // using List<Data>::Clear;
-
-};
-
-/* ************************************************************************** */
-
+      virtual inline void Dequeue() override;
+ 
+      virtual inline const Data& Head() const override;
+      virtual inline Data& Head() override;
+      
+      using Queue<Data>::HeadNDequeue;
+  };
 }
 
 #include "queuelst.cpp"
-
-#endif

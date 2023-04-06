@@ -9,6 +9,7 @@ namespace lasd {
 
   template <typename Data> class Stack : public virtual ClearableContainer {
     public:
+    
       Stack() = default;
       Stack(const Stack&) = default;
       Stack(Stack&&) = default;
@@ -20,13 +21,14 @@ namespace lasd {
       virtual Stack& operator=(const Stack&) = delete;
       virtual Stack& operator=(Stack&&) = delete;
   
-      virtual const Data& Top() const = 0;  // (non-mutable version; concrete function must throw std::length_error when empty)
-      virtual Data& Top() = 0;              // (mutable version; concrete function must throw std::length_error when empty)
-      virtual void Pop() = 0;               // (concrete function must throw std::length_error when empty)
-    
-      virtual Data TopNPop();
       virtual void Push(const Data&) = 0;
       virtual void Push(Data&&) = 0;
+      virtual void Pop() = 0;
+    
+      virtual const Data& Top() const = 0;
+      virtual Data& Top() = 0;
+      
+      Data TopNPop();
   };
 }
 

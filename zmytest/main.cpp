@@ -11,4 +11,6 @@
 int main() {
   execute_vector_tests();
   execute_list_tests();
+  execute_stack_tests();
+  execute_queue_tests();
 }

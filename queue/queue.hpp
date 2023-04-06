@@ -1,63 +1,35 @@
 
-#ifndef QUEUE_HPP
-#define QUEUE_HPP
+// FRANCESCO DE ROSA N86004379
 
-/* ************************************************************************** */
+#pragma once
 
 #include "../container/container.hpp"
 
-/* ************************************************************************** */
-
 namespace lasd {
 
-/* ************************************************************************** */
+  template <typename Data> class Queue : public virtual ClearableContainer {
+    public:
+      
+      Queue() = default;
+      Queue(const Queue&) = default;
+      Queue(Queue&&) = default;
+      virtual ~Queue() = default;
+      
+      virtual bool operator==(const Queue&) const noexcept = delete;
+      virtual bool operator!=(const Queue&) const noexcept = delete;
 
-template <typename Data>
-class Queue {
-              // Must extend ClearableContainer
+      virtual Queue& operator=(const Queue&) = delete;
+      virtual Queue& operator=(Queue&&) = delete;
 
-private:
-
-  // ...
-
-protected:
-
-  // ...
-
-public:
-
-  // Destructor
-  // ~Queue() specifiers
-
-  /* ************************************************************************ */
-
-  // Copy assignment
-  // type operator=(argument); // Copy assignment of abstract types should not be possible.
-
-  // Move assignment
-  // type operator=(argument); // Move assignment of abstract types should not be possible.
-
-  /* ************************************************************************ */
-
-  // Comparison operators
-  // type operator==(argument) specifiers; // Comparison of abstract types might not be possible.
-  // type operator!=(argument) specifiers; // Comparison of abstract types might not be possible.
-
-  /* ************************************************************************ */
-
-  // Specific member functions
-
-  // type Head() specifiers; // (non-mutable version; concrete function must throw std::length_error when empty)
-  // type Head() specifiers; // (mutable version; concrete function must throw std::length_error when empty)
-  // type Dequeue() specifiers; // (concrete function must throw std::length_error when empty)
-  // type HeadNDequeue() specifiers; // (concrete function must throw std::length_error when empty)
-  // type Enqueue(argument) specifiers; // Copy of the value
-  // type Enqueue(argument) specifiers; // Move of the value
-
-};
-
-/* ************************************************************************** */
-
+      virtual void Enqueue(const Data&) = 0;
+      virtual void Enqueue(Data&&) = 0;
+      virtual void Dequeue() = 0;
+      
+      virtual const Data& Head() const = 0;
+      virtual Data& Head() = 0;
+      
+      Data HeadNDequeue();
+  };
 }
 
-#endif
+#include "queue.cpp"
