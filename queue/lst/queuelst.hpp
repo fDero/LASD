@@ -5,15 +5,19 @@
 
 #include "../queue.hpp"
 #include "../../list/list.hpp"
+#include "../../container/mappable.hpp"
 
 namespace lasd {
 
-template <typename Data> class QueueLst : public virtual Queue<Data> , virtual List<Data> {
-  protected:
-    using List<Data>::Node;
-    using List<Data>::size;
-  public:
+  template <typename Data> class QueueLst : public virtual Queue<Data> , virtual List<Data> {
+    protected:
+      using List<Data>::Node;
+      using List<Data>::size;
+    public:
+    
       QueueLst();
+      QueueLst(const MappableContainer<Data>&);
+      QueueLst(MutableMappableContainer<Data>&&);
       QueueLst(const QueueLst&);
       QueueLst(QueueLst&&);
       virtual ~QueueLst(); 
@@ -48,7 +52,7 @@ template <typename Data> class QueueLst : public virtual Queue<Data> , virtual L
       virtual inline void Enqueue(Data&&) override;
 
       virtual inline void Dequeue() override;
- 
+
       virtual inline const Data& Head() const override;
       virtual inline Data& Head() override;
       

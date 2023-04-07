@@ -37,7 +37,7 @@ namespace lasd {
       List(const List&);
       List(List&&);
       List(const MappableContainer<Data>&);
-      List(const MutableMappableContainer<Data>&);
+      List(MutableMappableContainer<Data>&&);
       virtual ~List();
 
       List& operator=(const List&);

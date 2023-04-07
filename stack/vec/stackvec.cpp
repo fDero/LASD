@@ -10,35 +10,27 @@ namespace lasd {
     template <typename Data> StackVec<Data>::StackVec() : Vector<Data>() {}
     template <typename Data> StackVec<Data>::~StackVec() = default;
 
-    template <typename Data> StackVec<Data>::StackVec(const StackVec& stckvc) : Vector<Data>(stckvc) { actual_length = stckvc.actual_length; }
-    template <typename Data> StackVec<Data>::StackVec(StackVec&& stckvc) : Vector<Data>(stckvc) { actual_length = stckvc.actual_length; }
+    template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) : Stack<Data>::Stack(mc) { }
+    template <typename Data> StackVec<Data>::StackVec(MutableMappableContainer<Data>&& mmc) : Stack<Data>::Stack(std::move(mmc)) { }
+    
+    template <typename Data> StackVec<Data>::StackVec(const StackVec& stk) { this->operator=(stk); }
+    template <typename Data> StackVec<Data>::StackVec(StackVec&& stk) { this->operator=(std::move(stk)); }
     
     template <typename Data> inline bool StackVec<Data>::operator==(const StackVec<Data>& stk) const noexcept { return Vector<Data>::operator==(stk); }
     template <typename Data> inline bool StackVec<Data>::operator!=(const StackVec<Data>& stk) const noexcept { return Vector<Data>::operator!=(stk); }
 
-    template <typename Data> const Data& StackVec<Data>::Top() const { 
-        if (size == 0) throw std::length_error("Top() method called on an empty stack");
-        return this->Back(); 
-    }
-    
-    template <typename Data> Data& StackVec<Data>::Top() { 
-        if (size == 0) throw std::length_error("Top() method called on an empty stack");
-        return this->Back(); 
-    }
-   
     template <typename Data> StackVec<Data>& StackVec<Data>::operator=(const StackVec<Data>& stk) { 
-        stk.PreOrderMap([this](const Data& value){ this->Push(value); }); 
+        Resize(stk.actual_length);
+        stk.PreOrderMap([this](const Data& value){ this->Push(value); });  
         return *this;
     }
     
     template <typename Data> inline StackVec<Data>& StackVec<Data>::operator=(StackVec<Data>&& stk) { 
         actual_length = stk.actual_length;
-        size = stk.size;
-        storage = stk.storage;
-        stk.storage = nullptr;
-        return *this; 
+        Vector<Data>::operator=(std::move(stk));
+        return *this;
     }
-   
+
     template <typename Data> inline void StackVec<Data>::Clear() { 
         Vector<Data>::Clear();
         actual_length = 0;    
@@ -53,6 +45,16 @@ namespace lasd {
         actual_length = newlength;
     }
 
+    template <typename Data> const Data& StackVec<Data>::Top() const { 
+        if (size == 0) throw std::length_error("Top() method called on an empty stack");
+        return Vector<Data>::Back(); 
+    }
+    
+    template <typename Data> Data& StackVec<Data>::Top() { 
+        if (size == 0) throw std::length_error("Top() method called on an empty stack");
+        return Vector<Data>::Back(); 
+    }
+
     template <typename Data> inline void StackVec<Data>::Pop(){
         if (size == 0) throw std::length_error("Pop() method called on an empty stack");
         if (--size < actual_length/4) Resize(actual_length/2);
@@ -65,6 +67,6 @@ namespace lasd {
 
     template <typename Data> void StackVec<Data>::Push(Data&& value){
         if (++size >= actual_length) Resize(actual_length * 2 + 1);
-        this->Back() = value;
+        this->Back() = std::move(value);
     }
 }

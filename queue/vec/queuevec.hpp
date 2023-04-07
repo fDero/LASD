@@ -1,110 +1,60 @@
 
-#ifndef QUEUEVEC_HPP
-#define QUEUEVEC_HPP
+// FRANCESCO DE ROSA N86004379
 
-/* ************************************************************************** */
+#pragma once
 
 #include "../queue.hpp"
 #include "../../vector/vector.hpp"
-
-/* ************************************************************************** */
+#include "../../container/mappable.hpp"
 
 namespace lasd {
 
-/* ************************************************************************** */
+  template <typename Data> class QueueVec : public virtual Queue<Data>, virtual Vector<Data> {
+    protected:
+      using Vector<Data>::storage;
+      using Vector<Data>::size;
+      sizetype actual_length = 0;
+      sizetype head_index = 0;
+      sizetype tail_index = 0; 
+    public:
 
-template <typename Data>
-class QueueVec {
-                  // Must extend Queue<Data>,
-                  //             Vector<Data>
+      QueueVec();
+      QueueVec(const MappableContainer<Data>&);
+      QueueVec(MutableMappableContainer<Data>&&);
+      QueueVec(const QueueVec&);
+      QueueVec(QueueVec&&);
+      virtual ~QueueVec(); 
+      
+      virtual inline QueueVec& operator=(const QueueVec&);
+      virtual inline QueueVec& operator=(QueueVec&&);
 
-private:
+      virtual bool operator==(const QueueVec&) const noexcept;
+      virtual inline bool operator!=(const QueueVec&) const noexcept;
 
-  // ...
+      using Vector<Data>::Size;
+      using Vector<Data>::Empty;
+      
+      virtual inline void Clear() override;
+      virtual void Resize(sizetype) override;
 
-protected:
+      using Vector<Data>::Map;
+      using Vector<Data>::PreOrderMap;
+      using Vector<Data>::PostOrderMap;
 
-  // using Vector<Data>::???;
+      using Vector<Data>::Fold;
+      using Vector<Data>::PreOrderFold;
+      using Vector<Data>::PostOrderFold;
 
-  // ...
+      virtual void Enqueue(const Data&) override;
+      virtual void Enqueue(Data&&) override;
 
-public:
-
-  // Default constructor
-  // QueueVec() specifier;
-
-  /* ************************************************************************ */
-
-  // Specific constructor
-  // QueueVec(argument) specifiers; // A queue obtained from a MappableContainer
-  // QueueVec(argument) specifiers; // A queue obtained from a MutableMappableContainer
-
-  /* ************************************************************************ */
-
-  // Copy constructor
-  // QueueVec(argument);
-
-  // Move constructor
-  // QueueVec(argument);
-
-  /* ************************************************************************ */
-
-  // Destructor
-  // ~QueueVec() specifier;
-
-  /* ************************************************************************ */
-
-  // Copy assignment
-  // type operator=(argument);
-
-  // Move assignment
-  // type operator=(argument);
-
-  /* ************************************************************************ */
-
-  // Comparison operators
-  // type operator==(argument) specifiers;
-  // type operator!=(argument) specifiers;
-
-  /* ************************************************************************ */
-
-  // Specific member functions (inherited from Queue)
-
-  // type Head() specifiers; // Override Queue member (non-mutable version; must throw std::length_error when empty)
-  // type Head() specifiers; // Override Queue member (mutable version; must throw std::length_error when empty)
-  // type Dequeue() specifiers; // Override Queue member (must throw std::length_error when empty)
-  // type HeadNDequeue() specifiers; // Override Queue member (must throw std::length_error when empty)
-  // type Enqueue(argument) specifiers; // Override Queue member (copy of the value)
-  // type Enqueue(argument) specifiers; // Override Queue member (move of the value)
-
-  /* ************************************************************************ */
-
-  // Specific member functions (inherited from Container)
-
-  // type Empty() specifiers; // Override Container member
-
-  // type Size() specifiers; // Override Container member
-
-  /* ************************************************************************ */
-
-  // Specific member function (inherited from ClearableContainer)
-
-  // type Clear() specifiers; // Override ClearableContainer member
-
-protected:
-
-  // Auxiliary member functions
-
-  // type Expand() specifiers;
-  // type Reduce() specifiers;
-  // type SwapVectors(arguments) specifiers;
-
-};
-
-/* ************************************************************************** */
-
+      virtual inline void Dequeue() override;
+ 
+      virtual const Data& Head() const override;
+      virtual Data& Head() override;
+      
+      using Stack<Data>::HeadNDequeue;
+  };
 }
 
 #include "queuevec.cpp"
-
-#endif

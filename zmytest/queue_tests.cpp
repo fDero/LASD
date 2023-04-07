@@ -9,6 +9,7 @@
 #include "../container/linear.hpp"
 #include "../queue/queue.hpp"
 #include "../queue/lst/queuelst.hpp"
+#include "../queue/lst/queuevec.hpp"
 
 
 /* This file contains all the tests for the class lasd::QueueVec<?> and lasd::QueueLst<?> defined by the student

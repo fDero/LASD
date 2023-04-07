@@ -5,6 +5,7 @@
 
 #include "../stack.hpp"
 #include "../../vector/vector.hpp"
+#include "../../container/mappable.hpp"
 
 namespace lasd {
 
@@ -16,6 +17,8 @@ namespace lasd {
     public:
       
       StackVec();
+      StackVec(const MappableContainer<Data>&);
+      StackVec(MutableMappableContainer<Data>&&);
       StackVec(const StackVec&);
       StackVec(StackVec&&);
       virtual ~StackVec(); 

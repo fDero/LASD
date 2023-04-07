@@ -5,6 +5,7 @@
 
 #include "../stack.hpp"
 #include "../../list/list.hpp"
+#include "../../container/mappable.hpp"
 
 namespace lasd {
 
@@ -15,6 +16,8 @@ namespace lasd {
     public:
 
       StackLst();
+      StackLst(const MappableContainer<Data>&);
+      StackLst(MutableMappableContainer<Data>&&);
       StackLst(const StackLst&);
       StackLst(StackLst&&);
       virtual ~StackLst(); 

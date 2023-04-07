@@ -8,6 +8,7 @@
 #include "../container/mappable.hpp"
 #include "../container/dictionary.hpp"
 #include "../container/linear.hpp"
+#include <cassert>
 
 namespace lasd {
 
@@ -16,15 +17,15 @@ namespace lasd {
     }
 
     template<typename Data> List<Data>::List(List&& list){
-        this->operator=(list);
+        this->operator=(std::move(list));
     }
 
     template<typename Data> List<Data>::~List(){
         this->Clear();
     }
 
-    template<typename Data> List<Data>::List(const MutableMappableContainer<Data>& container){
-        container.Map([this](Data& value){ this->InsertAtBack(value); });
+    template<typename Data> List<Data>::List(MutableMappableContainer<Data>&& container){
+        container.Map([this](Data& value){ this->InsertAtBack(std::move(value)); });
     }
 
     
@@ -42,7 +43,7 @@ namespace lasd {
     }
 
     template<typename Data> void List<Data>::InsertAtBack(Data&& value){ 
-        Node* node = new Node(value);
+        Node* node = new Node(std::move(value));
         node->prev = tail;
         if (tail != nullptr) tail->next = node; 
         else head = node;
@@ -61,7 +62,7 @@ namespace lasd {
 
     
     template<typename Data> void List<Data>::InsertAtFront(Data&& value){ 
-        Node* node = new Node(value);
+        Node* node = new Node(std::move(value));
         node->next = head;
         if (tail != nullptr) head->prev = node; 
         else tail = node;
@@ -78,7 +79,8 @@ namespace lasd {
             at = at->next;
             bt = bt->next;
         } 
-        return (at == nullptr) and (bt == nullptr);
+        assert (at == nullptr and bt == nullptr);
+        return true;
     }
 
     template<typename Data> bool inline List<Data>::operator!=(const List<Data>& list) const { 
@@ -169,7 +171,7 @@ namespace lasd {
 
     template <typename Data> bool List<Data>::Insert(Data&& value){
         if (Exists(value)) return false;
-        InsertAtBack(value);
+        InsertAtBack(std::move(value));
         return true;
     }
 
