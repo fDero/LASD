@@ -15,7 +15,6 @@ namespace lasd {
       using Vector<Data>::size;
       sizetype actual_length = 0;
       sizetype head_index = 0;
-      sizetype tail_index = 0; 
     public:
 
       QueueVec();
@@ -34,7 +33,7 @@ namespace lasd {
       using Vector<Data>::Size;
       using Vector<Data>::Empty;
       
-      virtual inline void Clear() override;
+      virtual void Clear() override;
       virtual void Resize(sizetype) override;
 
       using Vector<Data>::Map;
@@ -53,7 +52,12 @@ namespace lasd {
       virtual const Data& Head() const override;
       virtual Data& Head() override;
       
-      using Stack<Data>::HeadNDequeue;
+      using Queue<Data>::HeadNDequeue;
+
+
+      void dump(){
+        for (sizetype i = 0; i < actual_length; i++) std::cout << storage[i] << ((i == head_index)? "<-H  " : "   ");
+      } 
   };
 }
 

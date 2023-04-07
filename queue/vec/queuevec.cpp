@@ -4,7 +4,6 @@
 #pragma once
 
 #include "queuevec.hpp"
-#include <cassert>
 
 namespace lasd {
 
@@ -22,33 +21,68 @@ namespace lasd {
         if (stk.size != size) return false;
         sizetype i = head_index;
         sizetype j = stk.head_index;
-        while (i != tail_index && j != stk.tail_index){
+        for (sizetype counter = 0; counter < size; counter++){
             if (storage[i] != stk.storage[j]) return false;
             ++i %= actual_length;
             ++j %= stk.actual_length;
         }
-        assert (i == tail_index and j == stk.tail_index);
-        return storage[i] == stk.storage[j];
+        return true;
     }
 
     template <typename Data> QueueVec<Data>& QueueVec<Data>::operator=(const QueueVec<Data>& qqvc) { 
         Resize(qqvc.actual_length);
-        qqvc.PostOrderMap([this](const Data& value){ this->Enqueue(value); });  
+        qqvc.PreOrderMap([this](const Data& value){ this->Enqueue(value); });  
         return *this;
     }
     
     template <typename Data> inline QueueVec<Data>& QueueVec<Data>::operator=(QueueVec<Data>&& qqvc) { 
         actual_length = qqvc.actual_length;
         head_index = qqvc.head_index;
-        tail_index = qqvc.tail_index;
         Vector<Data>::operator=(std::move(qqvc));
         return *this;
     }    
 
-    template <typename Data> inline void QueueVec<Data>::Clear() { 
+    template <typename Data> void QueueVec<Data>::Clear() { 
         Vector<Data>::Clear();
         actual_length = 0;    
         head_index = 0;
-        tail_index = 0;
+    }
+
+    template <typename Data> void QueueVec<Data>::Resize(sizetype newlength){
+        Data* tmp = new Data [newlength];
+        for (int i = 0; i < size; i++) { 
+            tmp[i] = storage[(i+head_index) % actual_length];
+        }
+        actual_length = newlength;
+        head_index = 0;
+        std::swap(storage, tmp);
+        delete [] tmp;
+    }
+
+    template <typename Data> void QueueVec<Data>::Enqueue(const Data& value){
+        if (size + 1 > actual_length) Resize(actual_length * 2 + 1);
+        storage[(head_index + size++)%actual_length] = value;
+    }
+
+    template <typename Data> void QueueVec<Data>::Enqueue(Data&& value){
+        if (size + 1 > actual_length) Resize(actual_length * 2 + 1);
+        storage[(head_index + size++)%actual_length] = std::move(value);
+    }
+
+    template <typename Data> void QueueVec<Data>::Dequeue(){
+        if (size == 0) throw std::length_error("Dequeue() method called on empty queue");
+        ++head_index %= (actual_length);
+        if (size - 1 < actual_length/4) Resize(actual_length / 2);  
+        size--;
+    }
+
+    template <typename Data> const Data& QueueVec<Data>::Head() const {
+        if (size == 0) throw std::length_error("Head() method called on empty queue");
+        return storage[head_index]; 
+    }
+
+    template <typename Data> Data& QueueVec<Data>::Head() {
+        if (size == 0) throw std::length_error("Head() method called on empty queue");
+        return storage[head_index]; 
     }
 }

@@ -16,6 +16,7 @@ namespace lasd {
     }
 
     template <typename Data> Data Queue<Data>::HeadNDequeue() {
+        if (Empty()) throw std::length_error("HeadNDequeue() method called on empty queue");
         Data tmp = std::move(Head());
         Dequeue();
         return tmp;
