@@ -26,7 +26,7 @@ namespace lasd {
     }
     
     template <typename Data> inline StackVec<Data>& StackVec<Data>::operator=(StackVec<Data>&& stk) { 
-        actual_length = stk.actual_length;
+        std::swap(actual_length,stk.actual_length);
         Vector<Data>::operator=(std::move(stk));
         return *this;
     }

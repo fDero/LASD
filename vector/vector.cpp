@@ -25,7 +25,7 @@ namespace lasd {
     }
 
     template<typename Data> Vector<Data>::Vector(const MappableContainer<Data>& source){
-        this->Resize(source.size);
+        this->Resize(source.Size());
         sizetype index_last_inserted = 0;
         source.Map([this, &index_last_inserted](const Data& value){
             (this->storage)[index_last_inserted] = value;
@@ -34,7 +34,7 @@ namespace lasd {
     }
 
     template<typename Data> Vector<Data>::Vector(MutableMappableContainer<Data>&& source){
-        this->Resize(source.size);
+        this->Resize(source.Size());
         sizetype index_last_inserted = 0;
         source.Map([this, &index_last_inserted](Data& value){
             (this->storage)[index_last_inserted] = std::move(value);
@@ -53,9 +53,8 @@ namespace lasd {
     }
 
     template<typename Data> Vector<Data>& Vector<Data>::operator=(Vector&& vector){
-        size = vector.size;
-        storage = vector.storage;
-        vector.storage = nullptr;
+        std::swap(size,vector.size);
+        std::swap(storage,vector.storage);
         return *this;
     }   
 

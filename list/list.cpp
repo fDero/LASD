@@ -94,11 +94,14 @@ namespace lasd {
     }
 
     template<typename Data> List<Data>& List<Data>::operator=(List<Data>&& list) {
-        head = list.head;
-        tail = list.tail;
-        size = list.size; 
-        list.head = nullptr;
-        list.tail = nullptr;
+        std::swap(head,list.head);
+        std::swap(tail,list.tail);
+        std::swap(size, list.size);
+        //head = list.head;
+        //tail = list.tail;
+        //size = list.size; 
+        //list.head = nullptr;
+        //list.tail = nullptr;
         return *this;
     }
 

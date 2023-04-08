@@ -36,14 +36,16 @@ namespace lasd {
     }
     
     template <typename Data> inline QueueVec<Data>& QueueVec<Data>::operator=(QueueVec<Data>&& qqvc) { 
-        actual_length = qqvc.actual_length;
-        head_index = qqvc.head_index;
+        std::swap(actual_length,qqvc.actual_length);
+        std::swap(head_index,qqvc.head_index);
         Vector<Data>::operator=(std::move(qqvc));
         return *this;
     }    
 
     template <typename Data> void QueueVec<Data>::Clear() { 
-        Vector<Data>::Clear();
+        delete [] storage;
+        storage = nullptr;
+        size = 0;
         actual_length = 0;    
         head_index = 0;
     }
