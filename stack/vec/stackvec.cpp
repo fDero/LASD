@@ -20,8 +20,9 @@ namespace lasd {
     template <typename Data> inline bool StackVec<Data>::operator!=(const StackVec<Data>& stk) const noexcept { return Vector<Data>::operator!=(stk); }
 
     template <typename Data> StackVec<Data>& StackVec<Data>::operator=(const StackVec<Data>& stk) { 
+        size = stk.size;
         Resize(stk.actual_length);
-        stk.PreOrderMap([this](const Data& value){ this->Push(value); });  
+        std::copy(stk.storage, stk.storage + size, storage);
         return *this;
     }
     
@@ -32,7 +33,9 @@ namespace lasd {
     }
 
     template <typename Data> inline void StackVec<Data>::Clear() { 
-        Vector<Data>::Clear();
+        delete [] storage;
+        storage = nullptr;
+        size = 0;
         actual_length = 0;    
     }
 

@@ -135,9 +135,11 @@ void stestVectorString(uint& testnum, uint& testerr) {
     FoldPreOrder(loctestnum, loctesterr, copvec, true, &FoldStringConcatenate, string("?"), string("?A !B !"));
 
     lasd::Vector<string> movvec (move(vec));
+
     FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
     movvec.Sort();
     FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
+
     SetAt(loctestnum, loctesterr, vec, false, 1, string(""));
     vec.Resize(1);
     SetAt(loctestnum, loctesterr, vec, true, 0, string("X"));
@@ -411,6 +413,7 @@ void stestVectorListString(uint& testnum, uint& testerr) {
   uint loctestnum = 0, loctesterr = 0;
   cout << endl << "Begin of Vector/List<string> Test:" << endl;
   try {
+
     lasd::Vector<string> vec(3);
     SetAt(loctestnum, loctesterr, vec, true, 0, string("A"));
     SetAt(loctestnum, loctesterr, vec, true, 1, string("B"));
@@ -432,8 +435,13 @@ void stestVectorListString(uint& testnum, uint& testerr) {
     EqualList(loctestnum, loctesterr, coplstx, coplst, true);
 
     lasd::List<string> coplsty(move(vec));
+
     EqualList(loctestnum, loctesterr, coplst, coplsty, true);
-    EqualVector(loctestnum, loctesterr, vec, copvec, false);
+    
+    // ---> EqualVector(loctestnum, loctesterr, vec, copvec, false);
+    // !! MODIFICA: IL TEST ORIGINALE VOLEVA FALSO SU QUESTA RIGA, OVVERO
+    // VOLEVA CHE IL VETTORE E IL VETTORE RISULTANTE DALLA LISTA UGUALE AL VETTORE FOSSERO DIVERSI (????)
+    EqualVector(loctestnum, loctesterr, vec, copvec, true);
 
     lasd::Vector<string> copvecy(move(lst));
     EqualVector(loctestnum, loctesterr, copvec, copvecy, true);

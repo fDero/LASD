@@ -49,6 +49,7 @@ void stestStackInt(Stk& stk, uint& testnum, uint& testerr) {
     NonEqualStack(loctestnum, loctesterr, stk, copstk, true);
 
     copstk = stk;
+
     EqualStack(loctestnum, loctesterr, stk, copstk, true);
     PushC(loctestnum, loctesterr, copstk, 6);
     NonEqualStack(loctestnum, loctesterr, stk, copstk, true);
@@ -61,6 +62,10 @@ void stestStackInt(Stk& stk, uint& testnum, uint& testerr) {
 
     Stk movstk(move(stk));
     Top(loctestnum, loctesterr, stk, false, 0);
+
+    
+    std::cerr << "\n\n\e[1;34m INDAGA QUI \n\n\e[0;0m";
+
     movstk.Clear();
     Pop(loctestnum, loctesterr, movstk, false);
     Empty(loctestnum, loctesterr, movstk, true);

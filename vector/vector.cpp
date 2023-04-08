@@ -16,7 +16,7 @@ namespace lasd {
     }
 
     template<typename Data> Vector<Data>::Vector(Vector&& vector){
-        this->operator=(vector);
+        this->operator=(std::move(vector));
     }
     
     template<typename Data> Vector<Data>::Vector(sizetype initial_size){

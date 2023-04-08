@@ -31,7 +31,9 @@ namespace lasd {
 
     template <typename Data> QueueVec<Data>& QueueVec<Data>::operator=(const QueueVec<Data>& qqvc) { 
         Resize(qqvc.actual_length);
-        qqvc.PreOrderMap([this](const Data& value){ this->Enqueue(value); });  
+        size = qqvc.size;
+        head_index = qqvc.head_index;
+        std::copy(qqvc.storage, qqvc.storage + actual_length, storage);  
         return *this;
     }
     
