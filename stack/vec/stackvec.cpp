@@ -11,11 +11,13 @@ namespace lasd {
     template <typename Data> StackVec<Data>::~StackVec() = default;
 
     template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) { 
+        Resize(mc.Size());
         mc.Map([this](const Data& value){ this->Push(value); });
     }
 
 
     template <typename Data> StackVec<Data>::StackVec(MutableMappableContainer<Data>&& mmc) { 
+        Resize(mmc.Size());
         mmc.Map([this](Data& value){ this->Push(std::move(value)); });
     }
 

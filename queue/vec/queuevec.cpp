@@ -11,11 +11,13 @@ namespace lasd {
     template <typename Data> QueueVec<Data>::~QueueVec() = default;
 
     template <typename Data> QueueVec<Data>::QueueVec(const MappableContainer<Data>& mc) {
-        throw true;
+        Resize(mc.Size());
+        mc.Map([this](const Data& value){ this->Enqueue(value); });
     }
     
     template <typename Data> QueueVec<Data>::QueueVec(MutableMappableContainer<Data>&& mmc) {
-        throw true;
+        Resize(mmc.Size());
+        mmc.Map([this](Data& value){ this->Enqueue(std::move(value)); });
     }
     
     template <typename Data> QueueVec<Data>::QueueVec(QueueVec<Data>&& qqvc) { this->operator=(std::move(qqvc)); }

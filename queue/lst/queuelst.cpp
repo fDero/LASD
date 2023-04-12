@@ -13,11 +13,11 @@ namespace lasd {
     template <typename Data> QueueLst<Data>::~QueueLst() = default;
 
     template <typename Data> QueueLst<Data>::QueueLst(MutableMappableContainer<Data>&& mmc) {
-        throw false;
+        mmc.Map([this](Data& value){ this->Enqueue(std::move(value)); });   
     }
 
     template <typename Data> QueueLst<Data>::QueueLst(const MappableContainer<Data>& mc) {
-        throw false;
+        mc.Map([this](const Data& value){ this->Enqueue(value); });
     }
     
     template <typename Data> inline bool QueueLst<Data>::operator==(const QueueLst<Data>& stk) const noexcept { return List<Data>::operator==(stk); }

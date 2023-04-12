@@ -426,11 +426,6 @@ void stestVectorListString(uint& testnum, uint& testerr) {
 
     lasd::Vector<string> copvec(lst);
 
-
-    std::cout << "\e[1;33m \n\n";
-    copvec.Map([](const string& s){ cout << s  << " "; });
-    std::cout << "\e[0;0m \n\n";
-
     EqualVector(loctestnum, loctesterr, vec, copvec, true);
     lasd::Vector<string> copvecx(vec);
     EqualVector(loctestnum, loctesterr, copvecx, copvec, true);
@@ -441,11 +436,6 @@ void stestVectorListString(uint& testnum, uint& testerr) {
     EqualList(loctestnum, loctesterr, coplstx, coplst, true);
 
     lasd::List<string> coplsty(move(vec));
-
-    std::cout << "\e[1;32m \n\n";
-    coplsty.Map([](const string& s){ cout << s  << " "; });
-    std::cout << "\e[0;0m \n\n";
-
 
     EqualList(loctestnum, loctesterr, coplst, coplsty, true);
     
