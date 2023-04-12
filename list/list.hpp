@@ -24,6 +24,7 @@ namespace lasd {
         Node() = delete;
         Node(Node&& node) { value = std::move(node.value); };
         Node(const Data& input) { value = input; }
+        Node(Data&& input) { value = std::move(input); }
         Node(const Node&) = default;
         ~Node() = default;
       };
@@ -81,7 +82,7 @@ namespace lasd {
       
       virtual void PreOrderMap(MutableMapFunctor) override;
       virtual void PostOrderMap(MutableMapFunctor) override;
-    };
+  };
 }
 
 #include "list.cpp"

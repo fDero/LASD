@@ -246,13 +246,22 @@ void stackvec_constructors_t1(){
 
 
 
-
 void stackvec_constructors_t2(){
     auto xs = lasd::StackVec<int>();
     auto ys = lasd::StackVec<int>(xs);
     auto zs = lasd::StackVec<int>(std::move(ys));
     expect(ys == xs);
     expect(ys == zs);
+}
+
+
+
+
+
+void stackvec_constructors_t3(){
+    auto ys = lasd::Vector<int>(3); 
+    ys[0] = 0; ys[1] = 1; ys[2] = 2;
+    auto xs = lasd::StackVec<int>(ys);
 }
 
 
@@ -276,6 +285,7 @@ void execute_stack_tests(){
         {"stackvec_assignments_t2",         stackvec_assignments_t2},
         {"stackvec_constructors_t1",        stackvec_constructors_t1},
         {"stackvec_constructors_t2",        stackvec_constructors_t2},
+        {"stackvec_constructors_t3",        stackvec_constructors_t3},
     };
     execute_tests(stack_test_procedures);  
 }

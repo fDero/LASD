@@ -13,8 +13,6 @@ namespace lasd {
       Stack() = default;
       Stack(const Stack&) = default;
       Stack(Stack&&) = default;
-      Stack(const MappableContainer<Data>&);
-      Stack(MutableMappableContainer<Data>&&);
       virtual ~Stack() = default; 
 
       virtual bool operator==(const Stack&) const = delete;

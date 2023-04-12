@@ -25,12 +25,43 @@ namespace lasd {
     }
 
     template<typename Data> List<Data>::List(MutableMappableContainer<Data>&& container){
-        container.Map([this](Data& value){ this->InsertAtBack(std::move(value)); });
+        MutableMapFunctor insertion_policy = [this](Data& value){ this->InsertAtBack(std::move(value)); };
+        container.Map(insertion_policy);
     }
 
-    
     template<typename Data> List<Data>::List(const MappableContainer<Data>& container){
-        container.Map([this](const Data& value){ this->InsertAtBack(value); });
+        MapFunctor insertion_policy = [this](const Data& value){ this->InsertAtBack(value); };
+        container.Map(insertion_policy);
+    }
+
+    template<typename Data> List<Data>& List<Data>::operator=(const List<Data>& list) {
+        Clear();
+        list.Map([this](const Data& value){ this->InsertAtBack(value); });
+        return *this;
+    }
+
+    template<typename Data> List<Data>& List<Data>::operator=(List<Data>&& list) {
+        std::swap(head, list.head);
+        std::swap(tail, list.tail);
+        std::swap(size, list.size);
+        return *this;
+    }
+
+    template<typename Data> bool List<Data>::operator==(const List<Data>& list) const {
+        if (size != list.size) return false;
+        Node* at = head; 
+        Node* bt = list.head;
+        while (at != nullptr and bt != nullptr) {
+            if (at->value != bt->value) return false;
+            at = at->next;
+            bt = bt->next;
+        } 
+        assert (at == nullptr and bt == nullptr);
+        return true;
+    }
+
+    template<typename Data> bool inline List<Data>::operator!=(const List<Data>& list) const { 
+        return not (this->operator==(list));
     }
 
     template<typename Data> void List<Data>::InsertAtBack(const Data& value){ 
@@ -59,7 +90,6 @@ namespace lasd {
         head = node;
         size++;
     }
-
     
     template<typename Data> void List<Data>::InsertAtFront(Data&& value){ 
         Node* node = new Node(std::move(value));
@@ -68,41 +98,6 @@ namespace lasd {
         else tail = node;
         head = node;
         size++;
-    }
-
-    template<typename Data> bool List<Data>::operator==(const List<Data>& list) const {
-        if (size != list.size) return false;
-        Node* at = head; 
-        Node* bt = list.head;
-        while (at != nullptr and bt != nullptr) {
-            if (at->value != bt->value) return false;
-            at = at->next;
-            bt = bt->next;
-        } 
-        assert (at == nullptr and bt == nullptr);
-        return true;
-    }
-
-    template<typename Data> bool inline List<Data>::operator!=(const List<Data>& list) const { 
-        return not (this->operator==(list));
-    }
-
-    template<typename Data> List<Data>& List<Data>::operator=(const List<Data>& list) {
-        Clear();
-        list.Map([this](const Data& value){ this->InsertAtBack(value); });
-        return *this;
-    }
-
-    template<typename Data> List<Data>& List<Data>::operator=(List<Data>&& list) {
-        std::swap(head,list.head);
-        std::swap(tail,list.tail);
-        std::swap(size, list.size);
-        //head = list.head;
-        //tail = list.tail;
-        //size = list.size; 
-        //list.head = nullptr;
-        //list.tail = nullptr;
-        return *this;
     }
 
     template<typename Data> const Data& List<Data>::operator[](sizetype index) const {

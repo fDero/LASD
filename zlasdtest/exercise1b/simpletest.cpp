@@ -63,9 +63,6 @@ void stestStackInt(Stk& stk, uint& testnum, uint& testerr) {
     Stk movstk(move(stk));
     Top(loctestnum, loctesterr, stk, false, 0);
 
-    
-    std::cerr << "\n\n\e[1;34m INDAGA QUI \n\n\e[0;0m";
-
     movstk.Clear();
     Pop(loctestnum, loctesterr, movstk, false);
     Empty(loctestnum, loctesterr, movstk, true);
@@ -166,14 +163,25 @@ void stestStackString(uint& testnum, uint& testerr) {
     PushM(loctestnum, loctesterr, stkvec, string("A"));
     PushM(loctestnum, loctesterr, stkvec, string("B"));
 
-    std::cerr << "\n<----TO FIX: ABSTRACT METHOD CALLED -------->\n";
-    //lasd::StackVec<string> newstkvec(vec);
-    //EqualStack(loctestnum, loctesterr, stkvec, newstkvec, true);
+    std::cerr << "\n<----TO FIX: ABSTRACT METHOD CALLED --------(1)>\n";
+    lasd::StackVec<string> newstkvec(vec);
+    
+    std::cerr << "\n<----TO FIX: ABSTRACT METHOD CALLED -------- (2)>\n";
+    EqualStack(loctestnum, loctesterr, stkvec, newstkvec, true);
 
-    //PushM(loctestnum, loctesterr, stklst, string("B"));
-    //PushM(loctestnum, loctesterr, stklst, string("A"));
-    //lasd::StackLst<string> newstklst(vec);
-    //EqualStack(loctestnum, loctesterr, stklst, newstklst, true);
+    std::cerr << "\n<----TO FIX: ABSTRACT METHOD CALLED -------- (3)>\n";
+    PushM(loctestnum, loctesterr, stklst, string("B"));
+    
+    std::cerr << "\n<----TO FIX: ABSTRACT METHOD CALLED -------- (4)>\n";
+    PushM(loctestnum, loctesterr, stklst, string("A"));
+    
+    std::cerr << "\n<----TO FIX: ABSTRACT METHOD CALLED -------- (5)>\n";
+    lasd::StackLst<string> newstklst(vec);
+
+    std::cerr << "\n<----TO FIX: ABSTRACT METHOD CALLED -------- (6)>\n";
+    EqualStack(loctestnum, loctesterr, stklst, newstklst, true);
+
+    std::cerr << "\n<----TO FIX: ABSTRACT METHOD CALLED -------- (7)>\n";
   } catch(...) {
     loctestnum++; loctesterr++;
     cout << endl << "Unmanaged error! " << endl;
@@ -334,12 +342,12 @@ void stestQueueString(uint& testnum, uint& testerr) {
     EnqueueM(loctestnum, loctesterr, quevec, string("B"));
     
     std::cerr << "\n<--- TO FIX: ABSTRACT METHOD CALL --->\n";
-    //lasd::QueueVec<string> newquevec(vec);
-    //EqualQueue(loctestnum, loctesterr, quevec, newquevec, true);
-    //EnqueueM(loctestnum, loctesterr, quelst, string("A"));
-    //EnqueueM(loctestnum, loctesterr, quelst, string("B"));
-    //lasd::QueueLst<string> newquelst(vec);
-    //EqualQueue(loctestnum, loctesterr, quelst, newquelst, true);
+    lasd::QueueVec<string> newquevec(vec);
+    EqualQueue(loctestnum, loctesterr, quevec, newquevec, true);
+    EnqueueM(loctestnum, loctesterr, quelst, string("A"));
+    EnqueueM(loctestnum, loctesterr, quelst, string("B"));
+    lasd::QueueLst<string> newquelst(vec);
+    EqualQueue(loctestnum, loctesterr, quelst, newquelst, true);
   } catch(...) {
     loctestnum++; loctesterr++;
     cout << endl << "Unmanaged error! " << endl;

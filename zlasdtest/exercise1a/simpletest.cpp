@@ -425,6 +425,12 @@ void stestVectorListString(uint& testnum, uint& testerr) {
     InsertAtFront(loctestnum, loctesterr, lst, true, string("A"));
 
     lasd::Vector<string> copvec(lst);
+
+
+    std::cout << "\e[1;33m \n\n";
+    copvec.Map([](const string& s){ cout << s  << " "; });
+    std::cout << "\e[0;0m \n\n";
+
     EqualVector(loctestnum, loctesterr, vec, copvec, true);
     lasd::Vector<string> copvecx(vec);
     EqualVector(loctestnum, loctesterr, copvecx, copvec, true);
@@ -436,12 +442,17 @@ void stestVectorListString(uint& testnum, uint& testerr) {
 
     lasd::List<string> coplsty(move(vec));
 
+    std::cout << "\e[1;32m \n\n";
+    coplsty.Map([](const string& s){ cout << s  << " "; });
+    std::cout << "\e[0;0m \n\n";
+
+
     EqualList(loctestnum, loctesterr, coplst, coplsty, true);
     
     // ---> EqualVector(loctestnum, loctesterr, vec, copvec, false);
     // !! MODIFICA: IL TEST ORIGINALE VOLEVA FALSO SU QUESTA RIGA, OVVERO
     // VOLEVA CHE IL VETTORE E IL VETTORE RISULTANTE DALLA LISTA UGUALE AL VETTORE FOSSERO DIVERSI (????)
-    EqualVector(loctestnum, loctesterr, vec, copvec, true);
+    EqualVector(loctestnum, loctesterr, vec, copvec, false);
 
     lasd::Vector<string> copvecy(move(lst));
     EqualVector(loctestnum, loctesterr, copvec, copvecy, true);

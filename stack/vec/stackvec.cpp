@@ -10,9 +10,15 @@ namespace lasd {
     template <typename Data> StackVec<Data>::StackVec() : Vector<Data>() {}
     template <typename Data> StackVec<Data>::~StackVec() = default;
 
-    template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) : Stack<Data>::Stack(mc) { }
-    template <typename Data> StackVec<Data>::StackVec(MutableMappableContainer<Data>&& mmc) : Stack<Data>::Stack(std::move(mmc)) { }
-    
+    template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) { 
+        mc.Map([this](const Data& value){ this->Push(value); });
+    }
+
+
+    template <typename Data> StackVec<Data>::StackVec(MutableMappableContainer<Data>&& mmc) { 
+        mmc.Map([this](Data& value){ this->Push(std::move(value)); });
+    }
+
     template <typename Data> StackVec<Data>::StackVec(const StackVec& stk) { this->operator=(stk); }
     template <typename Data> StackVec<Data>::StackVec(StackVec&& stk) { this->operator=(std::move(stk)); }
     

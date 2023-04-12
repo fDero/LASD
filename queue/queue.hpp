@@ -13,8 +13,6 @@ namespace lasd {
       Queue() = default;
       Queue(const Queue&) = default;
       Queue(Queue&&) = default;
-      Queue(const MappableContainer<Data>&);
-      Queue(MutableMappableContainer<Data>&&);
       virtual ~Queue() = default;
 
       
