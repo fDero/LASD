@@ -7,7 +7,7 @@
 
 namespace lasd {
 
-    template <typename Data> StackVec<Data>::StackVec() : Vector<Data>() {}
+    template <typename Data> StackVec<Data>::StackVec() { Resize(8); }
     template <typename Data> StackVec<Data>::~StackVec() = default;
 
     template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) { 

@@ -10,11 +10,6 @@
 #include "../vector/vector.hpp"
 
 
-/* This file contains all the tests for the class lasd::Vector<?> defined by the student
--- The tests are actually void procedures without parameters that are sequentially called 
--- one after the other by the procedure 'execute_tests' defined in 'test.cpp'
-*/ 
-
 
 void integer_vector_values_initiaization(){
     auto xs = lasd::Vector<int>(6);

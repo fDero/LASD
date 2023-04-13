@@ -7,7 +7,7 @@
 
 namespace lasd {
 
-    template <typename Data> QueueVec<Data>::QueueVec() : Vector<Data>() {}
+    template <typename Data> QueueVec<Data>::QueueVec() { Resize(8); }
     template <typename Data> QueueVec<Data>::~QueueVec() = default;
 
     template <typename Data> QueueVec<Data>::QueueVec(const MappableContainer<Data>& mc) {

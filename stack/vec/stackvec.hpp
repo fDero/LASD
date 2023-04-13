@@ -35,14 +35,6 @@ namespace lasd {
       virtual inline void Clear() override;
       virtual void Resize(sizetype) override;
 
-      using Vector<Data>::Map;
-      using Vector<Data>::PreOrderMap;
-      using Vector<Data>::PostOrderMap;
-
-      using Vector<Data>::Fold;
-      using Vector<Data>::PreOrderFold;
-      using Vector<Data>::PostOrderFold;
-
       virtual void Push(const Data&) override;
       virtual void Push(Data&&) override;
 

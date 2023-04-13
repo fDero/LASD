@@ -32,22 +32,6 @@ namespace lasd {
       using List<Data>::Size;
       using List<Data>::Empty;
 
-      using List<Data>::Map;
-      using List<Data>::PreOrderMap;
-      using List<Data>::PostOrderMap;
-
-      using List<Data>::Fold;
-      using List<Data>::PreOrderFold;
-      using List<Data>::PostOrderFold;
-
-      using List<Data>::Insert;
-      using List<Data>::InsertAll;
-      using List<Data>::InsertSome;
-
-      using List<Data>::Remove;
-      using List<Data>::RemoveAll;
-      using List<Data>::RemoveSome;
-
       virtual inline void Push(const Data&) override;
       virtual inline void Push(Data&&) override;
 

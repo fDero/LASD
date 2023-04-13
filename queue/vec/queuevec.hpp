@@ -36,14 +36,6 @@ namespace lasd {
       virtual void Clear() override;
       virtual void Resize(sizetype) override;
 
-      using Vector<Data>::Map;
-      using Vector<Data>::PreOrderMap;
-      using Vector<Data>::PostOrderMap;
-
-      using Vector<Data>::Fold;
-      using Vector<Data>::PreOrderFold;
-      using Vector<Data>::PostOrderFold;
-
       virtual void Enqueue(const Data&) override;
       virtual void Enqueue(Data&&) override;
 

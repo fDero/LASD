@@ -12,10 +12,7 @@
 #include "../queue/vec/queuevec.hpp"
 
 
-/* This file contains all the tests for the class lasd::QueueVec<?> and lasd::QueueLst<?> defined by the student
--- The tests are actually void procedures without parameters that are sequentially called 
--- one after the other by the procedure 'execute_tests' defined in 'test.cpp'
-*/ 
+
 
 void empty_queuelst(){
     auto empty = lasd::QueueLst<std::string>();
@@ -70,25 +67,6 @@ void queuelst_comparison(){
 
 
 
-void queuelst_map_fold(){
-    auto words = lasd::QueueLst<std::string>();
-    words.Enqueue("aa"); 
-    words.Enqueue("bb"); 
-    words.Enqueue("cc");
-
-    std::string concatenation;
-    words.Map([](std::string& word){ word[0] = 'x'; });
-    words.PreOrderFold([](const std::string& word, void* concatenation){ *((std::string*)concatenation) += word; }, &concatenation);
-
-    expect(words.HeadNDequeue() == "xa");
-    expect(words.HeadNDequeue() == "xb");
-    expect(words.HeadNDequeue() == "xc");
-    expect(concatenation == "xaxbxc");
-}
-
-
-
-
 void empty_queuevec(){
     auto empty = lasd::QueueVec<std::string>();
     expect(empty.Empty());
@@ -135,25 +113,6 @@ void queuevec_comparison(){
     expect(xs.HeadNDequeue() == ys.HeadNDequeue());
     expect(xs == ys);
     expect(not (xs != ys));
-}
-
-
-
-
-void queuevec_map_fold(){
-    auto words = lasd::QueueVec<std::string>();
-    words.Enqueue("aa"); 
-    words.Enqueue("bb"); 
-    words.Enqueue("cc");
-
-    std::string concatenation;
-    words.Map([](std::string& word){ word[0] = 'x'; });
-    words.PreOrderFold([](const std::string& word, void* concatenation){ *((std::string*)concatenation) += word; }, &concatenation);
-
-    expect(words.HeadNDequeue() == "xa");
-    expect(words.HeadNDequeue() == "xb");
-    expect(words.HeadNDequeue() == "xc");
-    expect(concatenation == "xaxbxc");
 }
 
 
@@ -244,12 +203,10 @@ void execute_queue_tests(){
         {"queuelst_initialization",     queuelst_initialization},
         {"queuelst_pop_top_test",       queuelst_pop_top_test},
         {"queuelst_comparison",         queuelst_comparison},
-        {"queuelst_map_fold",           queuelst_map_fold},
         {"empty_queuevec",              empty_queuevec},
         {"queuevec_initialization",     queuevec_initialization},
         {"queuevec_pop_top_test",       queuelst_pop_top_test},
         {"queuevec_comparison",         queuevec_comparison},
-        {"queuevec_map_fold",           queuevec_map_fold},
         {"queuevec_multiple_enqueues",  queuevec_multiple_enqueues},
         {"queuevec_more_enqueues",      queuevec_more_enqueues},
     };

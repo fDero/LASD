@@ -12,10 +12,6 @@
 #include "../stack/vec/stackvec.hpp"
 
 
-/* This file contains all the tests for the class lasd::StackVec<?> and lasd::StackLst<?> defined by the student
--- The tests are actually void procedures without parameters that are sequentially called 
--- one after the other by the procedure 'execute_tests' defined in 'test.cpp'
-*/ 
 
 
 void empty_stacklst(){
@@ -70,23 +66,6 @@ void stacklst_comparison(){
 }
 
 
-
-
-void stacklst_map_fold(){
-    auto words = lasd::StackLst<std::string>();
-    words.Push("aa"); 
-    words.Push("bb"); 
-    words.Push("cc");
-
-    std::string concatenation;
-    words.Map([](std::string& word){ word[0] = 'x'; });
-    words.PreOrderFold([](const std::string& word, void* concatenation){ *((std::string*)concatenation) += word; }, &concatenation);
-
-    expect(words.TopNPop() == "xc");
-    expect(words.TopNPop() == "xb");
-    expect(words.TopNPop() == "xa");
-    expect(concatenation == "xcxbxa");
-}
 
 
 
@@ -274,7 +253,6 @@ void execute_stack_tests(){
         {"stacklst_initialization",         stacklst_initialization},
         {"stacklst_pop_top_test",           stacklst_pop_top_test},
         {"stacklst_comparison",             stacklst_comparison},
-        {"stacklst_map_fold",               stacklst_map_fold},
         {"empty_stackvec",                  empty_stackvec},
         {"first_stackvec_push",             first_stackvec_push},
         {"first_stackvec_pop",              first_stackvec_pop},

@@ -10,10 +10,7 @@
 #include "../container/dictionary.hpp"
 #include "../list/list.hpp"
 
-/* This file contains all the tests for the class lasd::List<?> defined by the student
--- The tests are actually void procedures without parameters that are sequentially called 
--- one after the other by the procedure 'execute_tests' defined in 'test.cpp'
-*/ 
+
 
 
 void empty_list_allocation(){

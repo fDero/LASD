@@ -26,7 +26,7 @@ void execute_vector_tests();
 void execute_list_tests();
 void execute_stack_tests();
 void execute_queue_tests();
-
+void execute_student_test();
 
 std::string bold_red(const std::string& text);
 std::string bold_green(const std::string& text);
