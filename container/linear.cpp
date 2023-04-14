@@ -56,11 +56,11 @@ namespace lasd {
   // they are overrided. The override just forward the call to the relative PreOrders
 
   template<typename Data> void LinearContainer<Data>::PreOrderMap(MutableMapFunctor functor) {
-    for (int i = 0; i < size; i++) functor(this->operator[](i));
+    for (sizetype i = 0; i < size; i++) functor(this->operator[](i));
   }
 
   template<typename Data> void LinearContainer<Data>::PostOrderMap(MutableMapFunctor functor) {
-    for (int i = size-1; i >= 0; i--) functor(this->operator[](i));
+    for (sizetype i = size; i > 0; i--) functor(this->operator[](i-1));
   }
 
   template<typename Data> void inline LinearContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { PreOrderFold(functor,accumulator); }
