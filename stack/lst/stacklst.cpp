@@ -7,6 +7,8 @@
 
 namespace lasd {
 
+    /******************************************** CONSTRUCTORS AND DISTRUCTORS ******************************************************/
+
     template <typename Data> StackLst<Data>::StackLst() : List<Data>() {}
     template <typename Data> StackLst<Data>::StackLst(const StackLst& stcklst) : List<Data>(stcklst) {}
     template <typename Data> StackLst<Data>::StackLst(StackLst&& stcklst) : List<Data>(std::move(stcklst)) {}
@@ -19,9 +21,10 @@ namespace lasd {
     template <typename Data> StackLst<Data>::StackLst(MutableMappableContainer<Data>&& mmc) {
         mmc.Map([this](Data& value){ this->InsertAtBack(std::move(value)); });
     }
-    
-    template <typename Data> inline bool StackLst<Data>::operator==(const StackLst<Data>& stk) const noexcept { return List<Data>::operator==(stk); }
-    template <typename Data> inline bool StackLst<Data>::operator!=(const StackLst<Data>& stk) const noexcept { return List<Data>::operator!=(stk); }
+
+
+
+    /************************************************ ASSIGNMENT OPERATORS ********************************************************/
 
     template <typename Data> inline StackLst<Data>& StackLst<Data>::operator=(const StackLst<Data>& stk) { 
         List<Data>::operator=(stk); 
@@ -32,6 +35,19 @@ namespace lasd {
         List<Data>::operator=(std::move(stk)); 
         return *this; 
     }
+
+
+
+
+    /*********************************************** COMPARISON OPERATORS *********************************************************/
+    
+    template <typename Data> inline bool StackLst<Data>::operator==(const StackLst<Data>& stk) const noexcept { return List<Data>::operator==(stk); }
+    template <typename Data> inline bool StackLst<Data>::operator!=(const StackLst<Data>& stk) const noexcept { return List<Data>::operator!=(stk); }
+
+
+
+
+    /************************************************ INSERTION AND DELETIONS *****************************************************/
 
     template <typename Data> inline void StackLst<Data>::Push(const Data& value) { List<Data>::InsertAtFront(value); }
     template <typename Data> inline void StackLst<Data>::Push(Data&& value) { List<Data>::InsertAtFront(std::move(value)); }

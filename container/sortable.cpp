@@ -74,9 +74,10 @@ namespace lasd {
         while (lx < pivot and rx < end){
             tmp[kx++] = (operator[](lx) <= operator[](rx))? operator[](lx++) : operator[](rx++);
         }
+        
         while (lx < pivot) tmp[kx++] = operator[](lx++);
-        while (rx < end) tmp[kx++] = operator[](rx++);
-        while (kx-- > 0) operator[](kx+begin) = tmp[kx];
+        while (rx < end)   tmp[kx++] = operator[](rx++);
+        while (kx-- > 0)   (*this)[kx + begin] = tmp[kx];
         delete tmp;
     }
 }

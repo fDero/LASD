@@ -9,6 +9,8 @@
 
 namespace lasd {
 
+    /***************************** CONSTRUCTORS AND DISTRUCTORS ************************/
+
     template<typename Data> Vector<Data>::Vector() = default;
 
     template<typename Data> Vector<Data>::Vector(const Vector& vector){
@@ -46,6 +48,11 @@ namespace lasd {
         delete[] storage; 
     }
 
+
+
+
+    /*********************************** ASSIGNMENT OPERATORS ********************************/
+
     template<typename Data> Vector<Data>& Vector<Data>::operator=(const Vector& vector){
         Resize(vector.size);
         std::copy(vector.storage, vector.storage + size, storage);
@@ -58,6 +65,12 @@ namespace lasd {
         return *this;
     }   
 
+
+
+    /******************************************* RESIZE *****************************************/
+    // notice that Clear() is inherited from ClearableContainer as a call to Resize(0). wich indeed
+    // deallocates everything and correctly set the size to be zero. Therefore is not overrided
+
     template<typename Data> void Vector<Data>::Resize(sizetype newsize){
         Data* tmp = (newsize)? new Data[newsize] : nullptr;
         sizetype minimum_length = std::min(newsize, size);
@@ -66,6 +79,10 @@ namespace lasd {
         delete [] tmp;
         size = newsize;
     }
+
+
+
+    /*************************************** DATA ACCESS OPERATORS ******************************/
 
     template<typename Data> Data& Vector<Data>::operator[](sizetype index){
         if (index >= size) throw std::out_of_range("index exceeds the current size");

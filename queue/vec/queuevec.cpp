@@ -7,6 +7,8 @@
 
 namespace lasd {
 
+    /**************************************** CONSTRUCTORS AND DISTRUCTORS *************************************/
+
     template <typename Data> QueueVec<Data>::QueueVec() { Resize(8); }
     template <typename Data> QueueVec<Data>::~QueueVec() = default;
 
@@ -23,18 +25,10 @@ namespace lasd {
     template <typename Data> QueueVec<Data>::QueueVec(QueueVec<Data>&& qqvc) { this->operator=(std::move(qqvc)); }
     template <typename Data> QueueVec<Data>::QueueVec(const QueueVec<Data>& qqvc) { this->operator=(qqvc); } 
         
-    template <typename Data> inline bool QueueVec<Data>::operator!=(const QueueVec<Data>& stk) const noexcept { return not this->operator==(stk); }
-    template <typename Data> bool QueueVec<Data>::operator==(const QueueVec<Data>& stk) const noexcept { 
-        if (stk.size != size) return false;
-        sizetype i = head_index;
-        sizetype j = stk.head_index;
-        for (sizetype counter = 0; counter < size; counter++){
-            if (storage[i] != stk.storage[j]) return false;
-            ++i %= actual_length;
-            ++j %= stk.actual_length;
-        }
-        return true;
-    }
+
+
+
+    /******************************************* ASSIGNMENT OPERATORS *****************************************/
 
     template <typename Data> QueueVec<Data>& QueueVec<Data>::operator=(const QueueVec<Data>& qqvc) { 
         Resize(qqvc.actual_length);
@@ -50,6 +44,34 @@ namespace lasd {
         Vector<Data>::operator=(std::move(qqvc));
         return *this;
     }    
+
+
+
+
+    /******************************************* COMPARISON OPERATORS *****************************************/
+
+    template <typename Data> inline bool QueueVec<Data>::operator!=(const QueueVec<Data>& stk) const noexcept { 
+        return not this->operator==(stk); 
+    }
+
+    template <typename Data> bool QueueVec<Data>::operator==(const QueueVec<Data>& stk) const noexcept { 
+        if (stk.size != size) return false;
+        sizetype i = head_index;
+        sizetype j = stk.head_index;
+        for (sizetype counter = 0; counter < size; counter++){
+            if (storage[i] != stk.storage[j]) return false;
+            ++i %= actual_length;
+            ++j %= stk.actual_length;
+        }
+        return true;
+    }
+
+
+
+    /********************************************* CLEAR / RESIZE *****************************************/
+    // notice that since the Vector implementations works on size, they need to be overrided to work on actual_length
+    // having the variable actual_length to rappresent the memory footprint allows us to avoid overrding Empty and Size, 
+    // wich indeed allows us to make them not virtual and therefore to reduce the total virtual overhead
 
     template <typename Data> void QueueVec<Data>::Clear() { 
         delete [] storage;
@@ -69,6 +91,10 @@ namespace lasd {
         std::swap(storage, tmp);
         delete [] tmp;
     }
+
+
+
+    /***************************************** INSERTIONS AND DELETIONS **********************************/
 
     template <typename Data> void QueueVec<Data>::Enqueue(const Data& value){
         if (size + 1 > actual_length) Resize(actual_length * 2 + 1);

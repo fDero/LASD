@@ -7,6 +7,8 @@
 
 namespace lasd {
 
+    /*********************************** CONSTRUCTORS AND DISTRUCTORS *******************************/
+
     template <typename Data> StackVec<Data>::StackVec() { Resize(8); }
     template <typename Data> StackVec<Data>::~StackVec() = default;
 
@@ -24,8 +26,10 @@ namespace lasd {
     template <typename Data> StackVec<Data>::StackVec(const StackVec& stk) { this->operator=(stk); }
     template <typename Data> StackVec<Data>::StackVec(StackVec&& stk) { this->operator=(std::move(stk)); }
     
-    template <typename Data> inline bool StackVec<Data>::operator==(const StackVec<Data>& stk) const noexcept { return Vector<Data>::operator==(stk); }
-    template <typename Data> inline bool StackVec<Data>::operator!=(const StackVec<Data>& stk) const noexcept { return Vector<Data>::operator!=(stk); }
+
+
+
+    /*************************************** ASSIGNMENT OPERATORS **********************************/
 
     template <typename Data> StackVec<Data>& StackVec<Data>::operator=(const StackVec<Data>& stk) { 
         size = stk.size;
@@ -39,6 +43,22 @@ namespace lasd {
         Vector<Data>::operator=(std::move(stk));
         return *this;
     }
+
+
+
+
+    /************************************** COMPARISON OPERATORS **********************************/
+
+    template <typename Data> inline bool StackVec<Data>::operator==(const StackVec<Data>& stk) const noexcept { return Vector<Data>::operator==(stk); }
+    template <typename Data> inline bool StackVec<Data>::operator!=(const StackVec<Data>& stk) const noexcept { return Vector<Data>::operator!=(stk); }
+
+
+
+
+    /*************************************** RESIZE / CLEAR ****************************************/
+    // notice that since the Vector implementations works on size, they need to be overrided to work on actual_length
+    // having the variable actual_length to rappresent the memory footprint allows us to avoid overrding Empty and Size, 
+    // wich indeed allows us to make them not virtual and therefore to reduce the total virtual overhead
 
     template <typename Data> inline void StackVec<Data>::Clear() { 
         delete [] storage;
@@ -55,6 +75,10 @@ namespace lasd {
         delete [] tmp;
         actual_length = newlength;
     }
+
+
+
+    /****************************** DATA ACCESS OPERATORS / METHODS ********************************/
 
     template <typename Data> const Data& StackVec<Data>::Top() const { 
         if (size == 0) throw std::length_error("Top() method called on an empty stack");

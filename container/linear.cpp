@@ -7,6 +7,8 @@
 
 namespace lasd {
 
+  /************************************************ COMPARISON OPERATORS ***************************************/
+
   template<typename Data> bool LinearContainer<Data>::operator==(const LinearContainer<Data>& sequence) const noexcept {
     if(size != sequence.size) return false;
     for (int i = 0; i < sequence.size; i++)
@@ -17,6 +19,9 @@ namespace lasd {
   template<typename Data> bool inline LinearContainer<Data>::operator!=(const LinearContainer<Data>& sequence) const noexcept {
     return not this->operator==(sequence);
   }
+
+
+  /**************************************************** DATA ACCESS METHODS **************************************/
 
   template<typename Data> const Data& LinearContainer<Data>::Front() const {
     if (size == 0) throw std::length_error("Front() method invoked on an empty container");
@@ -43,6 +48,12 @@ namespace lasd {
         if (this->operator[](i) == target) return true;
     return false;
   }
+
+  /********************************************************* MAPS ***********************************************/
+  // note that the const version are implicitly derived from PreOrderMappableContainer and 
+  // PostOrderMappableContainer, and are both defined in "mappable.cpp". Moreover to resolve the diamond structure 
+  // problem that arises from having Map and Fold defined in both the classes LinearContainer is extending, here 
+  // they are overrided. The override just forward the call to the relative PreOrders
 
   template<typename Data> void LinearContainer<Data>::PreOrderMap(MutableMapFunctor functor) {
     for (int i = 0; i < size; i++) functor(this->operator[](i));

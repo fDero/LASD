@@ -8,6 +8,9 @@
 #include "../container/dictionary.hpp"
 #include "../container/linear.hpp"
 
+//the class lasd::List<T> been implemented as a doubly-linked list since it's much more efficient to perform PostOrderMaps on it
+//this way, since the possibility to remove from the tail is now aviable, the method "RemoveFromBack" has been implemented 
+
 namespace lasd {
 
   template <typename Data> class List 
@@ -21,11 +24,12 @@ namespace lasd {
         Node* next = nullptr;
         Node* prev = nullptr;
 
-        Node() = delete;
-        Node(Node&& node) { value = std::move(node.value); };
         Node(const Data& input) { value = input; }
         Node(Data&& input) { value = std::move(input); }
-        Node(const Node&) = default;
+
+        Node() = delete;
+        Node(Node&& node) = delete;
+        Node(const Node&) = delete;
         ~Node() = default;
       };
 
@@ -82,6 +86,11 @@ namespace lasd {
       
       virtual void PreOrderMap(MutableMapFunctor) override;
       virtual void PostOrderMap(MutableMapFunctor) override;
+
+    private:
+      void Dealloc();
+      void EmplaceAtFront(Node*);
+      void EmplaceAtBack(Node*);
   };
 }
 

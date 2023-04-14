@@ -5,6 +5,9 @@
 
 #include "mappable.hpp"
 
+// even if it was not required, lasd::SortableContainer<T> has been set up to provide multple sort algorithms, and they are 
+// QuickSort, MergeSort, InsertionSort and SelectionSort. By default Sort() just calls QuickSort. Implementations are in the file "sortable.cpp"
+
 namespace lasd {
 
   template <typename Data> class LinearContainer 
