@@ -68,11 +68,26 @@ namespace lasd {
       virtual SortableLinearContainer& operator=(const SortableLinearContainer&) = delete;
       virtual SortableLinearContainer& operator=(SortableLinearContainer&&) = delete;
 
+      using Container::Size;
+      using Container::Empty;
+
       using LinearContainer<Data>::operator==;
       using LinearContainer<Data>::operator!=;
+      using LinearContainer<Data>::operator[];
 
-      virtual void Sort();
+      void InsertionSort();
+      void SelectionSort();
+      inline void QuickSort();
+      inline void MergeSort(); 
+      inline void Sort();
+
+      bool Sorted() const;
+
+    private:
+      void QuickSort(sizetype, sizetype);
+      void MergeSort(sizetype, sizetype);
   };
 }
 
 #include "linear.cpp"
+#include "sortable.cpp"

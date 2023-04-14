@@ -5,6 +5,8 @@
 #include "zlasdtest/test.hpp"
 #include <iostream>
 
+#include "vector/vector.hpp"
+
 int main() {
 
   short choice = 0;

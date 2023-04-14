@@ -44,14 +44,6 @@ namespace lasd {
     return false;
   }
 
-  template<typename Data> void SortableLinearContainer<Data>::Sort() {
-    for (int current = 0; current < size; current++){
-      for (int i = current; i > 0 and this->operator[](i) < this->operator[](i-1); i--){
-        std::swap(this->operator[](i), this->operator[](i-1));
-      }
-    }
-  }
-
   template<typename Data> void LinearContainer<Data>::PreOrderMap(MutableMapFunctor functor) {
     for (int i = 0; i < size; i++) functor(this->operator[](i));
   }

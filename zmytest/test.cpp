@@ -25,6 +25,7 @@ void execute_student_test(){
     execute_list_tests();
     execute_stack_tests();
     execute_queue_tests();
+    execute_sort_tests();
 }
 
 void execute_tests(const UnitTest& tests){
