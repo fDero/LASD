@@ -7,9 +7,17 @@
 
 namespace lasd {
 
+    sizetype constexpr STACKVEC_MINIMUM_LENGTH = 8;
+
     /*********************************** CONSTRUCTORS AND DISTRUCTORS *******************************/
 
-    template <typename Data> StackVec<Data>::StackVec() { Resize(8); }
+    template <typename Data> StackVec<Data>::StackVec() { 
+        if constexpr (STACKVEC_MINIMUM_LENGTH != 0) {
+            actual_length = STACKVEC_MINIMUM_LENGTH;
+            storage = new Data[STACKVEC_MINIMUM_LENGTH];
+        } 
+    }
+
     template <typename Data> StackVec<Data>::~StackVec() = default;
 
     template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) { 
@@ -92,7 +100,7 @@ namespace lasd {
 
     template <typename Data> inline void StackVec<Data>::Pop(){
         if (size == 0) throw std::length_error("Pop() method called on an empty stack");
-        if (--size < actual_length/4) Resize(actual_length/2);
+        if (--size < actual_length/4 && actual_length/2 >= STACKVEC_MINIMUM_LENGTH) Resize(actual_length/2);
     }
 
     template <typename Data> void StackVec<Data>::Push(const Data& value){

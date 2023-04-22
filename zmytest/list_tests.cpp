@@ -277,7 +277,7 @@ void list_insert_dictionary_test(){
 
 
 
-void list_remove_dictionary_test(){
+void list_remove_dictionary_t1(){
     lasd::List<std::string> words = lasd::List<std::string>();
     words.InsertAtBack("aa");
     words.InsertAtBack("bb");
@@ -285,6 +285,18 @@ void list_remove_dictionary_test(){
     expect(not words.Remove("dd"));
     expect(words.Remove("aa"));
     expect(words.Size() == 2);
+}
+
+
+
+
+void list_remove_dictionary_t2(){
+    lasd::List<std::string> words = lasd::List<std::string>();
+    words.InsertAtBack("aa");
+    expect(words.Size() == 1);
+    expect(not words.Remove("dd"));
+    expect(words.Remove("aa"));
+    expect(words.Size() == 0);
 }
 
 
@@ -596,7 +608,8 @@ void execute_list_tests(){
        {"list_preorder_mutable_map",    list_preorder_mutable_map},
        {"list_postorder_mutable_map",   list_postorder_mutable_map},
        {"list_insert_dictionary_test",  list_insert_dictionary_test},
-       {"list_remove_dictionary_test",  list_remove_dictionary_test},
+       {"list_remove_dictionary_t1",    list_remove_dictionary_t1},
+       {"list_remove_dictionary_t2",    list_remove_dictionary_t2},
        {"list_insert_front_test",       list_insert_front_test},
        {"list_clear_t1",                list_clear_t1},
        {"list_remove_back_t1",          list_remove_back_t1},

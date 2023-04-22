@@ -8,7 +8,6 @@
 #include "vector/vector.hpp"
 
 int main() {
-
   short choice = 0;
   while (choice != 3) {
 
@@ -26,5 +25,5 @@ int main() {
     else if (choice == 2) execute_student_test();
     else if (choice == 3) std::cout << "\n Goodbye then! \n"; 
     else std::cout << "\n Unrecognized input, please try again \n";
-  }  
+  }
 }

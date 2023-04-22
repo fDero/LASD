@@ -39,7 +39,7 @@ namespace lasd {
       virtual void Enqueue(const Data&) override;
       virtual void Enqueue(Data&&) override;
 
-      virtual inline void Dequeue() override;
+      virtual void Dequeue() override;
  
       virtual const Data& Head() const override;
       virtual Data& Head() override;

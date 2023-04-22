@@ -7,9 +7,17 @@
 
 namespace lasd {
 
+    sizetype constexpr QUEUEVEC_MINIMUM_LENGTH = 8;
+
     /**************************************** CONSTRUCTORS AND DISTRUCTORS *************************************/
 
-    template <typename Data> QueueVec<Data>::QueueVec() { Resize(8); }
+    template <typename Data> QueueVec<Data>::QueueVec() { 
+        if constexpr (QUEUEVEC_MINIMUM_LENGTH != 0) {
+            actual_length = QUEUEVEC_MINIMUM_LENGTH;
+            storage = new Data[QUEUEVEC_MINIMUM_LENGTH];
+        } 
+    }
+
     template <typename Data> QueueVec<Data>::~QueueVec() = default;
 
     template <typename Data> QueueVec<Data>::QueueVec(const MappableContainer<Data>& mc) {
@@ -109,8 +117,7 @@ namespace lasd {
     template <typename Data> void QueueVec<Data>::Dequeue(){
         if (size == 0) throw std::length_error("Dequeue() method called on empty queue");
         ++head_index %= (actual_length);
-        if (size - 1 < actual_length/4) Resize(actual_length / 2);  
-        size--;
+        if (--size < actual_length/4 && actual_length/2 >= QUEUEVEC_MINIMUM_LENGTH) Resize(actual_length / 2);  
     }
 
     template <typename Data> const Data& QueueVec<Data>::Head() const {
