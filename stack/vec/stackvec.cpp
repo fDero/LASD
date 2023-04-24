@@ -9,6 +9,7 @@ namespace lasd {
 
     sizetype constexpr STACKVEC_MINIMUM_LENGTH = 8;
 
+
     /*********************************** CONSTRUCTORS AND DISTRUCTORS *******************************/
 
     template <typename Data> StackVec<Data>::StackVec() { 
@@ -18,22 +19,22 @@ namespace lasd {
         } 
     }
 
-    template <typename Data> StackVec<Data>::~StackVec() = default;
-
     template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) { 
-        Resize(mc.Size());
-        mc.Map([this](const Data& value){ this->Push(value); });
+        actual_length = std::max(mc.Size(), STACKVEC_MINIMUM_LENGTH);
+        storage = Vector<Data>::array_safe_alloc(actual_length);
+        mc.Map([this](const Data& value){ this->Push(value); });    
     }
 
-
     template <typename Data> StackVec<Data>::StackVec(MutableMappableContainer<Data>&& mmc) { 
-        Resize(mmc.Size());
-        mmc.Map([this](Data& value){ this->Push(std::move(value)); });
+        actual_length = std::max(mmc.Size(), STACKVEC_MINIMUM_LENGTH);
+        storage = Vector<Data>::array_safe_alloc(actual_length);
+        mmc.Map([this](const Data& value){ this->Push(std::move(value)); });    
     }
 
     template <typename Data> StackVec<Data>::StackVec(const StackVec& stk) { this->operator=(stk); }
     template <typename Data> StackVec<Data>::StackVec(StackVec&& stk) { this->operator=(std::move(stk)); }
-    
+    template <typename Data> StackVec<Data>::~StackVec() = default;
+
 
 
 
@@ -41,7 +42,9 @@ namespace lasd {
 
     template <typename Data> StackVec<Data>& StackVec<Data>::operator=(const StackVec<Data>& stk) { 
         size = stk.size;
-        Resize(stk.actual_length);
+        actual_length = stk.actual_length;
+        delete [] storage;
+        storage = Vector<Data>::array_safe_alloc(actual_length);;
         std::copy(stk.storage, stk.storage + size, storage);
         return *this;
     }
@@ -76,7 +79,7 @@ namespace lasd {
     }
 
     template <typename Data> void StackVec<Data>::Resize(sizetype newlength) { 
-        Data* tmp = (newlength)? new Data[newlength] : nullptr;
+        Data* tmp = Vector<Data>::array_safe_alloc(newlength);
         sizetype minimum_length = std::min(newlength, actual_length);
         std::copy(storage, storage + minimum_length, tmp);
         std::swap(tmp, storage);
@@ -100,7 +103,7 @@ namespace lasd {
 
     template <typename Data> inline void StackVec<Data>::Pop(){
         if (size == 0) throw std::length_error("Pop() method called on an empty stack");
-        if (--size < actual_length/4 && actual_length/2 >= STACKVEC_MINIMUM_LENGTH) Resize(actual_length/2);
+        if (--size < actual_length/4) Resize(std::max(actual_length/2, STACKVEC_MINIMUM_LENGTH));
     }
 
     template <typename Data> void StackVec<Data>::Push(const Data& value){

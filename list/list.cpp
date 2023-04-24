@@ -149,15 +149,22 @@ namespace lasd {
     }
 
     template <typename Data> bool List<Data>::Remove(const Data& value){
+        bool flag = (size != 0 and (this->Front() == value or this->Back() == value));
+
+        while (size != 0 and this->Front() == value) this->RemoveFromFront(); 
+        while (size != 0 and this->Back() == value)  this->RemoveFromBack();
+        
         for (Node* it = head; it != nullptr; it = it->next) 
             if (it->value == value) {
-                if (it != head) it->prev->next = it->next; else head = head->next;
-                if (it != tail) it->next->prev = it->prev; else tail = tail->prev;
-                delete it; 
+                it->prev->next = it->next;
+                it->next->prev = it->prev; 
+                Node* dead = it;
+                it = it->prev;
+                delete dead;
                 size--;
-                return true; 
+                flag = true;
             }
-        return false;
+        return flag;
     }
 
     template <typename Data> void List<Data>::RemoveFromFront(){

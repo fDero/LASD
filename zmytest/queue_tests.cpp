@@ -195,6 +195,35 @@ void queuevec_more_enqueues(){
 
 
 
+void queuevec_nontrivial_copies(){
+    auto queue = lasd::QueueVec<int>();
+    queue.Enqueue(10);
+    queue.Enqueue(20);
+    queue.Enqueue(30);
+    queue.Enqueue(40);
+    expect(queue.HeadNDequeue() == 10);
+    queue.Enqueue(50);
+    queue.Enqueue(60);
+    expect(queue.HeadNDequeue() == 20);
+    auto copied_queue1 = queue;
+    auto copied_queue2 = lasd::QueueVec<int>(queue);
+    expect(copied_queue1.HeadNDequeue() == copied_queue2.HeadNDequeue());
+    expect(copied_queue1.HeadNDequeue() == copied_queue2.HeadNDequeue());
+    expect(copied_queue1.Size() == copied_queue2.Size());
+    copied_queue1 = queue;
+    copied_queue2 = lasd::QueueVec<int>(queue);
+    expect(copied_queue1.HeadNDequeue() == queue.HeadNDequeue());
+    expect(copied_queue1.HeadNDequeue() == queue.HeadNDequeue());
+    expect(copied_queue1.HeadNDequeue() == queue.HeadNDequeue());
+    expect(copied_queue1.HeadNDequeue() == queue.HeadNDequeue());
+    expect(copied_queue2.HeadNDequeue() == 30);
+    expect(copied_queue2.HeadNDequeue() == 40);
+    expect(copied_queue2.HeadNDequeue() == 50);
+    expect(copied_queue2.HeadNDequeue() == 60);
+}
+
+
+
 
 void execute_queue_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for lasd::QueueLst<T> and lasd::QueueVec<T> ↓↓↓ \n");
@@ -209,6 +238,7 @@ void execute_queue_tests(){
         {"queuevec_comparison",         queuevec_comparison},
         {"queuevec_multiple_enqueues",  queuevec_multiple_enqueues},
         {"queuevec_more_enqueues",      queuevec_more_enqueues},
+        {"queuevec_nontrivial_copies",  queuevec_nontrivial_copies},
     };
     execute_tests(stack_test_procedures);  
 }

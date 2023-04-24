@@ -9,6 +9,7 @@ namespace lasd {
 
     sizetype constexpr QUEUEVEC_MINIMUM_LENGTH = 8;
 
+
     /**************************************** CONSTRUCTORS AND DISTRUCTORS *************************************/
 
     template <typename Data> QueueVec<Data>::QueueVec() { 
@@ -18,31 +19,34 @@ namespace lasd {
         } 
     }
 
-    template <typename Data> QueueVec<Data>::~QueueVec() = default;
-
     template <typename Data> QueueVec<Data>::QueueVec(const MappableContainer<Data>& mc) {
-        Resize(mc.Size());
+        actual_length = std::max(mc.Size(), QUEUEVEC_MINIMUM_LENGTH);
+        storage = Vector<Data>::array_safe_alloc(actual_length);
         mc.Map([this](const Data& value){ this->Enqueue(value); });
     }
     
     template <typename Data> QueueVec<Data>::QueueVec(MutableMappableContainer<Data>&& mmc) {
-        Resize(mmc.Size());
-        mmc.Map([this](Data& value){ this->Enqueue(std::move(value)); });
+        actual_length = std::max(mmc.Size(), QUEUEVEC_MINIMUM_LENGTH);
+        storage = Vector<Data>::array_safe_alloc(actual_length);
+        mmc.Map([this](const Data& value){ this->Enqueue(std::move(value)); });
     }
     
     template <typename Data> QueueVec<Data>::QueueVec(QueueVec<Data>&& qqvc) { this->operator=(std::move(qqvc)); }
     template <typename Data> QueueVec<Data>::QueueVec(const QueueVec<Data>& qqvc) { this->operator=(qqvc); } 
-        
+    template <typename Data> QueueVec<Data>::~QueueVec() = default;
+
 
 
 
     /******************************************* ASSIGNMENT OPERATORS *****************************************/
 
     template <typename Data> QueueVec<Data>& QueueVec<Data>::operator=(const QueueVec<Data>& qqvc) { 
-        Resize(qqvc.actual_length);
         size = qqvc.size;
-        head_index = qqvc.head_index;
-        std::copy(qqvc.storage, qqvc.storage + actual_length, storage);  
+        actual_length = qqvc.actual_length;
+        delete [] storage;
+        storage = Vector<Data>::array_safe_alloc(actual_length);
+        for (sizetype i = 0; i < qqvc.size; i++) storage[i] = qqvc.storage[(i+qqvc.head_index)%(qqvc.actual_length)];
+        head_index = 0;
         return *this;
     }
     
@@ -51,7 +55,7 @@ namespace lasd {
         std::swap(head_index,qqvc.head_index);
         Vector<Data>::operator=(std::move(qqvc));
         return *this;
-    }    
+    }
 
 
 
@@ -90,7 +94,7 @@ namespace lasd {
     }
 
     template <typename Data> void QueueVec<Data>::Resize(sizetype newlength){
-        Data* tmp = new Data [newlength];
+        Data* tmp = Vector<Data>::array_safe_alloc(newlength);;
         for (int i = 0; i < size; i++) { 
             tmp[i] = storage[(i+head_index) % actual_length];
         }
@@ -117,7 +121,7 @@ namespace lasd {
     template <typename Data> void QueueVec<Data>::Dequeue(){
         if (size == 0) throw std::length_error("Dequeue() method called on empty queue");
         ++head_index %= (actual_length);
-        if (--size < actual_length/4 && actual_length/2 >= QUEUEVEC_MINIMUM_LENGTH) Resize(actual_length / 2);  
+        if (--size < actual_length/4) Resize(std::max(actual_length / 2, QUEUEVEC_MINIMUM_LENGTH));  
     }
 
     template <typename Data> const Data& QueueVec<Data>::Head() const {

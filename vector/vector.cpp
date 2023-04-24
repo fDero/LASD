@@ -71,8 +71,12 @@ namespace lasd {
     // notice that Clear() is inherited from ClearableContainer as a call to Resize(0). wich indeed
     // deallocates everything and correctly set the size to be zero. Therefore is not overrided
 
+    template<typename Data> inline Data* Vector<Data>::array_safe_alloc(sizetype length){
+        return (length)? new Data[length] : nullptr;
+    }
+
     template<typename Data> void Vector<Data>::Resize(sizetype newsize){
-        Data* tmp = (newsize)? new Data[newsize] : nullptr;
+        Data* tmp = array_safe_alloc(newsize);
         sizetype minimum_length = std::min(newsize, size);
         std::copy(storage, storage + minimum_length, tmp);
         std::swap(tmp, storage);

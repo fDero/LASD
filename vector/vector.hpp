@@ -8,32 +8,37 @@
 
 namespace lasd {
 
-template <typename Data> 
-class Vector : public virtual ResizableContainer, public virtual SortableLinearContainer<Data> {
-  protected:
-    using Container::size;
-    Data* storage = nullptr;
-    
-  public:
+  template <typename Data> class Vector 
+    : public virtual ResizableContainer
+    , public virtual SortableLinearContainer<Data> 
+  {
+    protected:
+      using Container::size;
+      Data* storage = nullptr;
+      
+    public:
 
-    Vector();
-    Vector(const Vector&);
-    Vector(Vector&&);
-    Vector(sizetype);
-    Vector(const MappableContainer<Data>&);
-    Vector(MutableMappableContainer<Data>&&);
-    virtual ~Vector();
+      Vector();
+      Vector(const Vector&);
+      Vector(Vector&&);
+      Vector(sizetype);
+      Vector(const MappableContainer<Data>&);
+      Vector(MutableMappableContainer<Data>&&);
+      virtual ~Vector();
 
-    virtual Vector& operator=(const Vector&);
-    virtual Vector& operator=(Vector&&);
+      virtual Vector& operator=(const Vector&);
+      virtual Vector& operator=(Vector&&);
 
-    virtual const Data& operator[](sizetype) const override;
-    virtual Data& operator[](sizetype) override;
+      virtual const Data& operator[](sizetype) const override;
+      virtual Data& operator[](sizetype) override;
 
-    using LinearContainer<Data>::operator==;
-    using LinearContainer<Data>::operator!=;
+      using LinearContainer<Data>::operator==;
+      using LinearContainer<Data>::operator!=;
 
-    virtual void Resize(sizetype) override;
+      virtual void Resize(sizetype) override;
+
+    protected:
+      inline Data* array_safe_alloc(sizetype);
   };
 }
 

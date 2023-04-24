@@ -439,9 +439,6 @@ void stestVectorListString(uint& testnum, uint& testerr) {
 
     EqualList(loctestnum, loctesterr, coplst, coplsty, true);
     
-    // ---> EqualVector(loctestnum, loctesterr, vec, copvec, false);
-    // !! MODIFICA: IL TEST ORIGINALE VOLEVA FALSO SU QUESTA RIGA, OVVERO
-    // VOLEVA CHE IL VETTORE E IL VETTORE RISULTANTE DALLA LISTA UGUALE AL VETTORE FOSSERO DIVERSI (????)
     EqualVector(loctestnum, loctesterr, vec, copvec, false);
 
     lasd::Vector<string> copvecy(move(lst));

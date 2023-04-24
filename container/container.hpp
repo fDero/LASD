@@ -28,7 +28,7 @@ namespace lasd {
       virtual Container& operator=(Container&&) = delete;
 
       inline bool Empty() const noexcept { return (size == 0); }
-      inline int Size() const noexcept { return size; }
+      inline sizetype Size() const noexcept { return size; }
   };
 
   
