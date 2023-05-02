@@ -94,7 +94,7 @@ namespace lasd {
     }
 
     template <typename Data> void QueueVec<Data>::Resize(sizetype newlength){
-        Data* tmp = Vector<Data>::array_safe_alloc(newlength);;
+        Data* tmp = Vector<Data>::array_safe_alloc(newlength);
         for (int i = 0; i < size; i++) { 
             tmp[i] = storage[(i+head_index) % actual_length];
         }

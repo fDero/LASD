@@ -49,7 +49,6 @@ void stestStackInt(Stk& stk, uint& testnum, uint& testerr) {
     NonEqualStack(loctestnum, loctesterr, stk, copstk, true);
 
     copstk = stk;
-
     EqualStack(loctestnum, loctesterr, stk, copstk, true);
     PushC(loctestnum, loctesterr, copstk, 6);
     NonEqualStack(loctestnum, loctesterr, stk, copstk, true);
@@ -155,16 +154,15 @@ void stestStackString(uint& testnum, uint& testerr) {
   stestStackString(stklst, loctestnum, loctesterr);
   cout << endl;
   try {
-
     lasd::Vector<string> vec(2);
     SetAt(loctestnum, loctesterr, vec, true, 0, string("A"));
     SetAt(loctestnum, loctesterr, vec, true, 1, string("B"));
 
     PushM(loctestnum, loctesterr, stkvec, string("A"));
     PushM(loctestnum, loctesterr, stkvec, string("B"));
-
     lasd::StackVec<string> newstkvec(vec);
     EqualStack(loctestnum, loctesterr, stkvec, newstkvec, true);
+
     PushM(loctestnum, loctesterr, stklst, string("B"));
     PushM(loctestnum, loctesterr, stklst, string("A"));
     lasd::StackLst<string> newstklst(vec);
@@ -227,8 +225,10 @@ void stestQueueInt(Que& que, uint& testnum, uint& testerr) {
     HeadNDequeue(loctestnum, loctesterr, copque, true, 0);
     Dequeue(loctestnum, loctesterr, copque, true);
     Head(loctestnum, loctesterr, copque, true, 1);
+
     Que movque(move(que));
     Head(loctestnum, loctesterr, que, false, 0);
+
     movque.Clear();
     Dequeue(loctestnum, loctesterr, movque, false);
     Empty(loctestnum, loctesterr, movque, true);
@@ -327,9 +327,9 @@ void stestQueueString(uint& testnum, uint& testerr) {
 
     EnqueueM(loctestnum, loctesterr, quevec, string("A"));
     EnqueueM(loctestnum, loctesterr, quevec, string("B"));
-    
     lasd::QueueVec<string> newquevec(vec);
     EqualQueue(loctestnum, loctesterr, quevec, newquevec, true);
+
     EnqueueM(loctestnum, loctesterr, quelst, string("A"));
     EnqueueM(loctestnum, loctesterr, quelst, string("B"));
     lasd::QueueLst<string> newquelst(vec);

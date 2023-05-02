@@ -134,12 +134,10 @@ void stestVectorString(uint& testnum, uint& testerr) {
     copvec = move(vec);
     FoldPreOrder(loctestnum, loctesterr, copvec, true, &FoldStringConcatenate, string("?"), string("?A !B !"));
 
-    lasd::Vector<string> movvec (move(vec));
-
+    lasd::Vector<string> movvec(move(vec));
     FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
     movvec.Sort();
     FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
-
     SetAt(loctestnum, loctesterr, vec, false, 1, string(""));
     vec.Resize(1);
     SetAt(loctestnum, loctesterr, vec, true, 0, string("X"));
@@ -413,7 +411,6 @@ void stestVectorListString(uint& testnum, uint& testerr) {
   uint loctestnum = 0, loctesterr = 0;
   cout << endl << "Begin of Vector/List<string> Test:" << endl;
   try {
-
     lasd::Vector<string> vec(3);
     SetAt(loctestnum, loctesterr, vec, true, 0, string("A"));
     SetAt(loctestnum, loctesterr, vec, true, 1, string("B"));
@@ -425,7 +422,6 @@ void stestVectorListString(uint& testnum, uint& testerr) {
     InsertAtFront(loctestnum, loctesterr, lst, true, string("A"));
 
     lasd::Vector<string> copvec(lst);
-
     EqualVector(loctestnum, loctesterr, vec, copvec, true);
     lasd::Vector<string> copvecx(vec);
     EqualVector(loctestnum, loctesterr, copvecx, copvec, true);
@@ -436,9 +432,7 @@ void stestVectorListString(uint& testnum, uint& testerr) {
     EqualList(loctestnum, loctesterr, coplstx, coplst, true);
 
     lasd::List<string> coplsty(move(vec));
-
     EqualList(loctestnum, loctesterr, coplst, coplsty, true);
-    
     EqualVector(loctestnum, loctesterr, vec, copvec, false);
 
     lasd::Vector<string> copvecy(move(lst));

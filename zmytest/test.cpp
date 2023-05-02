@@ -7,6 +7,7 @@
 #include <stack>
 #include <iostream>
 #include "test.hpp"
+#include "../vector/vector.hpp"
 
 
 
@@ -26,6 +27,9 @@ void execute_student_test(){
     execute_stack_tests();
     execute_queue_tests();
     execute_sort_tests();
+    execute_binarytreelnk_tests();
+    execute_binarytreevec_tests();
+    execute_bst_tests();
 }
 
 void execute_tests(const UnitTest& tests){
@@ -37,4 +41,11 @@ void execute_tests(const UnitTest& tests){
         std::cout << "\n\n" << bold_green("SUCCESS") << "\t" << purple(current_test->first);
     }
     std::cout << std::endl << std::endl;
+}
+
+
+lasd::Vector<char> generate_sample_vector(lasd::sizetype size){
+  auto vec = lasd::Vector<char>(size);
+  for (lasd::sizetype i = 0; i < size; i++) vec[i] = ('A' + i);
+  return vec;
 }

@@ -29,6 +29,6 @@ namespace lasd {
     }
 
     template <typename Data> inline void BreadthFoldableContainer<Data>::Fold(FoldFunctor functor, void* accumulator) const { 
-        BreadthOrderFold(functor, accumulator); 
+        BreadthFold(functor, accumulator); 
     }
 }

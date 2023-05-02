@@ -1,0 +1,233 @@
+
+// FRANCESCO DE ROSA N86004379
+
+#pragma once
+
+#include "../container/mappable.hpp"
+#include "../binarytree/lnk/binarytreelnk.hpp"
+#include "bst.hpp"
+#include <cassert>
+
+namespace lasd {
+
+    /************************************************* CONSTRUCTORS ***************************************/
+
+    template <typename Data> BST<Data>::BST(const BST& other) noexcept : BinaryTreeLnk<Data>(other) {}
+    template <typename Data> BST<Data>::BST(BST&& other) noexcept : BinaryTreeLnk<Data>(std::move(other)) {}
+    
+    template <typename Data> BST<Data>::BST(const MappableContainer<Data>& source) noexcept {
+        source.Map([this](const Data& value){ this->Insert(value); });
+    }
+    
+    template <typename Data> BST<Data>::BST(MutableMappableContainer<Data>&& source) noexcept {
+        source.Map([this](Data& value){ this->Insert(std::move(value)); });
+    }
+    
+
+
+
+    /************************************************** ASSIGNMENTS ****************************************/
+
+    template<typename Data> BST<Data>& BST<Data>::operator=(const BST<Data>& other) noexcept {
+        BinaryTreeLnk<Data>::operator=(other);
+        return *this;
+    } 
+
+    template<typename Data> BST<Data>& BST<Data>::operator=(BST<Data>&& other) noexcept {
+        BinaryTreeLnk<Data>::operator=(std::move(other));
+        return *this;
+    } 
+
+
+
+
+    /******************************************** INSERTIONS / DELETIONS *********************************/
+
+    template <typename Data> inline bool BST<Data>::Insert(const Data& value){ return InsertHelper(value); }
+    template <typename Data> inline bool BST<Data>::Insert(Data&& value){ return InsertHelper(std::move(value)); }
+
+    template<typename Data> template<typename Value> bool BST<Data>::InsertHelper(Value&& value){
+        NodeLnk*& target = FindNodePointer(value, root);
+        if (target == nullptr) {
+            size++;
+            target = new NodeLnk(std::forward<Value>(value));
+            return true;    
+        }
+        return false;
+    }
+
+    template<typename Data> bool BST<Data>::Remove(const Data& value) {
+        NodeLnk*& target = FindNodePointer(value, root);
+        if (target == nullptr) return false;
+        Detatch(target);
+        return true;
+    }
+
+    template<typename Data> void BST<Data>::Detatch(NodeLnk*& target) {
+        if (target->right != nullptr) {
+            NodeLnk*& replacement = FindMinInSubtree(target->right);
+            std::swap(replacement->value, target->value);
+            delete replacement;
+            replacement = nullptr;
+        } 
+        else if (target->left != nullptr) {
+            NodeLnk*& replacement = FindMaxInSubtree(target->left);
+            std::swap(replacement->value, target->value);
+            delete replacement;
+            replacement = nullptr;
+        }
+        else {
+            delete target;
+            target = nullptr;
+        }
+        size--;
+    }
+    
+
+
+
+    /******************************************* MIN / MAX SEARCH ***********************************/
+
+    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindMinInSubtree(NodeLnk*& root){
+        if (root == nullptr or root->left == nullptr) return root; 
+        return FindMinInSubtree(root->left);
+    }
+
+    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindMaxInSubtree(NodeLnk*& root){
+        if (root == nullptr or root->right == nullptr) return root; 
+        return FindMaxInSubtree(root->right);
+    }
+
+    template<typename Data> const Data& BST<Data>::Min() const {
+        if (size == 0) throw std::runtime_error("attempt to get minimum from empty tree");
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        return const_casted->FindMinInSubtree(const_casted->root)->value;
+    }
+
+    template<typename Data> const Data& BST<Data>::Max() const {
+        if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        return const_casted->FindMaxInSubtree(const_casted->root)->value;
+    }
+
+    template<typename Data> void BST<Data>::RemoveMax() {
+        if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
+        NodeLnk*& max = FindMaxInSubtree(root);
+        Detatch(max);
+    }
+
+    template<typename Data> void BST<Data>::RemoveMin() {
+        if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
+        NodeLnk*& min = FindMinInSubtree(root);
+        Detatch(min);
+    }
+
+    template<typename Data> Data BST<Data>::MinNRemove() {
+        if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
+        NodeLnk*& min = FindMinInSubtree(root);
+        Data value = std::move(min->value);
+        Detatch(min);
+        return value;
+    }
+
+    template<typename Data> Data BST<Data>::MaxNRemove() {
+        if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
+        NodeLnk*& max = FindMaxInSubtree(root);
+        Data value = std::move(max->value);
+        Detatch(max);
+        return value;
+    }
+
+
+
+
+    /************************************* SPECIFIC VALUE / NODE SEARCH *****************************/
+
+    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindNodePointer(const Data& value, NodeLnk*& ptr) {
+        if (ptr == nullptr)      return ptr;
+        if (value > ptr->value)  return FindNodePointer(value, ptr->right);
+        if (value < ptr->value)  return FindNodePointer(value, ptr->left);
+        return ptr;
+    }
+
+    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindPredecessorPointer(const Data& value, NodeLnk*& ptr) {
+        if (ptr == nullptr) return ptr;
+        if (value > ptr->value) {
+            NodeLnk*& x = FindPredecessorPointer(value, ptr->right);
+            return (x == nullptr or x->value >= value)? ptr : x;
+        }
+        if (value < ptr->value) {
+            NodeLnk*& x = FindPredecessorPointer(value, ptr->left);
+            return (x == nullptr)? ptr : x;
+        }
+        if (ptr->left != nullptr) return FindMaxInSubtree(ptr->left);
+        return ptr;
+    }
+
+    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindSuccessorPointer(const Data& value, NodeLnk*& ptr) {
+        if (ptr == nullptr) return ptr;
+        if (value > ptr->value) {
+            NodeLnk*& x = FindSuccessorPointer(value, ptr->right);
+            return (x == nullptr)? ptr : x;
+        }
+        if (value < ptr->value) {
+            NodeLnk*& x = FindSuccessorPointer(value, ptr->left);
+            return (x == nullptr or x->value <= value)? ptr : x;
+        }
+        if (ptr->right != nullptr) return FindMinInSubtree(ptr->right);
+        return ptr;
+    }
+
+    template<typename Data> inline bool BST<Data>::Exists(const Data& value) const noexcept {
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        return (const_casted->FindNodePointer(value, const_casted->root) != nullptr);
+    }
+
+
+    template<typename Data> const Data& BST<Data>::Successor(const Data& value) const { 
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        auto succ = const_casted->FindSuccessorPointer(value, const_casted->root);
+        if (succ == nullptr or succ->value == value) throw std::length_error("attempt to get successor failed");
+        return succ->value;
+    }
+
+    template<typename Data> const Data& BST<Data>::Predecessor(const Data& value) const {
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        auto pred = const_casted->FindPredecessorPointer(value, const_casted->root);
+        if (pred == nullptr or pred->value == value) throw std::length_error("attempt to get predecessor failed");
+        return pred->value;
+    }
+
+    template<typename Data> void BST<Data>::RemoveSuccessor(const Data& value) { 
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        NodeLnk*& succ = const_casted->FindSuccessorPointer(value, const_casted->root);
+        if (succ == nullptr or succ->value == value) throw std::length_error("attempt to remove successor failed");
+        Detatch(succ);
+    }
+
+    template<typename Data> void BST<Data>::RemovePredecessor(const Data& value) {
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        NodeLnk*& pred = const_casted->FindPredecessorPointer(value, const_casted->root);
+        if (pred == nullptr or pred->value == value) throw std::length_error("attempt to remove predecessor failed");
+        Detatch(pred);
+    }
+
+    
+    template<typename Data> Data BST<Data>::SuccessorNRemove(const Data& value) { 
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        NodeLnk*& succ = const_casted->FindSuccessorPointer(value, const_casted->root);
+        if (succ == nullptr or succ->value == value) throw std::length_error("attempt to remove successor failed");
+        Data succvalue = std::move(succ->value);
+        Detatch(succ);
+        return succvalue;
+    }
+
+    template<typename Data> Data BST<Data>::PredecessorNRemove(const Data& value) {
+        auto* const_casted = const_cast<BST<Data>*>(this);
+        NodeLnk*& pred = const_casted->FindPredecessorPointer(value, const_casted->root);
+        if (pred == nullptr or pred->value == value) throw std::length_error("attempt to remove predecessor failed");
+        Data predvalue = std::move(pred->value);
+        Detatch(pred);
+        return predvalue;
+    }
+}

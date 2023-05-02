@@ -15,12 +15,12 @@ namespace lasd {
     template <typename Data> void inline MutablePreOrderMappableContainer<Data>::Map(MutableMapFunctor functor)  { PreOrderMap(functor); }
     template <typename Data> void inline MutablePostOrderMappableContainer<Data>::Map(MutableMapFunctor functor) { PostOrderMap(functor); }
     template <typename Data> void inline MutableInOrderMappableContainer<Data>::Map(MutableMapFunctor functor)   { InOrderMap(functor); }
-    template <typename Data> void inline MutableBreadthMappableContainer<Data>::Map(MutableMapFunctor functor)   { BreadthOrderMap(functor); }
+    template <typename Data> void inline MutableBreadthMappableContainer<Data>::Map(MutableMapFunctor functor)   { BreadthMap(functor); }
 
     template <typename Data> void inline PreOrderMappableContainer<Data>::Map(MapFunctor functor)  const  { PreOrderMap(functor); }
     template <typename Data> void inline PostOrderMappableContainer<Data>::Map(MapFunctor functor) const  { PostOrderMap(functor); }
     template <typename Data> void inline InOrderMappableContainer<Data>::Map(MapFunctor functor)   const  { InOrderMap(functor); }
-    template <typename Data> void inline BreadthMappableContainer<Data>::Map(MapFunctor functor)   const  { BreadthOrderMap(functor); }
+    template <typename Data> void inline BreadthMappableContainer<Data>::Map(MapFunctor functor)   const  { BreadthMap(functor); }
 
 
 
@@ -63,11 +63,11 @@ namespace lasd {
 
     template <typename Data> void MutableInOrderMappableContainer<Data>::InOrderMap(MapFunctor functor) const {
         MutableMapFunctor mf = [functor](Data& x){ functor(x); };
-        const_cast<MutableInOrderMappableContainer<Data>*>(this)->PostOrderMap(mf);
+        const_cast<MutableInOrderMappableContainer<Data>*>(this)->InOrderMap(mf);
     }
 
     template <typename Data> void MutableBreadthMappableContainer<Data>::BreadthMap(MapFunctor functor) const {
         MutableMapFunctor mf = [functor](Data& x){ functor(x); };
-        const_cast<MutableBreadthMappableContainer<Data>*>(this)->PostOrderMap(mf);
+        const_cast<MutableBreadthMappableContainer<Data>*>(this)->BreadthMap(mf);
     }  
 }

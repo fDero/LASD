@@ -69,7 +69,7 @@ namespace lasd {
   
   
   
-  template <typename Data> class InOrderFoldableContainer {
+  template <typename Data> class InOrderFoldableContainer : public virtual FoldableContainer<Data> {
     public:
       InOrderFoldableContainer() = default;
       InOrderFoldableContainer(const InOrderFoldableContainer&) = default;
