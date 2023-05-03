@@ -59,7 +59,7 @@ namespace lasd {
       virtual bool operator==(const ForwardIterator&) const = delete;
       virtual bool operator!=(const ForwardIterator&) const = delete;
 
-      virtual ForwardIterator<Data>& operator++() = 0;
+      virtual ForwardIterator& operator++() = 0;
   };
 
   
@@ -80,7 +80,7 @@ namespace lasd {
       virtual bool operator==(const BackwardIterator&) const = delete;
       virtual bool operator!=(const BackwardIterator&) const = delete;
 
-      virtual BackwardIterator<Data>& operator--() = 0;
+      virtual BackwardIterator& operator--() = 0;
   };
 
 
@@ -104,7 +104,7 @@ namespace lasd {
       virtual bool operator==(const BidirectionalIterator&) const = delete;
       virtual bool operator!=(const BidirectionalIterator&) const = delete;
     
-      virtual bool Terminated() = delete;
+      virtual bool Terminated() = 0;
       virtual bool ForwardTerminated() const noexcept { return ForwardIterator<Data>::Terminated(); }
       virtual bool BackwardTerminated() const noexcept { return BackwardIterator<Data>::Terminated(); }
   };
@@ -126,6 +126,6 @@ namespace lasd {
       virtual bool operator==(const ResettableIterator&) const = delete;
       virtual bool operator!=(const ResettableIterator&) const = delete;
 
-      virtual bool Reset() noexcept = 0;
+      virtual void Reset() noexcept = 0;
   };
 }

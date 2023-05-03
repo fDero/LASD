@@ -23,7 +23,7 @@ ZLASDTEST = \
 	zlasdtest/exercise1b/simpletest.cpp   zlasdtest/exercise1b/fulltest.cpp  \
 
 build:
-	@ g++ -std=c++20 -o main -O3 ${ZMYTEST} ${ZLASDTEST} main.cpp
+	@ g++ -std=c++20 -o main -O1 ${ZMYTEST} ${ZLASDTEST} main.cpp
 
 sanitize-build:
 	@ g++ -std=c++20 -fsanitize=address -o sanitizedmain -O3 ${ZMYTEST} ${ZLASDTEST} main.cpp

@@ -56,6 +56,18 @@ namespace lasd {
       using BinaryTree<Data>::Root;
       using BinaryTreeLnk<Data>::Clear;
 
+      using BinaryTreeLnk<Data>::Map;
+      using BinaryTreeLnk<Data>::PreOrderMap;
+      using BinaryTreeLnk<Data>::PostOrderMap;
+      using BinaryTreeLnk<Data>::InOrderMap;
+      using BinaryTreeLnk<Data>::BreadthMap;
+      
+      using BinaryTreeLnk<Data>::Fold;
+      using BinaryTreeLnk<Data>::PreOrderFold;
+      using BinaryTreeLnk<Data>::PostOrderFold;
+      using BinaryTreeLnk<Data>::InOrderFold;
+      using BinaryTreeLnk<Data>::BreadthFold;
+      
       virtual inline bool Insert(const Data&) override;
       virtual inline bool Insert(Data&&) override;
       
@@ -66,9 +78,11 @@ namespace lasd {
       NodeLnk*& FindNodePointer(const Data&, NodeLnk*&);
       NodeLnk*& FindPredecessorPointer(const Data&, NodeLnk*&);
       NodeLnk*& FindSuccessorPointer(const Data&, NodeLnk*&);
-    
+
       NodeLnk*& FindMinInSubtree(NodeLnk*&);
       NodeLnk*& FindMaxInSubtree(NodeLnk*&);
+
+      void DeleteJustThisNode(NodeLnk*&);
 
       template<typename Value> bool InsertHelper(Value&&);
       void Detatch(NodeLnk*&);

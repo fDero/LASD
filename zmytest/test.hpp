@@ -32,6 +32,7 @@ void execute_student_test();
 void execute_binarytreelnk_tests();
 void execute_binarytreevec_tests();
 void execute_bst_tests();
+void execute_iterator_tests();
 
 lasd::Vector<char> generate_sample_vector(lasd::sizetype);
 

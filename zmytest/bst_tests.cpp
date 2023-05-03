@@ -347,6 +347,91 @@ void successors_t6(){
 
 
 
+
+void maxNremove_t1(){
+    auto bst = lasd::BST<int>();
+    bst.Insert(1);
+    bst.Insert(2);
+    bst.Insert(3);
+    expect(bst.MaxNRemove() == 3);
+    expect(bst.MaxNRemove() == 2);
+    expect(bst.MaxNRemove() == 1);
+    expect(bst.Empty());
+}
+
+
+
+
+void maxNremove_t2(){
+    auto bst = lasd::BST<int>();
+    bst.Insert(3);
+    bst.Insert(2);
+    bst.Insert(1);
+    expect(bst.MaxNRemove() == 3);
+    expect(bst.MaxNRemove() == 2);
+    expect(bst.MaxNRemove() == 1);
+    expect(bst.Empty());
+}
+
+
+
+void maxNremove_t3(){
+    auto bst = lasd::BST<int>();
+    bst.Insert(2);
+    bst.Insert(1);
+    bst.Insert(3);
+    expect(bst.MaxNRemove() == 3);
+    expect(bst.MaxNRemove() == 2);
+    expect(bst.MaxNRemove() == 1);
+    expect(bst.Empty());
+}
+
+
+
+
+void minNremove_t1(){
+    auto bst = lasd::BST<int>();
+    bst.Insert(1);
+    bst.Insert(2);
+    bst.Insert(3);
+    expect(bst.MinNRemove() == 1);
+    expect(bst.MinNRemove() == 2);
+    expect(bst.MinNRemove() == 3);
+    expect(bst.Empty());
+}
+
+
+
+
+void minNremove_t2(){
+    auto bst = lasd::BST<int>();
+    bst.Insert(3);
+    bst.Insert(2);
+    bst.Insert(1);
+    expect(bst.MinNRemove() == 1);
+    expect(bst.MinNRemove() == 2);
+    expect(bst.MinNRemove() == 3);
+    expect(bst.Empty());
+}
+
+
+
+
+void minNremove_t3(){
+    auto bst = lasd::BST<int>();
+    bst.Insert(2);
+    bst.Insert(1);
+    bst.Insert(3);
+    expect(bst.MinNRemove() == 1);
+    expect(bst.MinNRemove() == 2);
+    expect(bst.MinNRemove() == 3);
+    expect(bst.Empty());
+}
+
+
+
+
+
 void execute_bst_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for lasd::BST<T> ↓↓↓ \n");
     UnitTest bst_test_procedures {
@@ -373,6 +458,12 @@ void execute_bst_tests(){
        {"successors_t4",               successors_t4},
        {"successors_t5",               successors_t5},
        {"successors_t6",               successors_t6}, 
+       {"minNremove_t1",               minNremove_t1},
+       {"minNremove_t2",               minNremove_t2},
+       {"minNremove_t3",               minNremove_t3},
+       {"maxNremove_t1",               maxNremove_t1},
+       {"maxNremove_t2",               maxNremove_t2},
+       {"maxNremove_t3",               maxNremove_t3}, 
     };
     execute_tests(bst_test_procedures);  
 }

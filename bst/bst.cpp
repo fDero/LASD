@@ -64,7 +64,19 @@ namespace lasd {
     }
 
     template<typename Data> void BST<Data>::Detatch(NodeLnk*& target) {
-        if (target->right != nullptr) {
+        if (target->right != nullptr and target->right->left == nullptr){
+            NodeLnk* dead = target;
+            target->right->left = target->left;
+            target = target->right;
+            DeleteJustThisNode(dead);
+        }
+        else if (target->left != nullptr and target->left->right == nullptr){
+            NodeLnk* dead = target;
+            target->left->right = target->right;
+            target = target->left;
+            DeleteJustThisNode(dead);
+        }
+        else if (target->right != nullptr) {
             NodeLnk*& replacement = FindMinInSubtree(target->right);
             std::swap(replacement->value, target->value);
             delete replacement;
@@ -82,20 +94,26 @@ namespace lasd {
         }
         size--;
     }
+
+    template<typename Data> void BST<Data>::DeleteJustThisNode(NodeLnk*& node){
+        node->left = nullptr;
+        node->right = nullptr;
+        delete node;
+    }
     
 
 
 
     /******************************************* MIN / MAX SEARCH ***********************************/
 
-    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindMinInSubtree(NodeLnk*& root){
-        if (root == nullptr or root->left == nullptr) return root; 
-        return FindMinInSubtree(root->left);
+    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindMinInSubtree(NodeLnk*& subroot){
+        if (subroot == nullptr or subroot->left == nullptr) return subroot; 
+        return FindMinInSubtree(subroot->left);
     }
 
-    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindMaxInSubtree(NodeLnk*& root){
-        if (root == nullptr or root->right == nullptr) return root; 
-        return FindMaxInSubtree(root->right);
+    template<typename Data> BST<Data>::NodeLnk*& BST<Data>::FindMaxInSubtree(NodeLnk*& subroot){
+        if (subroot == nullptr or subroot->right == nullptr) return subroot; 
+        return FindMaxInSubtree(subroot->right);
     }
 
     template<typename Data> const Data& BST<Data>::Min() const {

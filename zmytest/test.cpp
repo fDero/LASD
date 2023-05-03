@@ -30,6 +30,7 @@ void execute_student_test(){
     execute_binarytreelnk_tests();
     execute_binarytreevec_tests();
     execute_bst_tests();
+    execute_iterator_tests();
 }
 
 void execute_tests(const UnitTest& tests){
