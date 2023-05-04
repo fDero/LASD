@@ -41,6 +41,24 @@ namespace lasd {
 
 
 
+    /************************************************** COMPARISON ****************************************/
+
+    template <typename Data> inline bool BST<Data>::operator==(const BST<Data>& other) const noexcept { 
+        if (size != other.size) return false;
+        for (BTBreadthIterator<Data> it (*this); not it.Terminated(); ++it){
+            if (not other.Exists(*it)) return false;
+        }
+        return true;
+    }
+    
+    template <typename Data> inline bool BST<Data>::operator!=(const BST<Data>& other) const noexcept { 
+        return not operator==(other);
+    }   
+    
+
+
+
+
     /******************************************** INSERTIONS / DELETIONS *********************************/
 
     template <typename Data> inline bool BST<Data>::Insert(const Data& value){ return InsertHelper(value); }
@@ -117,7 +135,7 @@ namespace lasd {
     }
 
     template<typename Data> const Data& BST<Data>::Min() const {
-        if (size == 0) throw std::runtime_error("attempt to get minimum from empty tree");
+        if (size == 0) throw std::length_error("attempt to get minimum from empty tree");
         auto* const_casted = const_cast<BST<Data>*>(this);
         return const_casted->FindMinInSubtree(const_casted->root)->value;
     }

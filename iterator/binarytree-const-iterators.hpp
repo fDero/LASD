@@ -94,6 +94,8 @@ namespace lasd {
 
       virtual ForwardIterator<Data>& operator++() override;
       virtual void Reset() noexcept override;
+    private:
+      Node const* NavigateToLeft(Node const*);
   };
 
 
@@ -126,6 +128,8 @@ namespace lasd {
 
       virtual ForwardIterator<Data>& operator++() override;
       virtual void Reset() noexcept override;
+    private:
+      Node const* NavigateToLeft(Node const*);
   };
 
 

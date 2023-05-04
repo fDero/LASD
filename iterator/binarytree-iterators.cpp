@@ -36,7 +36,7 @@ namespace lasd {
     /********************************************** PREORDER BINARYTREEITERATOR ****************************************/
 
     template <typename Data> inline bool BTPreOrderIterator<Data>::operator==(const BTPreOrderIterator<Data>& other) const noexcept {
-        return other.current == current;
+        return other.current == current and other.root == root;
     }
 
     template <typename Data> inline bool BTPreOrderIterator<Data>::operator!=(const BTPreOrderIterator<Data>& other) const noexcept {
@@ -73,7 +73,7 @@ namespace lasd {
     /********************************************** POSTORDER BINARYTREEITERATOR ***************************************/
 
     template <typename Data> inline bool BTPostOrderIterator<Data>::operator==(const BTPostOrderIterator<Data>& other) const noexcept {
-        return other.current == current;
+        return other.current == current and other.root == root;
     }
 
     template <typename Data> inline bool BTPostOrderIterator<Data>::operator!=(const BTPostOrderIterator<Data>& other) const noexcept {
@@ -81,15 +81,33 @@ namespace lasd {
     }
     
     template <typename Data> BTPostOrderIterator<Data>::BTPostOrderIterator(const BinaryTree<Data>& tree) noexcept {
-        return;
+       root = &(tree.Root());
+        if (NavigateToLeft(root) != nullptr) current = suspended.TopNPop();
     }
 
     template <typename Data> void BTPostOrderIterator<Data>::Reset() noexcept {
         suspended.Clear();
-        current = root;
+        if (NavigateToLeft(root) != nullptr) current = suspended.TopNPop();
+    }
+
+    template <typename Data> BTPostOrderIterator<Data>::Node const* BTPostOrderIterator<Data>::NavigateToLeft(Node const* node){
+        while (node != nullptr){
+            suspended.Push(node);
+            if (node->IsLeaf()) return (suspended.Empty())? nullptr : suspended.Top();
+            else if (node->HasLeftChild())  node = &(node->LeftChild());
+            else if (node->HasRightChild()) node = &(node->RightChild());
+        }
+        return nullptr;
     }
 
     template <typename Data> ForwardIterator<Data>& BTPostOrderIterator<Data>::operator++() {
+        if (current == nullptr) throw std::out_of_range("attempt to increment a terminated iterator");
+        if (suspended.Empty()) current = nullptr; 
+        else {
+            if (suspended.Top()->HasLeftChild() and current == &(suspended.Top()->LeftChild()))
+                if (suspended.Top()->HasRightChild()) NavigateToLeft(&(suspended.Top()->RightChild()));
+            current = suspended.TopNPop();
+        }
         return *this;
     }
 
@@ -100,7 +118,7 @@ namespace lasd {
     /********************************************** INORDER BINARYTREEITERATOR ****************************************/
 
     template <typename Data> inline bool BTInOrderIterator<Data>::operator==(const BTInOrderIterator<Data>& other) const noexcept {
-        return other.current == current;
+        return other.current == current and other.root == root;
     }
 
     template <typename Data> inline bool BTInOrderIterator<Data>::operator!=(const BTInOrderIterator<Data>& other) const noexcept {
@@ -108,15 +126,27 @@ namespace lasd {
     }
     
     template <typename Data> BTInOrderIterator<Data>::BTInOrderIterator(const BinaryTree<Data>& tree) noexcept {
-        return;
+        root = &(tree.Root());
+        if (NavigateToLeft(root) != nullptr) current = suspended.TopNPop();
     }
 
     template <typename Data> void BTInOrderIterator<Data>::Reset() noexcept {
         suspended.Clear();
-        current = root;
+        if (NavigateToLeft(root) != nullptr) current = suspended.TopNPop();
+    }
+
+    template <typename Data> BTInOrderIterator<Data>::Node const* BTInOrderIterator<Data>::NavigateToLeft(Node const* node) {
+        while (node != nullptr){
+            suspended.Push(node);
+            node = (node->HasLeftChild())? &(node->LeftChild()) : nullptr;
+        }
+        return (suspended.Empty())? nullptr : suspended.Top();
     }
 
     template <typename Data> ForwardIterator<Data>& BTInOrderIterator<Data>::operator++() {
+        if (current == nullptr) throw std::out_of_range("attempt to increment a terminated iterator");
+        if (current->HasRightChild()) NavigateToLeft(&(current->RightChild()));
+        current = (suspended.Empty())? nullptr : suspended.TopNPop();
         return *this;
     }
 
@@ -127,7 +157,7 @@ namespace lasd {
     /********************************************** BREADTH BINARYTREEITERATOR *************************************/
 
     template <typename Data> inline bool BTBreadthIterator<Data>::operator==(const BTBreadthIterator<Data>& other) const noexcept {
-        return other.current == current;
+        return other.current == current and other.root == root;
     }
 
     template <typename Data> inline bool BTBreadthIterator<Data>::operator!=(const BTBreadthIterator<Data>& other) const noexcept {

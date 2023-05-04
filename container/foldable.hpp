@@ -48,6 +48,10 @@ namespace lasd {
       inline virtual void Fold(FoldFunctor functor, void* accumulator) const override;
   };
 
+
+
+
+
   template <typename Data> class PostOrderFoldableContainer : public virtual FoldableContainer<Data>{
     public:
       PostOrderFoldableContainer() = default;

@@ -13,7 +13,7 @@ void Map(uint& testnum, uint& testerr, const lasd::MappableContainer<Data>& con,
   bool tst = true;
   testnum++;
   try {
-    std::cout << " " << testnum << " (" << testerr << ") Executing map - ";
+    std::cout << " " << testnum << " (" << testerr << ") Executing map - ";    
     con.Map(fun);
     std::cout << ": " << ((tst = chk) ? "Correct" : "Error") << "!" << std::endl;
   } catch(std::exception exc) {

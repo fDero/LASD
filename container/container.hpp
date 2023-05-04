@@ -3,10 +3,10 @@
 
 #pragma once 
 
-// the method Empty and Size are not virtual because they are never overrided. In lasd::StackVec<T> and lasd::QueVec<T> size still rappresent 
-// the number of elements properly contained in the container so Size and Empty still works and do not need to be overrided. Instead Resize and Clear 
-// are overrided but in lasd::QueVec<T> Resize should have been overrided anyway so it's not a big problem. This choice, although restrictive, works fine 
-// for the current hiarchy and minimizes the numbers of methods declared virtual, wich itself minimazes the virtual-overall-overhead cost of the structures 
+// the method Empty and Size are not virtual because they are never overrided. In lasd::StackVec<T> and lasd::QueVec<T> size still rappresent
+// the number of elements properly contained in the container so Size and Empty still works and do not need to be overrided. Instead Resize and Clear
+// are overrided but in lasd::QueVec<T> Resize should have been overrided anyway so it's not a big problem. This choice, although restrictive, works fine
+// for the current hiarchy and minimizes the numbers of methods declared virtual, wich itself minimazes the virtual-overall-overhead cost of the structures
 
 namespace lasd {
 

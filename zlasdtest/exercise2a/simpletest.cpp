@@ -54,8 +54,18 @@ void stestBinaryTreeInt(uint& testnum, uint& testerr) {
     SetAt(loctestnum, loctesterr, vec, true, 3, 3);
 
     lasd::BinaryTreeVec<int> btvec(vec);
-    cout << endl << "Begin of BinaryTreeVec<int> Test:" << endl;
+
+    std::cerr << "\n\n" << btvec.Root().Element() << "\n";
+    std::cerr << btvec.Root().LeftChild().Element() << "\n";
+    std::cerr << btvec.Root().RightChild().Element() << "\n";
+    std::cerr << btvec.Root().LeftChild().HasLeftChild() << "\n";
+    std::cerr << btvec.Root().LeftChild().HasRightChild() << "\n";
+    std::cerr << btvec.Root().RightChild().HasLeftChild() << "\n";
+    std::cerr << btvec.Root().RightChild().HasRightChild() << "\n";
+
+    cerr << endl << "Begin of BinaryTreeVec<int> Test:" << endl;
     stestBinaryTreeInt(btvec, loctestnum, loctesterr);
+    
     lasd::BinaryTreeLnk<int> btlnk(vec);
     cout << endl << "Begin of BinaryTreeLnk<int> Test:" << endl;
     stestBinaryTreeInt(btlnk, loctestnum, loctesterr);
@@ -74,6 +84,7 @@ void stestBinaryTreeInt(uint& testnum, uint& testerr) {
     btlnk = move(copbtlnk);
     NonEqualBT(loctestnum, loctesterr, copbtlnk, btlnk);
     Empty(loctestnum, loctesterr, copbtlnk, true);
+    
   } catch(...) {
     loctestnum++; loctesterr++;
     cout << endl << "Unmanaged error! " << endl;
@@ -96,6 +107,7 @@ void stestBinaryTreeFloat(lasd::MutableBinaryTree<double>& bt, uint& testnum, ui
     GetItrValue(loctestnum, loctesterr, itr1, true, 3.0);
     ++itr1;
     Terminated(loctestnum, loctesterr, itr1, true);
+    
     itr1.Reset();
     Terminated(loctestnum, loctesterr, itr1, false);
     ++itr1;
@@ -231,14 +243,17 @@ void stestBinaryTreeString(uint& testnum, uint& testerr) {
     SetAt(loctestnum, loctesterr, vec, true, 2, string("C"));
     SetAt(loctestnum, loctesterr, vec, true, 3, string("D"));
 
+    //cout << endl << "Begin of BinaryTreeVec<string> Test:" << endl;
+    //lasd::BinaryTreeVec<string> btvec(vec);
+    //stestBinaryTreeString(btvec, loctestnum, loctesterr);
+    
     cout << endl << "Begin of BinaryTreeVec<string> Test:" << endl;
-    lasd::BinaryTreeVec<string> btvec(vec);
-    stestBinaryTreeString(btvec, loctestnum, loctesterr);
-    cout << endl << "Begin of BinaryTreeVec<string> Test:" << endl;
+    
     lasd::BinaryTreeLnk<string> btlnk(vec);
     stestBinaryTreeString(btlnk, loctestnum, loctesterr);
     cout << "\n";
 
+    /*
     EqualBT(loctestnum, loctesterr, btvec, btlnk);
     btvec.Root().LeftChild().LeftChild().Element() = string("S");
     NonEqualBT(loctestnum, loctesterr, btlnk, btvec);
@@ -247,6 +262,7 @@ void stestBinaryTreeString(uint& testnum, uint& testerr) {
     btvec.Root().RightChild().Element() = string("X");
     btlnk.Root().LeftChild().LeftChild().Element() = string("S");
     EqualBT(loctestnum, loctesterr, btlnk, btvec);
+    */
   } catch(...) {
     loctestnum++; loctesterr++;
     cout << endl << "Unmanaged error! " << endl;

@@ -15,23 +15,27 @@ namespace lasd {
     template<typename Data> Data& BinaryTreeVec<Data>::NodeVec::Element() noexcept { return value; }
 
     template<typename Data> const BinaryTree<Data>::Node& BinaryTreeVec<Data>::NodeVec::RightChild() const { 
-        if ((index+1)*2-1 >= tree->size) throw std::length_error("illegal requeste for a non-present node's right child");
-        return tree->nodes[(index+1)*2]; 
+        sizetype rightchild_index = 2*index + 2;
+        if (rightchild_index >= tree->size) throw std::length_error("illegal requeste for a non-present node's right child");
+        return tree->nodes[rightchild_index]; 
     }
     
     template<typename Data> MutableBinaryTree<Data>::MutableNode& BinaryTreeVec<Data>::NodeVec::RightChild() { 
-        if ((index+1)*2-1 >= tree->size) throw std::length_error("illegal requeste for a non-present node's right child");
-        return tree->nodes[(index+1)*2];
+        sizetype rightchild_index = 2*index + 2;
+        if (rightchild_index >= tree->size) throw std::length_error("illegal requeste for a non-present node's right child");
+        return tree->nodes[rightchild_index];
     }
 
     template<typename Data> const BinaryTree<Data>::Node& BinaryTreeVec<Data>::NodeVec::LeftChild() const { 
-        if ((index+1)*2 >= tree->size) throw std::length_error("illegal requeste for a non-present node's left child");
-        return tree->nodes[(index+1)*2-1]; 
+        sizetype leftchild_index = 2*index + 1;
+        if (leftchild_index >= tree->size) throw std::length_error("illegal requeste for a non-present node's left child");
+        return tree->nodes[leftchild_index]; 
     }
 
     template<typename Data> MutableBinaryTree<Data>::MutableNode& BinaryTreeVec<Data>::NodeVec::LeftChild() { 
-        if ((index+1)*2 >= tree->size) throw std::length_error("illegal requeste for a non-present node's left child");
-        return tree->nodes[(index+1)*2-1]; 
+        sizetype leftchild_index = 2*index + 1;
+        if (leftchild_index >= tree->size) throw std::length_error("illegal requeste for a non-present node's left child");
+        return tree->nodes[leftchild_index]; 
     }
 
 

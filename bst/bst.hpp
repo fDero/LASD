@@ -28,8 +28,8 @@ namespace lasd {
       BST(MutableMappableContainer<Data>&&) noexcept;
       virtual ~BST() = default;
 
-      using BinaryTree<Data>::operator==;
-      using BinaryTree<Data>::operator!=;
+      virtual bool operator==(const BST<Data>&) const noexcept;
+      virtual bool operator!=(const BST<Data>&) const noexcept;
 
       BST& operator=(const BST&) noexcept;
       BST& operator=(BST&&) noexcept;

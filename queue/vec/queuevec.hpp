@@ -45,11 +45,6 @@ namespace lasd {
       virtual Data& Head() override;
       
       using Queue<Data>::HeadNDequeue;
-
-
-      void dump(){
-        for (sizetype i = 0; i < actual_length; i++) std::cout << storage[i] << ((i == head_index)? "<-H  " : "   ");
-      } 
   };
 }
 
