@@ -61,8 +61,8 @@ namespace lasd {
 
     /******************************************** INSERTIONS / DELETIONS *********************************/
 
-    template <typename Data> inline bool BST<Data>::Insert(const Data& value){ return InsertHelper(value); }
-    template <typename Data> inline bool BST<Data>::Insert(Data&& value){ return InsertHelper(std::move(value)); }
+    template <typename Data> inline bool BST<Data>::Insert(const Data& value) noexcept { return InsertHelper(value); }
+    template <typename Data> inline bool BST<Data>::Insert(Data&& value) noexcept { return InsertHelper(std::move(value)); }
 
     template<typename Data> template<typename Value> bool BST<Data>::InsertHelper(Value&& value){
         NodeLnk*& target = FindNodePointer(value, root);
@@ -74,7 +74,7 @@ namespace lasd {
         return false;
     }
 
-    template<typename Data> bool BST<Data>::Remove(const Data& value) {
+    template<typename Data> bool BST<Data>::Remove(const Data& value) noexcept {
         NodeLnk*& target = FindNodePointer(value, root);
         if (target == nullptr) return false;
         Detatch(target);

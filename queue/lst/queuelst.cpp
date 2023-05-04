@@ -9,42 +9,47 @@ namespace lasd {
 
     /************************************* CONSTRUCTORS AND DISTRUCTORS *******************************/
 
-    template <typename Data> QueueLst<Data>::QueueLst() : List<Data>() {}
-    template <typename Data> QueueLst<Data>::QueueLst(const QueueLst& qqlst) : List<Data>(qqlst) {}
-    template <typename Data> QueueLst<Data>::QueueLst(QueueLst&& qqlst) : List<Data>(std::move(qqlst)) {}
-    template <typename Data> QueueLst<Data>::~QueueLst() = default;
+    template <typename Data> QueueLst<Data>::QueueLst(const QueueLst& qqlst) noexcept : List<Data>(qqlst) {}
+    template <typename Data> QueueLst<Data>::QueueLst(QueueLst&& qqlst) noexcept : List<Data>(std::move(qqlst)) {}
 
-    template <typename Data> QueueLst<Data>::QueueLst(MutableMappableContainer<Data>&& mmc) {
+    template <typename Data> QueueLst<Data>::QueueLst(MutableMappableContainer<Data>&& mmc) noexcept {
         mmc.Map([this](Data& value){ this->Enqueue(std::move(value)); });   
     }
 
-    template <typename Data> QueueLst<Data>::QueueLst(const MappableContainer<Data>& mc) {
+    template <typename Data> QueueLst<Data>::QueueLst(const MappableContainer<Data>& mc) noexcept {
         mc.Map([this](const Data& value){ this->Enqueue(value); });
     }
     
 
 
+
     /************************************** ASSIGNMENT OPERATORS ***************************************/
 
-    template <typename Data> inline QueueLst<Data>& QueueLst<Data>::operator=(const QueueLst<Data>& stk) { 
+    template <typename Data> inline QueueLst<Data>& QueueLst<Data>::operator=(const QueueLst<Data>& stk) noexcept{ 
         List<Data>::operator=(stk); 
         return *this; 
     }
     
-    template <typename Data> inline QueueLst<Data>& QueueLst<Data>::operator=(QueueLst<Data>&& stk) { 
+    template <typename Data> inline QueueLst<Data>& QueueLst<Data>::operator=(QueueLst<Data>&& stk) noexcept { 
         List<Data>::operator=(std::move(stk)); 
         return *this; 
     }
+
+
+
+
+    /*************************************** COMPARISON OPERATORS *************************************/
 
     template <typename Data> inline bool QueueLst<Data>::operator==(const QueueLst<Data>& stk) const noexcept { return List<Data>::operator==(stk); }
     template <typename Data> inline bool QueueLst<Data>::operator!=(const QueueLst<Data>& stk) const noexcept { return List<Data>::operator!=(stk); }
 
     
     
+    
     /**************************************** INSERTION AND DELETIONS *********************************/
 
-    template <typename Data> inline void QueueLst<Data>::Enqueue(const Data& value) { List<Data>::InsertAtBack(value); }
-    template <typename Data> inline void QueueLst<Data>::Enqueue(Data&& value) { List<Data>::InsertAtBack(std::move(value)); }
+    template <typename Data> inline void QueueLst<Data>::Enqueue(const Data& value) noexcept { List<Data>::InsertAtBack(value); }
+    template <typename Data> inline void QueueLst<Data>::Enqueue(Data&& value) noexcept { List<Data>::InsertAtBack(std::move(value)); }
     
     template <typename Data> inline void QueueLst<Data>::Dequeue() { 
         if (size == 0) throw std::length_error("Dequeue() method called on empty queue");

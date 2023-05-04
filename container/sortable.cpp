@@ -8,7 +8,7 @@
 
 namespace lasd {
 
-    template<typename Data> bool SortableLinearContainer<Data>::Sorted() const {
+    template<typename Data> bool SortableLinearContainer<Data>::Sorted() const noexcept {
         for (int i = 1; i < size; i++) {
             if (operator[](i-1) > operator[](i)) return false;
         }
@@ -16,12 +16,12 @@ namespace lasd {
     }
 
 
-    template<typename Data> inline void SortableLinearContainer<Data>::Sort()      { QuickSort(0,size); }
-    template<typename Data> inline void SortableLinearContainer<Data>::QuickSort() { QuickSort(0,size); }
-    template<typename Data> inline void SortableLinearContainer<Data>::MergeSort() { MergeSort(0,size); }
+    template<typename Data> inline void SortableLinearContainer<Data>::Sort()      noexcept { QuickSort(0,size); }
+    template<typename Data> inline void SortableLinearContainer<Data>::QuickSort() noexcept { QuickSort(0,size); }
+    template<typename Data> inline void SortableLinearContainer<Data>::MergeSort() noexcept { MergeSort(0,size); }
 
 
-    template<typename Data> void SortableLinearContainer<Data>::InsertionSort() {
+    template<typename Data> void SortableLinearContainer<Data>::InsertionSort() noexcept {
         for (int current = 0; current < size; current++){
             for (int i = current; i > 0 and this->operator[](i) < this->operator[](i-1); i--){
                 std::swap(operator[](i), operator[](i-1));
@@ -30,7 +30,7 @@ namespace lasd {
     }
 
     
-    template<typename Data> void SortableLinearContainer<Data>::SelectionSort() {
+    template<typename Data> void SortableLinearContainer<Data>::SelectionSort() noexcept {
         for (int current = 0; current < size; current++){
             for (int i = current; i < size; i++){
                 if (operator[](i) < operator[](current)){
@@ -41,7 +41,7 @@ namespace lasd {
     }
 
 
-    template<typename Data> void SortableLinearContainer<Data>::QuickSort(sizetype begin, sizetype end){
+    template<typename Data> void SortableLinearContainer<Data>::QuickSort(sizetype begin, sizetype end) {
         if (end - begin < 2) return;
         const Data& pivot = operator[](end-1);
         sizetype current_index = begin - 1;

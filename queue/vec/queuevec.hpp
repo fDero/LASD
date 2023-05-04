@@ -9,7 +9,9 @@
 
 namespace lasd {
 
-  template <typename Data> class QueueVec : public virtual Queue<Data>, virtual Vector<Data> {
+  template <typename Data> class QueueVec 
+    : public virtual Queue<Data>, virtual Vector<Data> 
+  {
     protected:
       using Vector<Data>::storage;
       using Vector<Data>::size;
@@ -17,15 +19,15 @@ namespace lasd {
       sizetype head_index = 0;
     public:
 
-      QueueVec();
-      QueueVec(const MappableContainer<Data>&);
-      QueueVec(MutableMappableContainer<Data>&&);
-      QueueVec(const QueueVec&);
-      QueueVec(QueueVec&&);
-      virtual ~QueueVec(); 
+      QueueVec() noexcept;
+      QueueVec(const MappableContainer<Data>&) noexcept;
+      QueueVec(MutableMappableContainer<Data>&&) noexcept;
+      QueueVec(const QueueVec&) noexcept;
+      QueueVec(QueueVec&&) noexcept;
+      virtual ~QueueVec() = default; 
       
-      virtual inline QueueVec& operator=(const QueueVec&);
-      virtual inline QueueVec& operator=(QueueVec&&);
+      virtual inline QueueVec& operator=(const QueueVec&) noexcept;
+      virtual inline QueueVec& operator=(QueueVec&&) noexcept ;
 
       virtual bool operator==(const QueueVec&) const noexcept;
       virtual inline bool operator!=(const QueueVec&) const noexcept;
@@ -36,8 +38,8 @@ namespace lasd {
       virtual void Clear() override;
       virtual void Resize(sizetype) override;
 
-      virtual void Enqueue(const Data&) override;
-      virtual void Enqueue(Data&&) override;
+      virtual void Enqueue(const Data&) noexcept override;
+      virtual void Enqueue(Data&&) noexcept override;
 
       virtual void Dequeue() override;
  

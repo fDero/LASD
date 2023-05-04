@@ -18,22 +18,22 @@ namespace lasd {
       
     public:
 
-      Vector();
-      Vector(const Vector&);
-      Vector(Vector&&);
-      Vector(sizetype);
-      Vector(const MappableContainer<Data>&);
-      Vector(MutableMappableContainer<Data>&&);
-      virtual ~Vector();
+      Vector() noexcept = default;
+      Vector(const Vector&) noexcept;
+      Vector(Vector&&) noexcept;
+      Vector(sizetype) noexcept;
+      Vector(const MappableContainer<Data>&) noexcept;
+      Vector(MutableMappableContainer<Data>&&) noexcept;
+      virtual ~Vector() noexcept;
 
-      virtual Vector& operator=(const Vector&);
-      virtual Vector& operator=(Vector&&);
+      virtual Vector& operator=(const Vector&) noexcept;
+      virtual Vector& operator=(Vector&&) noexcept;
 
       virtual const Data& operator[](sizetype) const override;
       virtual Data& operator[](sizetype) override;
 
-      using LinearContainer<Data>::operator==;
-      using LinearContainer<Data>::operator!=;
+      virtual inline bool operator==(const Vector&) const noexcept;
+      virtual inline bool operator!=(const Vector&) const noexcept;
 
       virtual void Resize(sizetype) override;
 

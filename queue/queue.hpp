@@ -22,8 +22,8 @@ namespace lasd {
       virtual Queue& operator=(const Queue&) = delete;
       virtual Queue& operator=(Queue&&) = delete;
 
-      virtual void Enqueue(const Data&) = 0;
-      virtual void Enqueue(Data&&) = 0;
+      virtual void Enqueue(const Data&) noexcept = 0;
+      virtual void Enqueue(Data&&) noexcept = 0;
       virtual void Dequeue() = 0;
       
       virtual const Data& Head() const = 0;

@@ -11,7 +11,9 @@
 namespace lasd {
 
   template <typename Data> class LinearContainer 
-      : public virtual MutablePreOrderMappableContainer<Data>, public virtual MutablePostOrderMappableContainer<Data> { 
+    : public virtual MutablePreOrderMappableContainer<Data>
+    , public virtual MutablePostOrderMappableContainer<Data> 
+  { 
     protected:
       using Container::size;
     public:
@@ -59,7 +61,9 @@ namespace lasd {
 
 
 
-  template <typename Data> class SortableLinearContainer : public virtual LinearContainer<Data> {
+  template <typename Data> class SortableLinearContainer 
+    : public virtual LinearContainer<Data> 
+  {
     protected:
       using Container::size;
     public:
@@ -78,13 +82,13 @@ namespace lasd {
       using LinearContainer<Data>::operator!=;
       using LinearContainer<Data>::operator[];
 
-      void InsertionSort();
-      void SelectionSort();
-      inline void QuickSort();
-      inline void MergeSort(); 
-      inline void Sort();
+      void InsertionSort() noexcept;
+      void SelectionSort() noexcept;
+      inline void QuickSort() noexcept;
+      inline void MergeSort() noexcept; 
+      inline void Sort() noexcept;
 
-      bool Sorted() const;
+      bool Sorted() const noexcept;
 
     private:
       void QuickSort(sizetype, sizetype);

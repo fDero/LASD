@@ -12,35 +12,34 @@ namespace lasd {
 
     /*********************************** CONSTRUCTORS AND DISTRUCTORS *******************************/
 
-    template <typename Data> StackVec<Data>::StackVec() { 
+    template <typename Data> StackVec<Data>::StackVec() noexcept { 
         if constexpr (STACKVEC_MINIMUM_LENGTH != 0) {
             actual_length = STACKVEC_MINIMUM_LENGTH;
             storage = new Data[STACKVEC_MINIMUM_LENGTH];
         } 
     }
 
-    template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) { 
+    template <typename Data> StackVec<Data>::StackVec(const MappableContainer<Data>& mc) noexcept { 
         actual_length = std::max(mc.Size(), STACKVEC_MINIMUM_LENGTH);
         storage = Vector<Data>::array_safe_alloc(actual_length);
         mc.Map([this](const Data& value){ this->Push(value); });    
     }
 
-    template <typename Data> StackVec<Data>::StackVec(MutableMappableContainer<Data>&& mmc) { 
+    template <typename Data> StackVec<Data>::StackVec(MutableMappableContainer<Data>&& mmc) noexcept { 
         actual_length = std::max(mmc.Size(), STACKVEC_MINIMUM_LENGTH);
         storage = Vector<Data>::array_safe_alloc(actual_length);
         mmc.Map([this](const Data& value){ this->Push(std::move(value)); });    
     }
 
-    template <typename Data> StackVec<Data>::StackVec(const StackVec& stk) { this->operator=(stk); }
-    template <typename Data> StackVec<Data>::StackVec(StackVec&& stk) { this->operator=(std::move(stk)); }
-    template <typename Data> StackVec<Data>::~StackVec() = default;
+    template <typename Data> StackVec<Data>::StackVec(const StackVec& stk) noexcept{ this->operator=(stk); }
+    template <typename Data> StackVec<Data>::StackVec(StackVec&& stk) noexcept { this->operator=(std::move(stk)); }
 
 
 
 
     /*************************************** ASSIGNMENT OPERATORS **********************************/
 
-    template <typename Data> StackVec<Data>& StackVec<Data>::operator=(const StackVec<Data>& stk) { 
+    template <typename Data> StackVec<Data>& StackVec<Data>::operator=(const StackVec<Data>& stk) noexcept { 
         size = stk.size;
         actual_length = stk.actual_length;
         delete [] storage;
@@ -49,7 +48,7 @@ namespace lasd {
         return *this;
     }
     
-    template <typename Data> inline StackVec<Data>& StackVec<Data>::operator=(StackVec<Data>&& stk) { 
+    template <typename Data> inline StackVec<Data>& StackVec<Data>::operator=(StackVec<Data>&& stk) noexcept { 
         std::swap(actual_length,stk.actual_length);
         Vector<Data>::operator=(std::move(stk));
         return *this;
@@ -106,12 +105,12 @@ namespace lasd {
         if (--size < actual_length/4) Resize(std::max(actual_length/2, STACKVEC_MINIMUM_LENGTH));
     }
 
-    template <typename Data> void StackVec<Data>::Push(const Data& value){
+    template <typename Data> void StackVec<Data>::Push(const Data& value) noexcept {
         if (++size >= actual_length) Resize(actual_length * 2 + 1);
         this->Back() = value;
     }
 
-    template <typename Data> void StackVec<Data>::Push(Data&& value){
+    template <typename Data> void StackVec<Data>::Push(Data&& value) noexcept {
         if (++size >= actual_length) Resize(actual_length * 2 + 1);
         this->Back() = std::move(value);
     }

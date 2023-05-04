@@ -11,22 +11,20 @@ namespace lasd {
 
     /***************************** CONSTRUCTORS AND DISTRUCTORS ************************/
 
-    template<typename Data> Vector<Data>::Vector() = default;
-
-    template<typename Data> Vector<Data>::Vector(const Vector& vector){
+    template<typename Data> Vector<Data>::Vector(const Vector& vector) noexcept {
         this->operator=(vector);
     }
 
-    template<typename Data> Vector<Data>::Vector(Vector&& vector){
+    template<typename Data> Vector<Data>::Vector(Vector&& vector) noexcept {
         this->operator=(std::move(vector));
     }
     
-    template<typename Data> Vector<Data>::Vector(sizetype initial_size){
+    template<typename Data> Vector<Data>::Vector(sizetype initial_size) noexcept {
         size = initial_size;
         storage = new Data [initial_size];
     }
 
-    template<typename Data> Vector<Data>::Vector(const MappableContainer<Data>& source){
+    template<typename Data> Vector<Data>::Vector(const MappableContainer<Data>& source) noexcept {
         this->Resize(source.Size());
         sizetype index_last_inserted = 0;
         source.Map([this, &index_last_inserted](const Data& value){
@@ -35,7 +33,7 @@ namespace lasd {
         });
     }
 
-    template<typename Data> Vector<Data>::Vector(MutableMappableContainer<Data>&& source){
+    template<typename Data> Vector<Data>::Vector(MutableMappableContainer<Data>&& source) noexcept {
         this->Resize(source.Size());
         sizetype index_last_inserted = 0;
         source.Map([this, &index_last_inserted](Data& value){
@@ -44,22 +42,32 @@ namespace lasd {
         });
     }
 
-    template<typename Data> Vector<Data>::~Vector(){ 
+    template<typename Data> Vector<Data>::~Vector() noexcept { 
         delete[] storage; 
     }
 
+
+    /************************************* COMPARISON OPERATORS ******************************/
+
+    template <typename Data> inline bool Vector<Data>::operator==(const Vector<Data>& other) const noexcept {
+        return LinearContainer<Data>::operator==(other);
+    }
+
+    template <typename Data> inline bool Vector<Data>::operator!=(const Vector<Data>& other) const noexcept {
+        return LinearContainer<Data>::operator!=(other);
+    }
 
 
 
     /*********************************** ASSIGNMENT OPERATORS ********************************/
 
-    template<typename Data> Vector<Data>& Vector<Data>::operator=(const Vector& vector){
+    template<typename Data> Vector<Data>& Vector<Data>::operator=(const Vector& vector) noexcept {
         Resize(vector.size);
         std::copy(vector.storage, vector.storage + size, storage);
         return *this;
     }
 
-    template<typename Data> Vector<Data>& Vector<Data>::operator=(Vector&& vector){
+    template<typename Data> Vector<Data>& Vector<Data>::operator=(Vector&& vector) noexcept {
         std::swap(size,vector.size);
         std::swap(storage,vector.storage);
         return *this;
@@ -71,7 +79,7 @@ namespace lasd {
     // notice that Clear() is inherited from ClearableContainer as a call to Resize(0). wich indeed
     // deallocates everything and correctly set the size to be zero. Therefore is not overrided
 
-    template<typename Data> inline Data* Vector<Data>::array_safe_alloc(sizetype length){
+    template<typename Data> inline Data* Vector<Data>::array_safe_alloc(sizetype length) {
         return (length)? new Data[length] : nullptr;
     }
 

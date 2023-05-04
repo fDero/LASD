@@ -14,7 +14,10 @@
 namespace lasd {
 
   template <typename Data> class List 
-      : public virtual ClearableContainer, public virtual LinearContainer<Data>, public virtual DictionaryContainer<Data> {
+    : public virtual ClearableContainer
+    , public virtual LinearContainer<Data>
+    , public virtual DictionaryContainer<Data> 
+  {
     protected:
 
       using Container::size;
@@ -39,24 +42,24 @@ namespace lasd {
     public:
 
       List() = default;
-      List(const List&);
-      List(List&&);
-      List(const MappableContainer<Data>&);
-      List(MutableMappableContainer<Data>&&);
-      virtual ~List();
+      List(const List&) noexcept;
+      List(List&&) noexcept;
+      List(const MappableContainer<Data>&) noexcept;
+      List(MutableMappableContainer<Data>&&) noexcept;
+      virtual ~List() noexcept;
 
-      List& operator=(const List&);
-      List& operator=(List&&);
+      List& operator=(const List&) noexcept;
+      List& operator=(List&&) noexcept;
 
       const Data& operator[](sizetype) const override;
       Data& operator[](sizetype) override;
 
-      virtual bool operator==(const List&) const;
-      virtual inline bool operator!=(const List&) const;
+      virtual bool operator==(const List&) const noexcept;
+      virtual inline bool operator!=(const List&) const noexcept;
       
-      virtual bool Insert(const Data&) override;
-      virtual bool Insert(Data&&) override;
-      virtual bool Remove(const Data&) override;
+      virtual bool Insert(const Data&) noexcept override;
+      virtual bool Insert(Data&&) noexcept override;
+      virtual bool Remove(const Data&) noexcept override;
 
       virtual void InsertAtFront(const Data&);
       virtual void InsertAtFront(Data&&);    

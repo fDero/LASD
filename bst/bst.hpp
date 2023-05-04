@@ -68,10 +68,10 @@ namespace lasd {
       using BinaryTreeLnk<Data>::InOrderFold;
       using BinaryTreeLnk<Data>::BreadthFold;
       
-      virtual inline bool Insert(const Data&) override;
-      virtual inline bool Insert(Data&&) override;
+      virtual inline bool Insert(const Data&) noexcept override;
+      virtual inline bool Insert(Data&&) noexcept override;
       
-      virtual bool Remove(const Data&) override;
+      virtual bool Remove(const Data&) noexcept override;
       virtual inline bool Exists(const Data&) const noexcept override;
 
     private:

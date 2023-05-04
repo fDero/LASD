@@ -12,35 +12,34 @@ namespace lasd {
 
     /**************************************** CONSTRUCTORS AND DISTRUCTORS *************************************/
 
-    template <typename Data> QueueVec<Data>::QueueVec() { 
+    template <typename Data> QueueVec<Data>::QueueVec() noexcept { 
         if constexpr (QUEUEVEC_MINIMUM_LENGTH != 0) {
             actual_length = QUEUEVEC_MINIMUM_LENGTH;
             storage = new Data[QUEUEVEC_MINIMUM_LENGTH];
         } 
     }
 
-    template <typename Data> QueueVec<Data>::QueueVec(const MappableContainer<Data>& mc) {
+    template <typename Data> QueueVec<Data>::QueueVec(const MappableContainer<Data>& mc) noexcept {
         actual_length = std::max(mc.Size(), QUEUEVEC_MINIMUM_LENGTH);
         storage = Vector<Data>::array_safe_alloc(actual_length);
         mc.Map([this](const Data& value){ this->Enqueue(value); });
     }
     
-    template <typename Data> QueueVec<Data>::QueueVec(MutableMappableContainer<Data>&& mmc) {
+    template <typename Data> QueueVec<Data>::QueueVec(MutableMappableContainer<Data>&& mmc) noexcept {
         actual_length = std::max(mmc.Size(), QUEUEVEC_MINIMUM_LENGTH);
         storage = Vector<Data>::array_safe_alloc(actual_length);
         mmc.Map([this](const Data& value){ this->Enqueue(std::move(value)); });
     }
     
-    template <typename Data> QueueVec<Data>::QueueVec(QueueVec<Data>&& qqvc) { this->operator=(std::move(qqvc)); }
-    template <typename Data> QueueVec<Data>::QueueVec(const QueueVec<Data>& qqvc) { this->operator=(qqvc); } 
-    template <typename Data> QueueVec<Data>::~QueueVec() = default;
+    template <typename Data> QueueVec<Data>::QueueVec(QueueVec<Data>&& qqvc) noexcept { this->operator=(std::move(qqvc)); }
+    template <typename Data> QueueVec<Data>::QueueVec(const QueueVec<Data>& qqvc) noexcept { this->operator=(qqvc); } 
 
 
 
 
     /******************************************* ASSIGNMENT OPERATORS *****************************************/
 
-    template <typename Data> QueueVec<Data>& QueueVec<Data>::operator=(const QueueVec<Data>& qqvc) { 
+    template <typename Data> QueueVec<Data>& QueueVec<Data>::operator=(const QueueVec<Data>& qqvc) noexcept { 
         size = qqvc.size;
         actual_length = qqvc.actual_length;
         delete [] storage;
@@ -50,7 +49,7 @@ namespace lasd {
         return *this;
     }
     
-    template <typename Data> inline QueueVec<Data>& QueueVec<Data>::operator=(QueueVec<Data>&& qqvc) { 
+    template <typename Data> inline QueueVec<Data>& QueueVec<Data>::operator=(QueueVec<Data>&& qqvc) noexcept { 
         std::swap(actual_length,qqvc.actual_length);
         std::swap(head_index,qqvc.head_index);
         Vector<Data>::operator=(std::move(qqvc));
@@ -108,12 +107,12 @@ namespace lasd {
 
     /***************************************** INSERTIONS AND DELETIONS **********************************/
 
-    template <typename Data> void QueueVec<Data>::Enqueue(const Data& value){
+    template <typename Data> void QueueVec<Data>::Enqueue(const Data& value) noexcept {
         if (size + 1 > actual_length) Resize(actual_length * 2 + 1);
         storage[(head_index + size++)%actual_length] = value;
     }
 
-    template <typename Data> void QueueVec<Data>::Enqueue(Data&& value){
+    template <typename Data> void QueueVec<Data>::Enqueue(Data&& value) noexcept {
         if (size + 1 > actual_length) Resize(actual_length * 2 + 1);
         storage[(head_index + size++)%actual_length] = std::move(value);
     }

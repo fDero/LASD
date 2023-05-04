@@ -21,17 +21,17 @@ namespace lasd {
       virtual bool operator==(const DictionaryContainer&) const noexcept = delete;
       virtual bool operator!=(const DictionaryContainer&) const noexcept = delete;
       
-      virtual bool Insert(const Data&) = 0;
-      virtual bool Insert(Data&&) = 0;
-      virtual bool Remove(const Data&) = 0;
+      virtual bool Insert(const Data&) noexcept = 0;
+      virtual bool Insert(Data&&) noexcept = 0;
+      virtual bool Remove(const Data&) noexcept = 0;
 
-      virtual bool InsertAll(const MappableContainer<Data>&);
-      virtual bool InsertAll(MutableMappableContainer<Data>&&);
-      virtual bool RemoveAll(const MappableContainer<Data>&);
+      virtual bool InsertAll(const MappableContainer<Data>&) noexcept;
+      virtual bool InsertAll(MutableMappableContainer<Data>&&) noexcept;
+      virtual bool RemoveAll(const MappableContainer<Data>&) noexcept;
       
-      virtual bool InsertSome(const MappableContainer<Data>&);
-      virtual bool InsertSome(MutableMappableContainer<Data>&&);
-      virtual bool RemoveSome(const MappableContainer<Data>& source);
+      virtual bool InsertSome(const MappableContainer<Data>&) noexcept;
+      virtual bool InsertSome(MutableMappableContainer<Data>&&) noexcept;
+      virtual bool RemoveSome(const MappableContainer<Data>&) noexcept;
   };
 }
 

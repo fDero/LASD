@@ -19,17 +19,17 @@ namespace lasd {
     // the list, both requires the deallocation of every node, a method "Dealloc" wich deallocates 
     // every node has been provided and is called in both the destructor and the Clear method
 
-    template<typename Data> List<Data>::List(const List& list){ operator=(list); }
+    template<typename Data> List<Data>::List(const List& list) noexcept { operator=(list); }
 
-    template<typename Data> List<Data>::List(List&& list){ operator=(std::move(list)); }
+    template<typename Data> List<Data>::List(List&& list) noexcept { operator=(std::move(list)); }
 
-    template<typename Data> List<Data>::~List(){ Dealloc(); }
+    template<typename Data> List<Data>::~List() noexcept { Dealloc(); }
 
-    template<typename Data> List<Data>::List(MutableMappableContainer<Data>&& container){
+    template<typename Data> List<Data>::List(MutableMappableContainer<Data>&& container) noexcept {
         container.Map([this](Data& value){ this->InsertAtBack(std::move(value)); });
     }
 
-    template<typename Data> List<Data>::List(const MappableContainer<Data>& container){
+    template<typename Data> List<Data>::List(const MappableContainer<Data>& container) noexcept {
         container.Map([this](const Data& value){ this->InsertAtBack(value); });
     }
     
@@ -51,7 +51,7 @@ namespace lasd {
     // note that the copy-assignment operator does its best to avoid useless allocation by 
     // not deallocating existing nodes and instead uses them to provide a place to put the new values
 
-    template<typename Data> List<Data>& List<Data>::operator=(const List<Data>& list) {
+    template<typename Data> List<Data>& List<Data>::operator=(const List<Data>& list) noexcept {
         Node* it = head;
         Node* src = list.head;
         while (it != nullptr and src != nullptr){
@@ -64,7 +64,7 @@ namespace lasd {
         return *this;
     }
 
-    template<typename Data> List<Data>& List<Data>::operator=(List<Data>&& list) {
+    template<typename Data> List<Data>& List<Data>::operator=(List<Data>&& list) noexcept {
         std::swap(head, list.head);
         std::swap(tail, list.tail);
         std::swap(size, list.size);
@@ -76,7 +76,7 @@ namespace lasd {
 
     /*********************************** COMPARISON OPERATORS ********************************/
 
-    template<typename Data> bool List<Data>::operator==(const List<Data>& list) const {
+    template<typename Data> bool List<Data>::operator==(const List<Data>& list) const noexcept {
         if (size != list.size) return false;
         Node* at = head; 
         Node* bt = list.head;
@@ -89,7 +89,7 @@ namespace lasd {
         return true;
     }
 
-    template<typename Data> bool inline List<Data>::operator!=(const List<Data>& list) const { 
+    template<typename Data> bool inline List<Data>::operator!=(const List<Data>& list) const noexcept { 
         return not (this->operator==(list));
     }
 
@@ -136,19 +136,19 @@ namespace lasd {
         EmplaceAtFront(node);
     }
 
-    template <typename Data> bool List<Data>::Insert(const Data& value){
+    template <typename Data> bool List<Data>::Insert(const Data& value) noexcept {
         if (Exists(value)) return false;
         InsertAtBack(value);
         return true;
     }
 
-    template <typename Data> bool List<Data>::Insert(Data&& value){
+    template <typename Data> bool List<Data>::Insert(Data&& value) noexcept {
         if (Exists(value)) return false;
         InsertAtBack(std::move(value));
         return true;
     }
 
-    template <typename Data> bool List<Data>::Remove(const Data& value){
+    template <typename Data> bool List<Data>::Remove(const Data& value) noexcept {
         bool flag = (size != 0 and (this->Front() == value or this->Back() == value));
 
         while (size != 0 and this->Front() == value) this->RemoveFromFront(); 

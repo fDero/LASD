@@ -8,7 +8,9 @@
 
 namespace lasd {
 
-  template <typename Data> class MappableContainer : public virtual FoldableContainer<Data> { 
+  template <typename Data> class MappableContainer 
+    : public virtual FoldableContainer<Data> 
+  { 
     public:
       MappableContainer() = default;
       MappableContainer(const MappableContainer&) = default;
@@ -30,8 +32,10 @@ namespace lasd {
 
 
 
-  template <typename Data> class PreOrderMappableContainer : 
-      public virtual MappableContainer<Data>, public virtual PreOrderFoldableContainer<Data> {
+  template <typename Data> class PreOrderMappableContainer
+    : public virtual MappableContainer<Data>
+    , public virtual PreOrderFoldableContainer<Data> 
+  {
     public:
       PreOrderMappableContainer() = default;
       PreOrderMappableContainer(const PreOrderMappableContainer&) = default;
@@ -55,8 +59,10 @@ namespace lasd {
 
 
 
-  template <typename Data> class PostOrderMappableContainer : 
-      public virtual MappableContainer<Data>, public virtual PostOrderFoldableContainer<Data> {
+  template <typename Data> class PostOrderMappableContainer 
+    : public virtual MappableContainer<Data>
+    , public virtual PostOrderFoldableContainer<Data> 
+  {
     public:
       PostOrderMappableContainer() = default;
       PostOrderMappableContainer(const PostOrderMappableContainer&) = default;
@@ -81,7 +87,9 @@ namespace lasd {
 
 
   template <typename Data> class InOrderMappableContainer 
-      : public virtual MappableContainer<Data>, public virtual InOrderFoldableContainer<Data> {
+    : public virtual MappableContainer<Data>
+    , public virtual InOrderFoldableContainer<Data> 
+  {
     public:
       InOrderMappableContainer() = default;
       InOrderMappableContainer(const InOrderMappableContainer&) = default;
@@ -106,7 +114,9 @@ namespace lasd {
 
 
   template <typename Data> class BreadthMappableContainer 
-      : public virtual MappableContainer<Data>, public virtual BreadthFoldableContainer<Data> {
+    : public virtual MappableContainer<Data>
+    , public virtual BreadthFoldableContainer<Data> 
+  {
     public:
       BreadthMappableContainer() = default;
       BreadthMappableContainer(const BreadthMappableContainer&) = default;
@@ -130,7 +140,9 @@ namespace lasd {
 
 
 
-  template <typename Data> class MutableMappableContainer : public virtual MappableContainer<Data> { 
+  template <typename Data> class MutableMappableContainer 
+    : public virtual MappableContainer<Data> 
+  { 
     public:
       MutableMappableContainer() = default;
       MutableMappableContainer(const MutableMappableContainer&) = default;
@@ -154,7 +166,9 @@ namespace lasd {
 
 
   template <typename Data> class MutablePreOrderMappableContainer 
-      : public virtual MutableMappableContainer<Data>, public virtual PreOrderMappableContainer<Data> {
+    : public virtual MutableMappableContainer<Data>
+    , public virtual PreOrderMappableContainer<Data> 
+  {
     public:
       MutablePreOrderMappableContainer() = default;
       MutablePreOrderMappableContainer(const MutablePreOrderMappableContainer&) = default;
@@ -177,8 +191,10 @@ namespace lasd {
 
 
 
-    template <typename Data> class MutablePostOrderMappableContainer
-      : public virtual MutableMappableContainer<Data>, public virtual PostOrderMappableContainer<Data> {
+  template <typename Data> class MutablePostOrderMappableContainer
+    : public virtual MutableMappableContainer<Data>
+    , public virtual PostOrderMappableContainer<Data> 
+  {
     public:
       MutablePostOrderMappableContainer() = default;
       MutablePostOrderMappableContainer(const MutablePostOrderMappableContainer&) = default;
@@ -204,7 +220,9 @@ namespace lasd {
 
 
   template <typename Data> class MutableInOrderMappableContainer 
-      : public virtual MutableMappableContainer<Data>, public virtual InOrderMappableContainer<Data> {  
+    : public virtual MutableMappableContainer<Data>
+    , public virtual InOrderMappableContainer<Data> 
+  {  
     public:
       MutableInOrderMappableContainer() = default;
       MutableInOrderMappableContainer(const MutableInOrderMappableContainer&) = default;
@@ -230,7 +248,9 @@ namespace lasd {
 
 
   template <typename Data> class MutableBreadthMappableContainer
-      : public virtual MutableMappableContainer<Data>, public virtual BreadthMappableContainer<Data> {  
+    : public virtual MutableMappableContainer<Data>
+    , public virtual BreadthMappableContainer<Data> 
+  {  
     public:
       MutableBreadthMappableContainer() = default;
       MutableBreadthMappableContainer(const MutableBreadthMappableContainer&) = default;
