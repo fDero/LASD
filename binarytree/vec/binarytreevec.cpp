@@ -41,7 +41,7 @@ namespace lasd {
 
 
 
-    /*********************************************** BINARYTREELNK **********************************************/
+    /*********************************************** CONSTRUCTORS **********************************************/
 
     template<typename Data> BinaryTreeVec<Data>::~BinaryTreeVec() noexcept { delete [] nodes; }
 
@@ -75,6 +75,17 @@ namespace lasd {
         this->operator=(std::move(other));
     }
 
+    
+    template<typename Data> BinaryTreeVec<Data>::NodeVec* BinaryTreeVec<Data>::safe_nodes_alloc(sizetype length) noexcept {
+        return (length != 0)? new NodeVec[length] : nullptr;
+    }
+
+
+    
+
+
+    /************************************************ ASSIGNMENT OPERATORS *******************************************/
+
     template<typename Data> BinaryTreeVec<Data>& BinaryTreeVec<Data>::operator=(const BinaryTreeVec<Data>& other) noexcept {
         delete [] nodes;
         size = other.Size();
@@ -94,9 +105,12 @@ namespace lasd {
         return *this;
     }
 
-    template<typename Data> BinaryTreeVec<Data>::NodeVec* BinaryTreeVec<Data>::safe_nodes_alloc(sizetype length) noexcept {
-        return (length != 0)? new NodeVec[length] : nullptr;
-    }
+
+
+
+
+
+    /************************************************* ROOT GETTERS *********************************************/
 
     template<typename Data> const BinaryTreeVec<Data>::Node& BinaryTreeVec<Data>::Root() const {
         if (size == 0) throw std::length_error("attempt to get the root from an empty tree");
@@ -112,16 +126,6 @@ namespace lasd {
 
 
     /******************************************** COMPARISON OPERATORS ***************************************/
-
-    template<typename Data> bool BinaryTreeVec<Data>::operator==(const BinaryTree<Data>& other) const noexcept {
-        if (size != other.Size()) return false;
-        if (size == 0) return true;
-        return CompareSubTrees(this->Root(), other.Root());
-    }
-
-    template<typename Data> inline bool BinaryTreeVec<Data>::operator!=(const BinaryTree<Data>& other) const noexcept {
-        return not operator==(other);
-    }
 
     template<typename Data> bool BinaryTreeVec<Data>::operator==(const BinaryTreeVec<Data>& other) const noexcept {
         if (size != other.Size()) return false;

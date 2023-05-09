@@ -55,8 +55,6 @@ namespace lasd {
       BinaryTreeVec& operator=(const BinaryTreeVec&) noexcept;
       BinaryTreeVec& operator=(BinaryTreeVec&&) noexcept;
 
-      virtual bool operator==(const BinaryTree<Data>&) const noexcept;
-      virtual bool operator!=(const BinaryTree<Data>&) const noexcept;
       bool operator==(const BinaryTreeVec<Data>&) const noexcept;
       bool operator!=(const BinaryTreeVec<Data>&) const noexcept;
 

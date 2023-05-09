@@ -55,8 +55,8 @@ namespace lasd {
       BinaryTreeLnk& operator=(const BinaryTreeLnk&) noexcept;
       BinaryTreeLnk& operator=(BinaryTreeLnk&&) noexcept;
 
-      using BinaryTree<Data>::operator==;
-      using BinaryTree<Data>::operator!=;
+      virtual inline bool operator==(const BinaryTreeLnk& other) const noexcept;
+      virtual inline bool operator!=(const BinaryTreeLnk& other) const noexcept;
 
       virtual const Node& Root() const override;
       virtual MutableNode& Root() override;
@@ -70,7 +70,7 @@ namespace lasd {
     private:
       NodeLnk* CloneSubtree(NodeLnk*);
       void ReplaceSubtree(NodeLnk*&, NodeLnk*);
-      template <typename InputType> void BuildFromMappable(InputType, QueueVec<NodeLnk*>&) noexcept;
+      template <typename InputType> void BuildFromMappable(InputType&&, QueueVec<NodeLnk*>&) noexcept;
   };
 
 }

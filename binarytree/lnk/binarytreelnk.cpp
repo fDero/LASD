@@ -52,7 +52,7 @@ namespace lasd {
 
 
 
-    /********************************************** BINARYTREELNK *********************************************/
+    /********************************************** CONSTRUCTORS *********************************************/
 
     template <typename Data> BinaryTreeLnk<Data>::BinaryTreeLnk(const MappableContainer<Data>& source) noexcept {
         QueueVec<NodeLnk*> nodes;
@@ -75,6 +75,27 @@ namespace lasd {
         this->operator=(std::move(other));
     }
 
+        template<typename Data> BinaryTreeLnk<Data>::~BinaryTreeLnk() noexcept {
+        delete root;
+    }
+
+
+
+
+
+    /****************************************************** OVERRIDES ****************************************/
+
+    template<typename Data> void BinaryTreeLnk<Data>::Clear() {
+        delete root;
+        root = nullptr;
+        size = 0;
+    }
+
+
+
+
+    /***************************************************** ASSIGNMENTS ***************************************/
+
     template<typename Data> BinaryTreeLnk<Data>& BinaryTreeLnk<Data>::operator=(const BinaryTreeLnk<Data>& other) noexcept {
         ReplaceSubtree(root,other.root);
         size = other.size;
@@ -87,14 +108,17 @@ namespace lasd {
         return *this;
     }
 
-    template<typename Data> void BinaryTreeLnk<Data>::Clear() {
-        delete root;
-        root = nullptr;
-        size = 0;
+
+
+
+    /****************************************************** COMPARISON ******************************************/
+
+    template<typename Data> inline bool BinaryTreeLnk<Data>::operator==(const BinaryTreeLnk<Data>& other) const noexcept {
+        return BinaryTree<Data>::operator==(other);
     }
 
-    template<typename Data> BinaryTreeLnk<Data>::~BinaryTreeLnk() noexcept {
-        delete root;
+    template<typename Data> inline bool BinaryTreeLnk<Data>::operator!=(const BinaryTreeLnk<Data>& other) const noexcept {
+        return BinaryTree<Data>::operator==(other);
     }
 
 
@@ -103,7 +127,7 @@ namespace lasd {
     /******************************************** PRIVATE HELPER FUNCTIONS *********************************************/
     
     template<typename Data> template <typename InputType>
-    void BinaryTreeLnk<Data>::BuildFromMappable(InputType value, QueueVec<NodeLnk*>& nodes) noexcept {    
+    void BinaryTreeLnk<Data>::BuildFromMappable(InputType&& value, QueueVec<NodeLnk*>& nodes) noexcept {    
         if (nodes.Empty()) { 
             assert (root == nullptr);
             root = new NodeLnk{ std::forward<InputType>(value) }; 

@@ -3,25 +3,34 @@
 
 #include "zmytest/test.hpp"
 #include "zlasdtest/test.hpp"
-#include <iostream>
+#include "zstresstest/stresstest.hpp"
+#include "zcli/menu.hpp"
+
 
 int main() {
-  short choice = 0;
-  while (choice != 3) {
 
-    std::cout << "\n Hi there, what you would like to do? \n";
-    std::cout << "\t [1] Perform the teacher's tests \n";
-    std::cout << "\t [2] Perform the student's tests \n";
-    std::cout << "\t [3] Quit \n";
+    display_fancy_asciiart();
 
-    std::string input;
-    std::getline(std::cin, input);
+    short choice = 0;
+    while (choice != 4) {
 
-    try { choice = std::stoi(input); } catch(...) { choice = -1; }
-
-    if (choice == 1) lasdtest();
-    else if (choice == 2) execute_student_test();
-    else if (choice == 3) std::cout << "\n Goodbye then! \n"; 
-    else std::cout << "\n Unrecognized input, please try again \n";
-  }
+        std::string prompt = (choice != 0) 
+            ?       "\n\n ┍━ would you like to do something else?" 
+            :       "\n\n ┍━ Hi there, what you would like to do?";
+        
+        std::cout << prompt;
+        std::cout << "\n │   [1] Perform the teacher's tests";
+        std::cout << "\n │   [2] Perform the student's tests";
+        std::cout << "\n │   [3] Perform stress tests";
+        std::cout << "\n │   [4] Quit";
+        std::cout << "\n └─────────> ";
+    
+        switch (choice = get_user_choice()) {
+            case 1 : lasdtest();                      break;
+            case 2 : execute_student_test();          break;
+            case 3 : execute_stresstest();            break;
+            case 4 : goodbye();                       break;
+            default: input_error();                   break;
+        }
+    }
 }

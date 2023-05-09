@@ -8,6 +8,7 @@ DIRECTORIES = \
 	container list queue stack vector   \
 	binarytree bst iterator             \
 	zbinaries zmytest zlasdtest         \
+	zcli zstresstest                    \
 	
 
 ZMYTEST = \
@@ -24,19 +25,29 @@ ZLASDTEST = \
 	zlasdtest/exercise2a/simpletest.cpp   zlasdtest/exercise2a/fulltest.cpp  \
 	zlasdtest/exercise2b/simpletest.cpp   zlasdtest/exercise2b/fulltest.cpp  \
 
+ZSTRESSTEST = \
+	zstresstest/stresstest.cpp             zstresstest/iterator_stresstests.cpp \
+	zstresstest/binarytree_stresstests.cpp zstresstest/bst_stresstests.cpp      \
+	zstresstest/stack_stresstests.cpp      zstresstest/queue_stresstests.cpp    \
+
+
 build:
-	@ g++ -std=c++20 -o main -O1 ${ZMYTEST} ${ZLASDTEST} main.cpp
+	@ g++ -std=c++20 -o main -O1 ${ZMYTEST} ${ZLASDTEST} ${ZSTRESSTEST} zcli/menu.cpp main.cpp
 
 sanitize-build:
-	@ g++ -std=c++20 -fsanitize=address -o sanitizedmain -O3 ${ZMYTEST} ${ZLASDTEST} main.cpp
+	@ g++ -std=c++20 -fsanitize=address -o sanitizedmain -O3 ${ZMYTEST} ${ZLASDTEST} ${ZSTRESSTEST} zcli/menu.cpp main.cpp
 
 deploy:
+	@ make build 
+	@ make sanitize-build
+	@ mv main zbinaries/main
+	@ mv sanitizedmain zbinaries/sanitizedmain
 	@ make clean
 	@ mkdir -p 'LASD exercise-2'
 	@ cp -r ${DIRECTORIES} 'LASD exercise-2'
 	@ cp ${FILES} 'LASD exercise-2'
 	@ tar -czvf 'De Rosa - Francesco - N86004379.tar.gz' 'LASD exercise-2'
-	@ zip 'De Rosa - Francesco - N86004379.zip' 'LASD exercise-2'
+	@ zip -r 'De Rosa - Francesco - N86004379.zip' 'LASD exercise-2'
 	@ rm -rf 'LASD exercise-2'
 
 clean:

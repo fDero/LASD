@@ -219,7 +219,6 @@ namespace lasd {
         return (const_casted->FindNodePointer(value, const_casted->root) != nullptr);
     }
 
-
     template<typename Data> const Data& BST<Data>::Successor(const Data& value) const { 
         auto* const_casted = const_cast<BST<Data>*>(this);
         auto succ = const_casted->FindSuccessorPointer(value, const_casted->root);

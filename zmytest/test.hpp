@@ -17,6 +17,8 @@ using UnitTest = typename std::vector<std::pair<std::string,TestProcedure>>;
 
 void expect(bool condition);
 
+void execute_test(const std::string&, const TestProcedure&);
+
 template<typename Exception> void expect_exception(TestProcedure action) {
     try { action(); } catch(const Exception&) { return; }
     throw std::runtime_error("TEST FALLITO");

@@ -56,17 +56,17 @@ namespace lasd {
       using BinaryTree<Data>::Root;
       using BinaryTreeLnk<Data>::Clear;
 
-      using BinaryTreeLnk<Data>::Map;
-      using BinaryTreeLnk<Data>::PreOrderMap;
-      using BinaryTreeLnk<Data>::PostOrderMap;
-      using BinaryTreeLnk<Data>::InOrderMap;
-      using BinaryTreeLnk<Data>::BreadthMap;
+      using BinaryTree<Data>::Map;
+      using BinaryTree<Data>::PreOrderMap;
+      using BinaryTree<Data>::PostOrderMap;
+      using BinaryTree<Data>::InOrderMap;
+      using BinaryTree<Data>::BreadthMap;
       
-      using BinaryTreeLnk<Data>::Fold;
-      using BinaryTreeLnk<Data>::PreOrderFold;
-      using BinaryTreeLnk<Data>::PostOrderFold;
-      using BinaryTreeLnk<Data>::InOrderFold;
-      using BinaryTreeLnk<Data>::BreadthFold;
+      using BinaryTree<Data>::Fold;
+      using BinaryTree<Data>::PreOrderFold;
+      using BinaryTree<Data>::PostOrderFold;
+      using BinaryTree<Data>::InOrderFold;
+      using BinaryTree<Data>::BreadthFold;
       
       virtual inline bool Insert(const Data&) noexcept override;
       virtual inline bool Insert(Data&&) noexcept override;

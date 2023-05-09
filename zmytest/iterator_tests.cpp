@@ -17,6 +17,21 @@
 
 
 
+void emptytree_iterator_tests(){
+    auto empty_tree = lasd::BST<int>();
+    auto preit = lasd::BTPreOrderIterator<int>(empty_tree);
+    auto postit = lasd::BTPostOrderIterator<int>(empty_tree);
+    auto init = lasd::BTInOrderIterator<int>(empty_tree);
+    auto brit = lasd::BTBreadthIterator<int>(empty_tree);
+    expect(preit.Terminated());
+    expect(postit.Terminated());
+    expect(init.Terminated());
+    expect(brit.Terminated());
+}
+
+
+
+
 void preorder_iterator_t1(){
     auto tree = lasd::BinaryTreeLnk<char>(generate_sample_vector(3));
     auto it = lasd::BTPreOrderIterator<char>(tree);
@@ -389,26 +404,27 @@ void breadth_iterator_t5(){
 void execute_iterator_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for the all iterators on trees ↓↓↓ \n");
     UnitTest iterator_test_procedures {
-        {"preorder_iterator_t1",    preorder_iterator_t1},
-        {"preorder_iterator_t2",    preorder_iterator_t2},
-        {"preorder_iterator_t3",    preorder_iterator_t3},
-        {"preorder_iterator_t4",    preorder_iterator_t4},
-        {"preorder_iterator_t5",    preorder_iterator_t5},
-        {"postorder_iterator_t1",   postorder_iterator_t1},
-        {"postorder_iterator_t2",   postorder_iterator_t2},
-        {"postorder_iterator_t3",   postorder_iterator_t3},
-        {"postorder_iterator_t4",   postorder_iterator_t4},
-        {"postorder_iterator_t5",   postorder_iterator_t5},
-        {"inorder_iterator_t1",     inorder_iterator_t1},
-        {"inorder_iterator_t2",     inorder_iterator_t2},
-        {"inorder_iterator_t3",     inorder_iterator_t3},
-        {"inorder_iterator_t4",     inorder_iterator_t4},
-        {"inorder_iterator_t5",     inorder_iterator_t5},
-        {"breadth_iterator_t1",     breadth_iterator_t1},
-        {"breadth_iterator_t2",     breadth_iterator_t2},
-        {"breadth_iterator_t3",     breadth_iterator_t3},
-        {"breadth_iterator_t4",     breadth_iterator_t4},
-        {"breadth_iterator_t5",     breadth_iterator_t5},
+        {"emptytree_iterator_tests",  emptytree_iterator_tests},
+        {"preorder_iterator_t1",      preorder_iterator_t1},
+        {"preorder_iterator_t2",      preorder_iterator_t2},
+        {"preorder_iterator_t3",      preorder_iterator_t3},
+        {"preorder_iterator_t4",      preorder_iterator_t4},
+        {"preorder_iterator_t5",      preorder_iterator_t5},
+        {"postorder_iterator_t1",     postorder_iterator_t1},
+        {"postorder_iterator_t2",     postorder_iterator_t2},
+        {"postorder_iterator_t3",     postorder_iterator_t3},
+        {"postorder_iterator_t4",     postorder_iterator_t4},
+        {"postorder_iterator_t5",     postorder_iterator_t5},
+        {"inorder_iterator_t1",       inorder_iterator_t1},
+        {"inorder_iterator_t2",       inorder_iterator_t2},
+        {"inorder_iterator_t3",       inorder_iterator_t3},
+        {"inorder_iterator_t4",       inorder_iterator_t4},
+        {"inorder_iterator_t5",       inorder_iterator_t5},
+        {"breadth_iterator_t1",       breadth_iterator_t1},
+        {"breadth_iterator_t2",       breadth_iterator_t2},
+        {"breadth_iterator_t3",       breadth_iterator_t3},
+        {"breadth_iterator_t4",       breadth_iterator_t4},
+        {"breadth_iterator_t5",       breadth_iterator_t5},
     };
     execute_tests(iterator_test_procedures);  
 }

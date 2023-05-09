@@ -16,7 +16,6 @@ namespace lasd {
   {
     protected:
       using Container::size;
-      
     public:
       BinaryTree() = default;
       BinaryTree(const BinaryTree&) = default;
@@ -62,6 +61,13 @@ namespace lasd {
       };
 
       virtual const Node& Root() const = 0;
+
+    private:
+      void PreOrderMapOnSubtree(MapFunctor, const Node&) const;
+      void PostOrderMapOnSubtree(MapFunctor, const Node&) const;
+      void InOrderMapOnSubtree(MapFunctor, const Node&) const;
+      void BreadthMapOnSubtree(MapFunctor, const Node&) const;
+      bool CompareSubtrees(const Node&, const Node&) const noexcept;
   };
 
 
@@ -96,11 +102,11 @@ namespace lasd {
       using MapFunctor = typename MappableContainer<Data>::MapFunctor;
       using MutableMapFunctor = typename MutableMappableContainer<Data>::MutableMapFunctor;
       
-      virtual inline void Map(MutableMapFunctor) override;
-      virtual inline void PreOrderMap(MutableMapFunctor) override;
-      virtual inline void PostOrderMap(MutableMapFunctor) override;
-      virtual inline void InOrderMap(MutableMapFunctor) override;
-      virtual inline void BreadthMap(MutableMapFunctor) override;
+      virtual void Map(MutableMapFunctor) override;
+      virtual void PreOrderMap(MutableMapFunctor) override;
+      virtual void PostOrderMap(MutableMapFunctor) override;
+      virtual void InOrderMap(MutableMapFunctor) override;
+      virtual void BreadthMap(MutableMapFunctor) override;
 
       virtual inline void Map(MapFunctor) const override;
       virtual inline void PreOrderMap(MapFunctor) const override;

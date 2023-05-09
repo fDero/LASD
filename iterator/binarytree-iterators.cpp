@@ -45,7 +45,7 @@ namespace lasd {
     
     template <typename Data> BTPreOrderIterator<Data>::BTPreOrderIterator(const BinaryTree<Data>& tree) noexcept {
         suspended = lasd::StackVec<Node const*>();
-        current = root = &(tree.Root());
+        current = root = (tree.Empty())? nullptr : &(tree.Root());
     }
 
     template <typename Data> void BTPreOrderIterator<Data>::Reset() noexcept { 
@@ -81,8 +81,9 @@ namespace lasd {
     }
     
     template <typename Data> BTPostOrderIterator<Data>::BTPostOrderIterator(const BinaryTree<Data>& tree) noexcept {
-       root = &(tree.Root());
-        if (NavigateToLeft(root) != nullptr) current = suspended.TopNPop();
+        root = (tree.Empty())? nullptr : &(tree.Root());
+        if (root == nullptr) current = nullptr;
+        else if (NavigateToLeft(root) != nullptr) current = suspended.TopNPop();
     }
 
     template <typename Data> void BTPostOrderIterator<Data>::Reset() noexcept {
@@ -126,8 +127,9 @@ namespace lasd {
     }
     
     template <typename Data> BTInOrderIterator<Data>::BTInOrderIterator(const BinaryTree<Data>& tree) noexcept {
-        root = &(tree.Root());
-        if (NavigateToLeft(root) != nullptr) current = suspended.TopNPop();
+        root = (tree.Empty())? nullptr : &(tree.Root());
+        if (root == nullptr) current = nullptr;
+        else if (NavigateToLeft(root) != nullptr) current = suspended.TopNPop();
     }
 
     template <typename Data> void BTInOrderIterator<Data>::Reset() noexcept {
@@ -166,7 +168,7 @@ namespace lasd {
 
     template <typename Data> BTBreadthIterator<Data>::BTBreadthIterator(const BinaryTree<Data>& tree) noexcept {
         suspended = lasd::QueueVec<Node const*>();
-        current = root = &(tree.Root());
+        current = root = (tree.Empty())? nullptr : &(tree.Root());
     }
 
     template <typename Data> void BTBreadthIterator<Data>::Reset() noexcept {

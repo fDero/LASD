@@ -29,18 +29,18 @@ namespace lasd {
     /************************************************** COMPARISON OPERATORS **************************************************/
     // the utility free function 'CompareSubTrees' has been provided to the user to compare two subtrees given the two roots
 
-    template <typename Node> bool CompareSubTrees(const Node& ax, const Node& bx) {
+    template <typename Data> bool BinaryTree<Data>::CompareSubtrees(const Node& ax, const Node& bx) const noexcept {
         if (ax.HasLeftChild() != bx.HasLeftChild()) return false;
         if (ax.HasRightChild() != bx.HasRightChild()) return false;
-        if (ax.HasLeftChild() and !CompareSubTrees(ax.LeftChild(), bx.LeftChild())) return false;
-        if (ax.HasRightChild() and !CompareSubTrees(ax.RightChild(), bx.RightChild())) return false;
+        if (ax.HasLeftChild() and !CompareSubtrees(ax.LeftChild(), bx.LeftChild())) return false;
+        if (ax.HasRightChild() and !CompareSubtrees(ax.RightChild(), bx.RightChild())) return false;
         return ax.Element() == bx.Element();
     }
 
     template <typename Data> bool BinaryTree<Data>::operator==(const BinaryTree<Data>& other) const noexcept {
         if(size != other.Size()) return false;
         if(size == 0) return true;
-        return CompareSubTrees(Root(), other.Root());
+        return CompareSubtrees(Root(), other.Root());
     } 
 
     template <typename Data> inline bool BinaryTree<Data>::operator!=(const BinaryTree<Data>& other) const noexcept {
@@ -58,34 +58,28 @@ namespace lasd {
 
 
 
-    /************************************************ MAP HELPER FUNCTIONS ****************************************************/
-    // these free functions can be called on BinaryTree<Data>::Node, MutableBinaryTree<Data>::MutableNode, BinaryTreeLnk<Data>::NodeLnk
-    // and every other node-like type thanks to universal-referencing, a technique aviable since C++11
-    // (more info: https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers). The effect of this functions is to perform
-    // a map (PreOrder/PostOrder/InOrder/Breadth) on a subtree given the root node of that subtree. The '&&' (universal reference) can 
-    // be translated in both & and const& so that both mutable and immutable cases are covered. In 'BreadthMapOnSubtree' std::remove_reference
-    // is used to avoid having a pointer to a non const reference (wich in C++ is illegal)
+    /************************************************ MAP HELPER FUNCTIONS **************************************************/
    
-    template <typename Functor, typename Node> void PreOrderMapOnSubtree(Functor mf, Node&& node){
+    template <typename Data> void BinaryTree<Data>::PreOrderMapOnSubtree(MapFunctor mf, const Node& node) const {
         mf(node.Element());
         if (node.HasLeftChild()) PreOrderMapOnSubtree(mf, node.LeftChild());
         if (node.HasRightChild()) PreOrderMapOnSubtree(mf, node.RightChild());
     }    
 
-    template <typename Functor, typename Node> void PostOrderMapOnSubtree(Functor mf, Node&& node){
+    template <typename Data> void BinaryTree<Data>::PostOrderMapOnSubtree(MapFunctor mf, const Node& node) const {
         if (node.HasLeftChild()) PostOrderMapOnSubtree(mf, node.LeftChild());
         if (node.HasRightChild()) PostOrderMapOnSubtree(mf, node.RightChild());
         mf(node.Element());
     }   
 
-    template <typename Functor, typename Node> void InOrderMapOnSubtree(Functor mf, Node&& node){
+    template <typename Data> void BinaryTree<Data>::InOrderMapOnSubtree(MapFunctor mf, const Node& node) const {
         if (node.HasLeftChild()) InOrderMapOnSubtree(mf, node.LeftChild());
         mf(node.Element());
         if (node.HasRightChild()) InOrderMapOnSubtree(mf, node.RightChild());
     }
 
-    template <typename Functor, typename Node> inline void BreadthMapOnSubtree(Functor mf, Node&& node){ 
-        QueueVec<typename std::remove_reference<Node>::type*> frointier;
+    template <typename Data> void BinaryTree<Data>::BreadthMapOnSubtree(MapFunctor mf, const Node& node) const { 
+        QueueVec<Node const*> frointier;
         frointier.Enqueue(&node);
         while(not frointier.Empty()){
             if(frointier.Head()->HasLeftChild())  frointier.Enqueue(&frointier.Head()->LeftChild());
@@ -125,25 +119,29 @@ namespace lasd {
 
     /****************************************************** MUTABLE MAPS *********************************************/
 
-    template <typename Data> inline void MutableBinaryTree<Data>::Map(MutableMapFunctor mf) {
-        if(not Empty()) PreOrderMapOnSubtree(mf, Root());
+    template <typename Data> void MutableBinaryTree<Data>::Map(MutableMapFunctor mmf) {
+        MapFunctor mf = [&mmf](const Data& data) { mmf(const_cast<Data&>(data)); };
+        static_cast<const MutableBinaryTree<Data>*>(this)->Map(mf);
     } 
     
-
-    template <typename Data> inline void MutableBinaryTree<Data>::PreOrderMap(MutableMapFunctor mf) {
-        if(not Empty()) PreOrderMapOnSubtree(mf, Root());
+    template <typename Data> void MutableBinaryTree<Data>::PreOrderMap(MutableMapFunctor mmf) {
+        MapFunctor mf = [&mmf](const Data& data) { mmf(const_cast<Data&>(data)); };
+        static_cast<const MutableBinaryTree<Data>*>(this)->PreOrderMap(mf);
     } 
     
-    template <typename Data> inline void MutableBinaryTree<Data>::PostOrderMap(MutableMapFunctor mf) {
-        if(not Empty()) PostOrderMapOnSubtree(mf, Root());
+    template <typename Data> void MutableBinaryTree<Data>::PostOrderMap(MutableMapFunctor mmf) {
+        MapFunctor mf = [&mmf](const Data& data) { mmf(const_cast<Data&>(data)); };
+        static_cast<const MutableBinaryTree<Data>*>(this)->PostOrderMap(mf); 
+    }
+
+    template <typename Data> void MutableBinaryTree<Data>::InOrderMap(MutableMapFunctor mmf) {
+        MapFunctor mf = [&mmf](const Data& data) { mmf(const_cast<Data&>(data)); };
+        static_cast<const MutableBinaryTree<Data>*>(this)->InOrderMap(mf);
     } 
 
-    template <typename Data> inline void MutableBinaryTree<Data>::InOrderMap(MutableMapFunctor mf) {
-        if(not Empty()) InOrderMapOnSubtree(mf, Root());
-    } 
-
-    template <typename Data> inline void MutableBinaryTree<Data>::BreadthMap(MutableMapFunctor mf) {
-        if(not Empty()) BreadthMapOnSubtree(mf, Root());
+    template <typename Data> void MutableBinaryTree<Data>::BreadthMap(MutableMapFunctor mmf) {
+        MapFunctor mf = [&mmf](const Data& data) { mmf(const_cast<Data&>(data)); };
+        static_cast<const MutableBinaryTree<Data>*>(this)->BreadthMap(mf);
     }
 
 

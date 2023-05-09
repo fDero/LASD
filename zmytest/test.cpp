@@ -33,17 +33,25 @@ void execute_student_test(){
     execute_iterator_tests();
 }
 
-void execute_tests(const UnitTest& tests){
-    for (auto current_test = tests.begin(); current_test != tests.end(); current_test++){
-        try {current_test->second();} catch (...) {
-            std::cout << "\n\n" << bold_red("FAILURE") << "\t" <<  purple(current_test->first); 
-            continue;
-        }
-        std::cout << "\n\n" << bold_green("SUCCESS") << "\t" << purple(current_test->first);
+void execute_test(const std::string& test_name, const TestProcedure& testfunc){
+    try { 
+        testfunc(); 
+        std::cout << bold_green("SUCCESS") << "\t" << purple(test_name);
+        std::cout << std::endl << std::endl;
+    } 
+    catch (...) {
+        std::cout << bold_red("FAILURE") << "\t" <<  purple(test_name); 
+        std::cout << std::endl << std::endl;
     }
-    std::cout << std::endl << std::endl;
 }
 
+void execute_tests(const UnitTest& tests){
+    std::cout << "\n";
+    for (auto current_test = tests.begin(); current_test != tests.end(); current_test++){
+        execute_test(current_test->first, current_test->second);
+    }
+    std::cout << "\n";
+}
 
 lasd::Vector<char> generate_sample_vector(lasd::sizetype size){
   auto vec = lasd::Vector<char>(size);
