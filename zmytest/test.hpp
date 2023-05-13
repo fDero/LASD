@@ -41,4 +41,5 @@ lasd::Vector<char> generate_sample_vector(lasd::sizetype);
 std::string bold_red(const std::string& text);
 std::string bold_green(const std::string& text);
 std::string purple(const std::string& text);
+std::string yellow(const std::string& text);
 std::string blue(const std::string& text);

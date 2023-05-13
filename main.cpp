@@ -10,8 +10,7 @@ int main() {
 
     display_fancy_asciiart();
 
-    short choice = 0;
-    while (choice != 4) {
+    for (int choice = 0; choice != 4; choice = (choice == 0)? -1 : choice) {
 
         std::string prompt = (choice != 0) 
             ?       "\n\n ┍━ would you like to do something else?" 

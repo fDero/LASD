@@ -2,17 +2,39 @@
 // FRANCESCO DE ROSA N86004379
 
 #include "stresstest.hpp"
+#include "../zcli/menu.hpp"
 #include <cstdlib>
 #include <random>
 #include <cassert>
 
 void execute_stresstest(){
     
-    std::cout << "\n\n" << blue("\t stress testing: repeated operations on lasd containers many many times with random values ");
-    std::cout << "\n"   << blue("\t the outcome of these tests vary on runtime-conditions and it's non-deterministic ") << "\n\n";
-    std::cout << "\n"   << blue("\t !!!!!!!!!! IF THE TEST SEEMS TO BE STUCK JUST WAIT A COUPLE OF SECONDS !!!!!!!!!!");
-    std::cout << "\n"   << blue("\t          ---> IT'S DOING THOUSANDS OF COMPUTATIONS IT TAKES SOME TIME <---") << "\n\n";
+    std::cout << "\n\t" << blue(" stress testing: repeated operations on lasd containers thousands of times with random values ");
+    std::cout << "\n\t" << blue("      the outcome of these tests vary on runtime-conditions and it's non-deterministic        ");
 
+    std::cout << std::endl << std::endl;
+    
+    std::cout << "\n\t" << yellow("          !! THESE TESTS ARE COMPUTATIONALLY EXPENSIVE, THEY TAKE SOME TIME  !!             ");
+    std::cout << "\n\t" << yellow("      IT'S SUGGESTED TO NOT EXECUTE THESE TESTS IF RUNNING VALGRIND OR F-SANITIZER          ");
+    std::cout << "\n\t" << yellow("   BECAUSE THE ADDED OVERHEAD OF THESE TOOLS IS ENAUGH TO SLOW THINGS DOWN DRASTICALLY      ");
+    
+    std::cout << std::endl << std::endl;
+
+    for (int choice = 0; choice != 2; choice = -1) {
+
+        std::cout << "\n ┍━ are you sure?";
+        std::cout << "\n │   [1] Yes, Go ahead with stresstesting";
+        std::cout << "\n │   [2] Go back to main menu";
+        std::cout << "\n └─────────> ";
+    
+        choice = get_user_choice();
+        if (choice != 1 and choice != 2) input_error();
+        if (choice == 1) break;
+        if (choice == 2) return;
+    }
+
+    std::cout << std::endl << std::endl;
+    
     execute_stack_stresstests();
     execute_queue_stresstests();
     execute_binarytree_stresstests();
