@@ -126,9 +126,8 @@ void bst_removal_coherence_stresstest(){
             values[i] = get_random_value();
             bst.Insert(values[i]);
         }
-        
+
         for (long i = 0; i < values.Size(); i++){
-            bst.Exists(values[i]);
             if (random_boolean_by_probability_percentage(20)){
                 removed_values.InsertAtBack(values[i]);
                 bst.Remove(values[i]);
