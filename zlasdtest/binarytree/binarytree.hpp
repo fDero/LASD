@@ -4,6 +4,8 @@
 
 #include "../../binarytree/binarytree.hpp"
 
+/* ************************************************************************** */
+
 template <typename Data>
 void GetElement(uint& testnum, uint& testerr, const typename lasd::BinaryTree<Data>::Node& nod, bool chk, const Data& val) {
   bool tst;
@@ -121,7 +123,7 @@ void Root(uint& testnum, uint& testerr, const lasd::BinaryTree<Data>& bt, bool c
     std::cout << std::endl << "Wrong exception: " << exc.what() << "!" << std::endl;
   }
   testerr += (1 - (uint) tst);
-};
+}
 
 /* ************************************************************************** */
 

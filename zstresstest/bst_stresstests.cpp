@@ -28,6 +28,7 @@ void bst_insertions_removal_stresstest(){
         for (int i = 0; i < 100; i++) {
             int randvalue = get_random_value();
             expect(tree.Exists(randvalue) == tree.Remove(randvalue)); 
+            expect(not tree.Exists(randvalue));
         }
         expect(correct_bst_tree(tree.Root()));
     }
@@ -79,7 +80,9 @@ void bst_min_search_stresstest(){
         while (tree.Size() < 300) tree.Insert(get_random_value());
         int randvalue = get_random_value();
         int min = tree.Min();
-        tree.BreadthMap([&min](const int& x){ expect(x >= min); });
+        bool success = true;
+        tree.BreadthMap([&min, &success](const int& x){ success &= (x >= min); });
+        expect(success);
     }
 }
 
@@ -89,7 +92,9 @@ void bst_max_search_stresstest(){
         while (tree.Size() < 300) tree.Insert(get_random_value());
         int randvalue = get_random_value();
         int max = tree.Max();
-        tree.BreadthMap([&max](const int& x){ expect(x <= max); });
+        bool success = true;
+        tree.BreadthMap([&max, &success](const int& x){ success &= (x <= max); });
+        expect(success);
     }
 }
 

@@ -205,6 +205,22 @@ void inspection_of_binarytreevec_copies_t4(){
 
 
 
+void inspection_of_binarytreevec_moves(){
+  auto three_element_vec = generate_sample_vector(3);
+  auto nine_element_vec  = generate_sample_vector(9);
+
+  auto tree = lasd::BinaryTreeVec<char>{ nine_element_vec };
+  auto other  = lasd::BinaryTreeVec<char> { three_element_vec };
+  tree = std::move(other);
+
+  expect(tree.Root().Element() == 'A');
+  
+  expect(tree.Root().LeftChild().Element() == 'B');
+  expect(tree.Root().RightChild().Element() == 'C');
+}
+
+
+
 void compare_empty_treevecs(){
   auto atree = lasd::BinaryTreeVec<char>{ generate_sample_vector(0) };
   auto btree = lasd::BinaryTreeVec<char>{ generate_sample_vector(0) };
@@ -313,6 +329,7 @@ void execute_binarytreevec_tests(){
         {"inspection_of_binarytreevec_copies_t2",  inspection_of_binarytreevec_copies_t2},
         {"inspection_of_binarytreevec_copies_t3",  inspection_of_binarytreevec_copies_t3},
         {"inspection_of_binarytreevec_copies_t4",  inspection_of_binarytreevec_copies_t4},
+        {"inspection_of_binarytreevec_moves",      inspection_of_binarytreevec_moves},
         {"compare_empty_treevecs",                 compare_empty_treevecs},
         {"compare_nontrivial_treevecs",            compare_nontrivial_treevecs},
         {"treevec_preorder_fold_map",              treevec_preorder_fold_map},

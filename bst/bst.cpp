@@ -97,14 +97,16 @@ namespace lasd {
         else if (target->right != nullptr) {
             NodeLnk*& replacement = FindMinInSubtree(target->right);
             std::swap(replacement->value, target->value);
-            delete replacement;
-            replacement = nullptr;
+            NodeLnk* dead = replacement;
+            replacement = replacement->right;
+            DeleteJustThisNode(dead);
         } 
         else if (target->left != nullptr) {
             NodeLnk*& replacement = FindMaxInSubtree(target->left);
             std::swap(replacement->value, target->value);
-            delete replacement;
-            replacement = nullptr;
+            NodeLnk* dead = replacement;
+            replacement = replacement->left;
+            DeleteJustThisNode(dead);
         }
         else {
             delete target;

@@ -179,8 +179,6 @@ void stestBSTFloat(uint& testnum, uint& testerr) {
     MapPreOrder(loctestnum, loctesterr, lst, true, &MapPrint<double>);
 
     lasd::BST<double> bst1(lst);
-    bst1.BreadthMap([](const double& x){ std::cerr << x << " "; });   std::cerr << "\n\n";
-
 
     Empty(loctestnum, loctesterr, bst1, false);
     Size(loctestnum, loctesterr, bst1, true, 6);
@@ -202,10 +200,6 @@ void stestBSTFloat(uint& testnum, uint& testerr) {
     InsertC(loctestnum, loctesterr, bst2, true, 4.0);
 
     Root(loctestnum, loctesterr, bst2, true, 2.1);
-
-    bst1.BreadthMap([](const double& x){ std::cerr << x << " "; });   std::cerr << "\n\n";
-    bst2.BreadthMap([](const double& x){ std::cerr << x << " "; });   std::cerr << "\n\n";
-
 
     EqualBST(loctestnum, loctesterr, bst1, bst2);
     NonEqualBT(loctestnum, loctesterr, bst1, bst2);
@@ -249,7 +243,6 @@ void stestBSTString(uint& testnum, uint& testerr) {
     MapInOrder(loctestnum, loctesterr, (const lasd::BST<string>) bst, true, &MapPrint<string>);
 
     lasd::BTInOrderIterator<string> itr4(bst);
-    
     GetItrValue(loctestnum, loctesterr, itr4, true, string("A"));
     ++itr4;
     GetItrValue(loctestnum, loctesterr, itr4, true, string("B"));

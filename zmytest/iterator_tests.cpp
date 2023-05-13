@@ -27,6 +27,14 @@ void emptytree_iterator_tests(){
     expect(postit.Terminated());
     expect(init.Terminated());
     expect(brit.Terminated());
+    preit.Reset();
+    postit.Reset();
+    init.Reset();
+    brit.Reset();
+    expect(preit.Terminated());
+    expect(postit.Terminated());
+    expect(init.Terminated());
+    expect(brit.Terminated());
 }
 
 

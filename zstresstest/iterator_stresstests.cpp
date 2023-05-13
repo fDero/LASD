@@ -12,10 +12,12 @@ void binarytree_breadth_iteratation_stresstest(){
     for (long attempt = 1; attempt <= 1000; attempt++){
         while (tree.Size() < 1000) tree.Insert(get_random_value());
         auto it = lasd::BTBreadthIterator<int>(tree);
-        tree.BreadthMap([&it](const int& x){
-            expect(*it == x);
+        bool success = true;
+        tree.BreadthMap([&it, &success](const int& x){
+            success &= (*it == x);
             ++it;
         });
+        expect(success);
     }
 }
 
@@ -24,10 +26,12 @@ void binarytree_preorder_iteratation_stresstest(){
     for (long attempt = 1; attempt <= 100; attempt++){
         while (tree.Size() < 100) tree.Insert(get_random_value());
         auto it = lasd::BTPreOrderIterator<int>(tree);
-        tree.PreOrderMap([&it](const int& x){
-            expect(*it == x);
+        bool success = true;
+        tree.PreOrderMap([&it, &success](const int& x){
+            success &= (*it == x);
             ++it;
         });
+        expect(success);
     }
 }
 
@@ -36,10 +40,12 @@ void binarytree_postorder_iteratation_stresstest(){
     for (long attempt = 1; attempt <= 100; attempt++){
         while (tree.Size() < 100) tree.Insert(get_random_value());
         auto it = lasd::BTPostOrderIterator<int>(tree);
-        tree.PostOrderMap([&it](const int& x){
-            expect(*it == x);
+        bool success = true;
+        tree.PostOrderMap([&it, &success](const int& x){
+            success &= (*it == x);
             ++it;
         });
+        expect(success);
     }
 }
 
@@ -48,10 +54,12 @@ void binarytree_inorder_iteratation_stresstest(){
     for (long attempt = 1; attempt <= 100; attempt++){
         while (tree.Size() < 100) tree.Insert(get_random_value());
         auto it = lasd::BTInOrderIterator<int>(tree);
-        tree.InOrderMap([&it](const int& x){
-            expect(*it == x);
+        bool success = true;
+        tree.InOrderMap([&it, &success](const int& x){
+            success &= (*it == x);
             ++it;
         });
+        expect(success);
     }
 }
 

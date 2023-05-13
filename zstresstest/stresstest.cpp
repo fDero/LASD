@@ -11,7 +11,7 @@ void execute_stresstest(){
     std::cout << "\n\n" << blue("\t stress testing: repeated operations on lasd containers many many times with random values ");
     std::cout << "\n"   << blue("\t the outcome of these tests vary on runtime-conditions and it's non-deterministic ") << "\n\n";
     std::cout << "\n"   << blue("\t !!!!!!!!!! IF THE TEST SEEMS TO BE STUCK JUST WAIT A COUPLE OF SECONDS !!!!!!!!!!");
-    std::cout << "\n"   << blue("\t          ---> IT'S DOING THOUSENDS OF COMPUTATIONS IT TAKES SOME TIME <---") << "\n\n";
+    std::cout << "\n"   << blue("\t          ---> IT'S DOING THOUSANDS OF COMPUTATIONS IT TAKES SOME TIME <---") << "\n\n";
 
     execute_stack_stresstests();
     execute_queue_stresstests();

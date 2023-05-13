@@ -5,9 +5,17 @@
 #include "./exercise2a/test.hpp"
 #include "./exercise2b/test.hpp"
 
+// #include "./exercise3/test.hpp"
+
+// #include "./exercise4/test.hpp"
+
+/* ************************************************************************** */
+
 #include <iostream>
 
 using namespace std;
+
+/* ************************************************************************** */
 
 void lasdtest() {
   cout << endl << "~*~#~*~ Welcome to the LASD Test Suite ~*~#~*~ " << endl;
@@ -55,6 +63,32 @@ void lasdtest() {
 
   cout << endl << "Exercise 2 (Simple Test) (Errors/Tests: " << stesterr << "/" << stestnum << ")";
   cout << endl << "Exercise 2 (Full Test) (Errors/Tests: " << ftesterr << "/" << ftestnum << ")" << endl;
+
+  stestnum = 0; stesterr = 0; ftestnum = 0; ftesterr = 0;
+
+  loctestnum = 0; loctesterr = 0;
+  // testSimpleExercise3(loctestnum, loctesterr);
+  stestnum += loctestnum; stesterr += loctesterr;
+
+  loctestnum = 0; loctesterr = 0;
+  // testFullExercise3(loctestnum, loctesterr);
+  ftestnum += loctestnum; ftesterr += loctesterr;
+
+  cout << endl << "Exercise 3 (Simple Test) (Errors/Tests: " << stesterr << "/" << stestnum << ")";
+  cout << endl << "Exercise 3 (Full Test) (Errors/Tests: " << ftesterr << "/" << ftestnum << ")" << endl;
+
+  // stestnum = 0; stesterr = 0; ftestnum = 0; ftesterr = 0;
+  //
+  // loctestnum = 0; loctesterr = 0;
+  // testSimpleExercise4(loctestnum, loctesterr);
+  // stestnum += loctestnum; stesterr += loctesterr;
+  //
+  // loctestnum = 0; loctesterr = 0;
+  // testFullExercise4(loctestnum, loctesterr);
+  // ftestnum += loctestnum; ftesterr += loctesterr;
+  //
+  // cout << endl << "Exercise 4 (Simple Test) (Errors/Tests: " << stesterr << "/" << stestnum << ")";
+  // cout << endl << "Exercise 4 (Full Test) (Errors/Tests: " << ftesterr << "/" << ftestnum << ")" << endl;
 
   cout << endl << "Goodbye!" << endl;
 }

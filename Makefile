@@ -1,7 +1,7 @@
 
 # FRANCESCO DE ROSA N86004379
 
-.PHONY: sanitize-build build deploy
+.PHONY: sanitize-build build deploy clean
 
 FILES = main.cpp build.sh Makefile
 DIRECTORIES = \
@@ -40,8 +40,8 @@ sanitize-build:
 deploy:
 	@ make build 
 	@ make sanitize-build
-	@ mv main zbinaries/main
-	@ mv sanitizedmain zbinaries/sanitizedmain
+	@ mv main zbinaries/precompiled_main
+	@ mv sanitizedmain zbinaries/precompiled_sanitizedmain
 	@ make clean
 	@ mkdir -p 'LASD exercise-2'
 	@ cp -r ${DIRECTORIES} 'LASD exercise-2'
