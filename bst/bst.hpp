@@ -85,7 +85,7 @@ namespace lasd {
       void DeleteJustThisNode(NodeLnk*&);
 
       template<typename Value> bool InsertHelper(Value&&);
-      void Detatch(NodeLnk*&);
+      void Detach(NodeLnk*&);
     };
 }
 

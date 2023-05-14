@@ -77,11 +77,11 @@ namespace lasd {
     template<typename Data> bool BST<Data>::Remove(const Data& value) noexcept {
         NodeLnk*& target = FindNodePointer(value, root);
         if (target == nullptr) return false;
-        Detatch(target);
+        Detach(target);
         return true;
     }
 
-    template<typename Data> void BST<Data>::Detatch(NodeLnk*& target) {
+    template<typename Data> void BST<Data>::Detach(NodeLnk*& target) {
         if (target->right != nullptr and target->right->left == nullptr){
             NodeLnk* dead = target;
             target->right->left = target->left;
@@ -151,20 +151,20 @@ namespace lasd {
     template<typename Data> void BST<Data>::RemoveMax() {
         if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
         NodeLnk*& max = FindMaxInSubtree(root);
-        Detatch(max);
+        Detach(max);
     }
 
     template<typename Data> void BST<Data>::RemoveMin() {
         if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
         NodeLnk*& min = FindMinInSubtree(root);
-        Detatch(min);
+        Detach(min);
     }
 
     template<typename Data> Data BST<Data>::MinNRemove() {
         if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
         NodeLnk*& min = FindMinInSubtree(root);
         Data value = std::move(min->value);
-        Detatch(min);
+        Detach(min);
         return value;
     }
 
@@ -172,7 +172,7 @@ namespace lasd {
         if (size == 0) throw std::length_error("attempt to get the maximum value from an empty tree");
         NodeLnk*& max = FindMaxInSubtree(root);
         Data value = std::move(max->value);
-        Detatch(max);
+        Detach(max);
         return value;
     }
 
@@ -239,14 +239,14 @@ namespace lasd {
         auto* const_casted = const_cast<BST<Data>*>(this);
         NodeLnk*& succ = const_casted->FindSuccessorPointer(value, const_casted->root);
         if (succ == nullptr or succ->value == value) throw std::length_error("attempt to remove successor failed");
-        Detatch(succ);
+        Detach(succ);
     }
 
     template<typename Data> void BST<Data>::RemovePredecessor(const Data& value) {
         auto* const_casted = const_cast<BST<Data>*>(this);
         NodeLnk*& pred = const_casted->FindPredecessorPointer(value, const_casted->root);
         if (pred == nullptr or pred->value == value) throw std::length_error("attempt to remove predecessor failed");
-        Detatch(pred);
+        Detach(pred);
     }
 
     
@@ -255,7 +255,7 @@ namespace lasd {
         NodeLnk*& succ = const_casted->FindSuccessorPointer(value, const_casted->root);
         if (succ == nullptr or succ->value == value) throw std::length_error("attempt to remove successor failed");
         Data succvalue = std::move(succ->value);
-        Detatch(succ);
+        Detach(succ);
         return succvalue;
     }
 
@@ -264,7 +264,7 @@ namespace lasd {
         NodeLnk*& pred = const_casted->FindPredecessorPointer(value, const_casted->root);
         if (pred == nullptr or pred->value == value) throw std::length_error("attempt to remove predecessor failed");
         Data predvalue = std::move(pred->value);
-        Detatch(pred);
+        Detach(pred);
         return predvalue;
     }
 }

@@ -6,7 +6,7 @@
 FILES = main.cpp build.sh Makefile
 DIRECTORIES = \
 	container list queue stack vector   \
-	binarytree bst iterator             \
+	binarytree bst iterator hashtable   \
 	zbinaries zmytest zlasdtest         \
 	zcli zstresstest                    \
 	
@@ -17,6 +17,8 @@ ZMYTEST = \
     zmytest/test.cpp           zmytest/sort_tests.cpp     \
 	zmytest/treelnk_tests.cpp  zmytest/treevec_tests.cpp  \
 	zmytest/bst_tests.cpp      zmytest/iterator_tests.cpp \
+	zmytest/hashtable_closed_addressing_tests.cpp         \
+	zmytest/hashtable_open_addressing_tests.cpp           \
 
 ZLASDTEST = \
 	zlasdtest/test.cpp                    zlasdtest/container/container.cpp  \
@@ -24,6 +26,7 @@ ZLASDTEST = \
 	zlasdtest/exercise1b/simpletest.cpp   zlasdtest/exercise1b/fulltest.cpp  \
 	zlasdtest/exercise2a/simpletest.cpp   zlasdtest/exercise2a/fulltest.cpp  \
 	zlasdtest/exercise2b/simpletest.cpp   zlasdtest/exercise2b/fulltest.cpp  \
+	zlasdtest/exercise3/simpletest.cpp    zlasdtest/exercise3/fulltest.cpp   \
 
 ZSTRESSTEST = \
 	zstresstest/stresstest.cpp             zstresstest/iterator_stresstests.cpp \

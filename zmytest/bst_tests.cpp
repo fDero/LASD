@@ -263,6 +263,27 @@ void bst_deletions_t10(){
 
 
 
+void bst_deletions_t11(){
+    auto bst = lasd::BST<int>();
+    bst.Insert(5000);
+    bst.Insert(7000);
+    bst.Insert(3000);
+    bst.Insert(6000);
+    bst.Insert(6500);
+    bst.Insert(4000);
+    bst.Insert(3500);
+    expect(bst.Remove(5000));
+    expect(bst.Exists(7000));
+    expect(bst.Exists(3000));
+    expect(bst.Exists(6000));
+    expect(bst.Exists(6500));
+    expect(bst.Exists(4000));
+    expect(bst.Exists(3500));
+}
+
+
+
+
 void bst_min_max_exists(){
     auto bst = lasd::BST<int>();
     bst.Insert(8);
@@ -711,6 +732,7 @@ void execute_bst_tests(){
         {"bst_deletions_t8",            bst_deletions_t8}, 
         {"bst_deletions_t9",            bst_deletions_t9}, 
         {"bst_deletions_t10",           bst_deletions_t10}, 
+        {"bst_deletions_t11",           bst_deletions_t11}, 
         {"bst_min_max_exists",          bst_min_max_exists}, 
         {"predecessors_t1",             predecessors_t1}, 
         {"predecessors_t2",             predecessors_t2},
