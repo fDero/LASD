@@ -33,6 +33,7 @@ void execute_student_test(){
     execute_bst_tests();
     execute_iterator_tests();
     execute_htclsadr_tests();
+    execute_htopnadr_tests();
 }
 
 void execute_test(const std::string& test_name, const TestProcedure& testfunc){

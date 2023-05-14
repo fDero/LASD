@@ -18,6 +18,7 @@ namespace lasd {
     }
 
     template <typename Data> void HashTableClsAdr<Data>::DeallocStorage(){
+        assert (storage != nullptr);
         for (sizetype i = 0; i < buckets; i++) delete storage[i];
         delete[] storage;
     }

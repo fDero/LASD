@@ -10,7 +10,7 @@ namespace lasd {
 
     /****************************************** INTERNAL STORAGE HANDLERS *************************************/
 
-    sizetype constexpr OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT = 40000;
+    sizetype constexpr OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT = 128;
 
     template <typename Data> void HashTableOpnAdr<Data>::AllocStorage(sizetype size){
         buckets = std::max(OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT, RoundupPower2(size));
@@ -18,6 +18,8 @@ namespace lasd {
     }
 
     template <typename Data> void HashTableOpnAdr<Data>::DeallocStorage(){
+        assert (storage != nullptr);
+        for (sizetype i = 0; i < buckets; i++) delete storage[i];
         delete[] storage;
     }
 
@@ -131,7 +133,7 @@ namespace lasd {
         if (location == nullptr) return false;
         delete location;
         location = nullptr;
-        size--;
+        if (--size <= 0.3*buckets) Resize(size);
         return true;
     }
 
@@ -139,7 +141,7 @@ namespace lasd {
         Data*& location = LocateCell(target);
         if (location != nullptr) return false;
         location = new Data(std::move(target));
-        size++;
+        if (++size >= 0.7*buckets) Resize(buckets+100);
         return true;
     }
     
@@ -147,15 +149,16 @@ namespace lasd {
         Data*& location = LocateCell(target);
         if (location != nullptr) return false;
         location = new Data(std::move(target));
-        size++;
+        if (++size >= 0.7*buckets) Resize(buckets+100);
         return true;
     }
 
     template <typename Data> Data*& HashTableOpnAdr<Data>::LocateCell(const Data& value) {
         sizetype index = HashFunction(value);
-        while (storage[index] != nullptr and value == (*storage[index])){
+        while (storage[index] != nullptr and value != (*storage[index])){
             ++index %= buckets;
         }
+        assert(storage != nullptr);
         return storage[index];
     }
 

@@ -46,16 +46,16 @@ deploy:
 	@ mv main zbinaries/precompiled_main
 	@ mv sanitizedmain zbinaries/precompiled_sanitizedmain
 	@ make clean
-	@ mkdir -p 'LASD exercise-2'
-	@ cp -r ${DIRECTORIES} 'LASD exercise-2'
-	@ cp ${FILES} 'LASD exercise-2'
-	@ tar -czvf 'De Rosa - Francesco - N86004379.tar.gz' 'LASD exercise-2'
-	@ zip -r 'De Rosa - Francesco - N86004379.zip' 'LASD exercise-2'
-	@ rm -rf 'LASD exercise-2'
+	@ mkdir -p 'LASD exercise-3'
+	@ cp -r ${DIRECTORIES} 'LASD exercise-3'
+	@ cp ${FILES} 'LASD exercise-3'
+	@ tar -czvf 'De Rosa - Francesco - N86004379.tar.gz' 'LASD exercise-3'
+	@ zip -r 'De Rosa - Francesco - N86004379.zip' 'LASD exercise-3'
+	@ rm -rf 'LASD exercise-3'
 
 clean:
 	@ rm -rf '.vscode'
-	@ rm -rf 'LASD exercise-2'
+	@ rm -rf 'LASD exercise-3'
 	@ rm -f 'De Rosa - Francesco - N86004379.tar.gz'
 	@ rm -f 'De Rosa - Francesco - N86004379.zip'
 	@ rm -f main
