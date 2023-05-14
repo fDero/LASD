@@ -11,10 +11,17 @@ namespace lasd {
       using Container::size;
       using HashTable<Data>::seed;
       using HashTable<Data>::buckets;
-      Data** storage;
+      sizetype removed_data_counter = 0;
 
       using HashTable<Data>::HashFunction;
       using HashTable<Data>::RoundupPower2;
+
+      struct HashNode {
+        Data* value = nullptr;
+        bool  removed = false;
+      };
+
+      HashNode* storage;
 
     public:
       HashTableOpnAdr() noexcept;
@@ -41,6 +48,8 @@ namespace lasd {
       void Resize(sizetype) noexcept override;
       void Clear() noexcept override;
 
+      void Reset();
+
       using MapFunctor = typename MappableContainer<Data>::MapFunctor;
       using FoldFunctor = typename FoldableContainer<Data>::FoldFunctor;
       
@@ -50,7 +59,7 @@ namespace lasd {
     private:
       void AllocStorage(sizetype size);
       void DeallocStorage(); 
-      Data*& LocateCell(const Data&);
+      HashNode& LocateTargetBucket(const Data&);
   };
 }
 

@@ -8,16 +8,35 @@
 namespace lasd {
 
     /******************************************** HASH-FUNCTIONS **************************************/
-    // without loss of generality, every template-type is treated as a string, this allows for this
-    // one definition wich covers every use-case needed for this library without need for template-specialization
-
+    // notice that the hash function is a template method of the template class HashTable, it is instaciatied
+    // and specialized for types such as int, double and std::string, but it actually can be as generic as 
+    // needed with the use of a reinterpret cast wich is capable of reading the bytes of the spceific object
+    // passed as parameter and it treats them as if they were a string of character (each byte as a char)
+ 
     template<typename Data> sizetype HashTable<Data>::HashFunction(const Data& object) const noexcept {
-        std::string string;
-        if constexpr (std::same_as<Data, std::string>){ string = object; }
-        else { string = std::to_string(object); } 
+        auto ptr = reinterpret_cast<char const* const>(&object);
         sizetype encoding = seed;
-        for (const char letter : string) encoding = (encoding * 54059) ^ (76963 * (int)letter);
-        return (encoding % 86969) % buckets;
+        for (auto addresscursor = ptr; addresscursor - ptr < sizeof(Data); addresscursor++){
+            encoding = (encoding * 54059) ^ (*addresscursor * 76963);
+        }
+        return encoding % buckets;
+    }
+ 
+    template<> inline sizetype HashTable<std::string>::HashFunction(const std::string& string) const noexcept {
+        sizetype encoding = seed;
+        for (const char letter : string) {
+            encoding = (encoding * 54059) ^ (76963 * (int)letter);
+        }
+        return encoding % buckets;
+    }
+ 
+    template<> inline sizetype HashTable<int>::HashFunction(const int& integer) const noexcept {
+        return (integer * integer + seed) % buckets;
+    }
+ 
+    template<> inline sizetype HashTable<double>::HashFunction(const double& decimal_floating_point_value) const noexcept {
+        double square = (decimal_floating_point_value * decimal_floating_point_value);
+        return ((sizetype)square + seed) % buckets;
     }
 
 

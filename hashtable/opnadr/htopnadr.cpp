@@ -14,12 +14,12 @@ namespace lasd {
 
     template <typename Data> void HashTableOpnAdr<Data>::AllocStorage(sizetype size){
         buckets = std::max(OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT, RoundupPower2(size));
-        storage = new Data*[buckets] (nullptr);
+        storage = new HashNode[buckets]();
     }
 
     template <typename Data> void HashTableOpnAdr<Data>::DeallocStorage(){
         assert (storage != nullptr);
-        for (sizetype i = 0; i < buckets; i++) delete storage[i];
+        for (sizetype i = 0; i < buckets; i++) delete storage[i].value;
         delete[] storage;
     }
 
@@ -32,8 +32,13 @@ namespace lasd {
     template <typename Data> void HashTableOpnAdr<Data>::Resize(sizetype newsize) noexcept {
         if (buckets == std::max(RoundupPower2(newsize),OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT)) return;
         auto resized = HashTableOpnAdr<Data>(newsize);
-        for (sizetype i = 0; i < buckets; i++) if (storage[i] != nullptr) resized.Insert(*storage[i]);
+        for (sizetype i = 0; i < buckets; i++) if (storage[i].value != nullptr) resized.Insert(*(storage[i].value));
         this->operator=(std::move(resized)); 
+    }
+
+    template <typename Data> void HashTableOpnAdr<Data>::Reset(){
+        HashTableOpnAdr<Data> resetted = HashTableOpnAdr<Data>(this->Size(), static_cast<MappableContainer<Data>&&>(std::move(*this)));
+        this->operator=(std::move(resetted));
     }
 
 
@@ -98,6 +103,7 @@ namespace lasd {
         std::swap(buckets, other.buckets);
         std::swap(size, other.size);
         std::swap(seed, other.seed);
+        std::swap(removed_data_counter, other.removed_data_counter);
         return *this;
     }
 
@@ -110,7 +116,7 @@ namespace lasd {
         if (size != other.size) return false;
         if (size == 0) return true;
         for (sizetype i = 0; i < buckets; i++) {
-            if (storage[i] != nullptr and not other.Exists(*storage[i])) return false;
+            if (storage[i].value != nullptr and not other.Exists(*(storage[i].value))) return false;
         }
         return true;
     }
@@ -125,37 +131,42 @@ namespace lasd {
     /****************************************** DICTIONARY FUNCTIONALITIES ****************************************/
 
     template <typename Data> bool HashTableOpnAdr<Data>::Exists(const Data& target) const noexcept {
-        return const_cast<HashTableOpnAdr<Data>*>(this)->LocateCell(target) != nullptr;
+        return const_cast<HashTableOpnAdr<Data>*>(this)->LocateTargetBucket(target).value != nullptr;
     }
 
     template <typename Data> bool HashTableOpnAdr<Data>::Remove(const Data& target) noexcept {
-        Data*& location = LocateCell(target);
-        if (location == nullptr) return false;
-        delete location;
-        location = nullptr;
+        HashNode& targetbucket = LocateTargetBucket(target);
+        if (targetbucket.value == nullptr) return false;
+        delete targetbucket.value;
+        targetbucket.value = nullptr;
+        targetbucket.removed = true;
         if (--size <= 0.3*buckets) Resize(size);
+        if (++removed_data_counter + size >= 0.3*buckets) Reset();
         return true;
     }
 
     template <typename Data> bool HashTableOpnAdr<Data>::Insert(const Data& target) noexcept {
-        Data*& location = LocateCell(target);
-        if (location != nullptr) return false;
-        location = new Data(std::move(target));
+        HashNode& location = LocateTargetBucket(target);
+        if (location.value != nullptr) return false;
+        location.value = new Data(target);
+        location.removed = false;
         if (++size >= 0.7*buckets) Resize(buckets+100);
         return true;
     }
     
     template <typename Data> bool HashTableOpnAdr<Data>::Insert(Data&& target) noexcept {
-        Data*& location = LocateCell(target);
-        if (location != nullptr) return false;
-        location = new Data(std::move(target));
+        HashNode& location = LocateTargetBucket(target);
+        if (location.value != nullptr) return false;
+        location.value = new Data(target);
+        location.removed = false;
         if (++size >= 0.7*buckets) Resize(buckets+100);
         return true;
     }
 
-    template <typename Data> Data*& HashTableOpnAdr<Data>::LocateCell(const Data& value) {
+    template <typename Data> HashTableOpnAdr<Data>::HashNode& HashTableOpnAdr<Data>::LocateTargetBucket(const Data& value) {
         sizetype index = HashFunction(value);
-        while (storage[index] != nullptr and value != (*storage[index])){
+        while (storage[index].value != nullptr or storage[index].removed){
+            if (not storage[index].removed and value == *(storage[index].value)) break;
             ++index %= buckets;
         }
         assert(storage != nullptr);
@@ -175,7 +186,7 @@ namespace lasd {
 
     template <typename Data> void HashTableOpnAdr<Data>::Map(MapFunctor functor) const {
         for (sizetype i = 0; i < buckets; i++){
-            if (storage[i] != nullptr) functor(*storage[i]);
+            if (storage[i].value != nullptr) functor(*(storage[i].value));
         }
     }
 }
