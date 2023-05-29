@@ -25,7 +25,7 @@ int main() {
         switch (choice = get_user_choice()) {
             case 1 : lasdtest();                      break;
             case 2 : execute_student_test();          break;
-            case 3 : execute_stresstest();            break;
+            case 3 : execute_student_stresstest();    break;
             case 4 : goodbye();                       break;
             default: input_error();                   break;
         }

@@ -35,8 +35,10 @@ void binarytree_vec_lnk_assignment_stresstest(){
 }
 
 void execute_binarytree_stresstests(){
-    execute_test("binarytree_vec_lnk_construction_stresstest - 1",  binarytree_vec_lnk_construction_stresstest);
-    execute_test("binarytree_vec_lnk_construction_stresstest - 2",  binarytree_vec_lnk_construction_stresstest);
-    execute_test("binarytree_vec_lnk_assignment_stresstest - 1",    binarytree_vec_lnk_assignment_stresstest);
-    execute_test("binarytree_vec_lnk_assignment_stresstest - 2",    binarytree_vec_lnk_assignment_stresstest);
+    execute_stresstests({
+        {"binarytree_vec_lnk_construction_stresstest#1",  binarytree_vec_lnk_construction_stresstest },
+        {"binarytree_vec_lnk_construction_stresstest#2",  binarytree_vec_lnk_construction_stresstest },
+        {"binarytree_vec_lnk_assignment_stresstest#1",    binarytree_vec_lnk_assignment_stresstest   },
+        {"binarytree_vec_lnk_assignment_stresstest#2",    binarytree_vec_lnk_assignment_stresstest   },
+    });
 }

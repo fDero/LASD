@@ -64,8 +64,10 @@ void binarytree_inorder_iteratation_stresstest(){
 }
 
 void execute_iterators_stresstests(){
-    execute_test("binarytree_breadth_iteratation_stresstest",   binarytree_breadth_iteratation_stresstest);
-    execute_test("binarytree_preorder_iteratation_stresstest",  binarytree_preorder_iteratation_stresstest);
-    execute_test("binarytree_postorder_iteratation_stresstest", binarytree_postorder_iteratation_stresstest);
-    execute_test("binarytree_inorder_iteratation_stresstest",   binarytree_inorder_iteratation_stresstest);
+    execute_stresstests({
+        {"binarytree_breadth_iteratation_stresstest",   binarytree_breadth_iteratation_stresstest},
+        {"binarytree_preorder_iteratation_stresstest",  binarytree_preorder_iteratation_stresstest},
+        {"binarytree_postorder_iteratation_stresstest", binarytree_postorder_iteratation_stresstest},
+        {"binarytree_inorder_iteratation_stresstest",   binarytree_inorder_iteratation_stresstest},
+    });
 }

@@ -6,8 +6,11 @@
 #include <cstdlib>
 #include <random>
 #include <cassert>
+#include <iostream>
+#include <chrono>
+#include <thread>
 
-void execute_stresstest(){
+void execute_student_stresstest(){
     
     std::cout << "\n\t" << blue(" stress testing: repeated operations on lasd containers thousands of times with random values ");
     std::cout << "\n\t" << blue("      the outcome of these tests vary on runtime-conditions and it's non-deterministic        ");
@@ -40,7 +43,56 @@ void execute_stresstest(){
     execute_binarytree_stresstests();
     execute_bst_stresstests();
     execute_iterators_stresstests();
+    execute_hashtable_stresstests();
 }
+
+
+
+
+void execute_stresstest(const std::string& testname, TestProcedure test){
+    std::cout << "\n";
+
+    bool finished = false;
+    bool succeded = true;
+    
+    std::thread test_runner([&succeded, &finished, &test](){ 
+        try {
+            test();
+            succeded = true;
+            finished = true;
+        } catch(...){
+            succeded = false;
+            finished = true;
+        }
+    });
+    
+    test_runner.detach();
+    
+    std::string waitingstrings[3];
+    waitingstrings[0] = ".  ";
+    waitingstrings[1] = ".. ";
+    waitingstrings[2] = "...";
+    
+    for (short i = 0; not finished; ++i %= 3){
+        std::cout << bold_yellow("TESTING") << waitingstrings[i] << "         ";
+        std::cout.flush();
+        std::this_thread::sleep_for(std::chrono::milliseconds(300)); 
+        std::cout << "\r";
+        std::cout.flush();        
+    }
+    std::cout << ((succeded)? bold_green("SUCCESS") : bold_red("FAILURE")) << " " << purple(testname) << "\n";
+}
+
+
+
+
+void execute_stresstests(UnitTest tests){
+    for (auto current_test = tests.begin(); current_test != tests.end(); current_test++){
+        execute_stresstest(current_test->first, current_test->second);
+    }
+}
+
+
 
 int get_random_value(){
     std::random_device dev;

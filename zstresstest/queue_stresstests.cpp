@@ -48,7 +48,9 @@ void queue_massive_enqueue_dequeue_stresstests(){
 }
 
 void execute_queue_stresstests(){
-    execute_test("queue_massive_enqueue_dequeue_stresstests - 1", queue_massive_enqueue_dequeue_stresstests);
-    execute_test("queue_massive_enqueue_dequeue_stresstests - 2", queue_massive_enqueue_dequeue_stresstests);
-    execute_test("queue_massive_enqueue_dequeue_stresstests - 3", queue_massive_enqueue_dequeue_stresstests);
+    execute_stresstests({
+        {"queue_massive_enqueue_dequeue_stresstests#1", queue_massive_enqueue_dequeue_stresstests},
+        {"queue_massive_enqueue_dequeue_stresstests#2", queue_massive_enqueue_dequeue_stresstests},
+        {"queue_massive_enqueue_dequeue_stresstests#3", queue_massive_enqueue_dequeue_stresstests},
+    });
 }

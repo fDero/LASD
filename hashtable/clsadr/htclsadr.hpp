@@ -11,12 +11,12 @@ namespace lasd {
 
   template <typename Data> class HashTableClsAdr : public virtual HashTable<Data> {
     protected:
-      using ConcreteDictionaryType = List<Data>;
 
       using Container::size;
       using HashTable<Data>::seed;
       using HashTable<Data>::buckets;
-      ConcreteDictionaryType** storage = nullptr;
+      
+      Vector<List<Data>> storage;
 
       using HashTable<Data>::HashFunction;
       using HashTable<Data>::RoundupPower2;
@@ -30,7 +30,7 @@ namespace lasd {
       HashTableClsAdr(sizetype initial_size, MutableMappableContainer<Data>&&) noexcept;
       HashTableClsAdr(const HashTableClsAdr&) noexcept;
       HashTableClsAdr(HashTableClsAdr&&) noexcept;
-      virtual ~HashTableClsAdr() noexcept;
+      virtual ~HashTableClsAdr() = default;
 
       HashTableClsAdr& operator=(const HashTableClsAdr&) noexcept;
       HashTableClsAdr& operator=(HashTableClsAdr&&) noexcept;
@@ -54,8 +54,6 @@ namespace lasd {
 
     private:
       void AllocStorage(sizetype size);
-      void DeallocStorage();
-      template <typename ValueType> bool InsertHelper(ValueType&&);
   };
 
 }

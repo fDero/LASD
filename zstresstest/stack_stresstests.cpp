@@ -47,8 +47,13 @@ void massive_stack_push_pop_stresstest(){
     expect(stackvec.Empty());
 }
 
+
+
+
 void execute_stack_stresstests(){
-    execute_test("massive_stack_push_pop_stresstest - 1", massive_stack_push_pop_stresstest);
-    execute_test("massive_stack_push_pop_stresstest - 2", massive_stack_push_pop_stresstest);
-    execute_test("massive_stack_push_pop_stresstest - 3", massive_stack_push_pop_stresstest);
+    execute_stresstests({
+        {"massive_stack_push_pop_stresstest#1", massive_stack_push_pop_stresstest},
+        {"massive_stack_push_pop_stresstest#2", massive_stack_push_pop_stresstest},
+        {"massive_stack_push_pop_stresstest#3", massive_stack_push_pop_stresstest},
+    });
 }

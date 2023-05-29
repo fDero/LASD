@@ -216,15 +216,7 @@ void htopnadr_resize(){
     vector[2] = "str3"; vector[5] = "str6";
     auto hashtablex = lasd::HashTableOpnAdr<std::string>(100, vector);
     auto hashtabley = lasd::HashTableOpnAdr<std::string>(100, vector);
-
-    hashtablex.Map([](const std::string& x){ std::cerr << x << " "; }); std::cerr << "\n";
-    hashtabley.Map([](const std::string& x){ std::cerr << x << " "; }); std::cerr << "\n";
-
     hashtabley.Resize(1000);
-
-    hashtablex.Map([](const std::string& x){ std::cerr << x << " "; }); std::cerr << "\n";
-    hashtabley.Map([](const std::string& x){ std::cerr << x << " "; }); std::cerr << "\n";
-
     expect(hashtablex == hashtabley);
     expect(hashtabley == hashtablex);
     hashtablex.Resize(300);

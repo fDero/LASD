@@ -11,17 +11,15 @@ namespace lasd {
       using Container::size;
       using HashTable<Data>::seed;
       using HashTable<Data>::buckets;
-      sizetype removed_data_counter = 0;
-
+      
       using HashTable<Data>::HashFunction;
       using HashTable<Data>::RoundupPower2;
 
-      struct HashNode {
-        Data* value = nullptr;
-        bool  removed = false;
-      };
+      sizetype removed_data_counter = 0;
+      enum class State { EMPTY, CLEARED, OCCUPIED };
 
-      HashNode* storage;
+      Vector<Data> values_storage;
+      Vector<State> state_storage;
 
     public:
       HashTableOpnAdr() noexcept;
@@ -32,7 +30,7 @@ namespace lasd {
       HashTableOpnAdr(sizetype initial_size, MutableMappableContainer<Data>&&) noexcept;
       HashTableOpnAdr(const HashTableOpnAdr&) noexcept;
       HashTableOpnAdr(HashTableOpnAdr&&) noexcept;
-      virtual ~HashTableOpnAdr() noexcept;
+      virtual ~HashTableOpnAdr() = default;
 
       HashTableOpnAdr& operator=(const HashTableOpnAdr&) noexcept;
       HashTableOpnAdr& operator=(HashTableOpnAdr&&) noexcept;
@@ -58,8 +56,9 @@ namespace lasd {
     
     private:
       void AllocStorage(sizetype size);
-      void DeallocStorage(); 
-      HashNode& LocateTargetBucket(const Data&);
+      std::pair<sizetype, sizetype> LocateBucket(const Data&) const noexcept;
+      bool RemoveAtIndex(const Data&, sizetype) noexcept;
+      template<typename ValueType> bool InsertHelper(ValueType&&) noexcept;
   };
 }
 

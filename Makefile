@@ -32,6 +32,7 @@ ZSTRESSTEST = \
 	zstresstest/stresstest.cpp             zstresstest/iterator_stresstests.cpp \
 	zstresstest/binarytree_stresstests.cpp zstresstest/bst_stresstests.cpp      \
 	zstresstest/stack_stresstests.cpp      zstresstest/queue_stresstests.cpp    \
+	zstresstest/hashtable_stresstests.cpp  
 
 
 build:

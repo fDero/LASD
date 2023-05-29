@@ -166,13 +166,15 @@ void bst_remove_exists_stresstest(){
 }
 
 void execute_bst_stresstests() {
-    execute_test("bst_correctness_stresstest",         bst_correctness_stresstest);
-    execute_test("bst_insertions_removal_stresstest",  bst_insertions_removal_stresstest);
-    execute_test("bst_predecessor_search_stresstest",  bst_predecessor_search_stresstest);
-    execute_test("bst_successor_search_stresstest",    bst_successor_search_stresstest);
-    execute_test("bst_min_search_stresstest",          bst_min_search_stresstest);
-    execute_test("bst_max_search_stresstest",          bst_max_search_stresstest);
-    execute_test("bst_copy_move_stresstest",           bst_copy_move_stresstest);
-    execute_test("bst_removal_coherence_stresstest",   bst_removal_coherence_stresstest);
-    execute_test("bst_remove_exists_stresstest",       bst_remove_exists_stresstest);
+    execute_stresstests({
+        {"bst_correctness_stresstest",         bst_correctness_stresstest        },
+        {"bst_insertions_removal_stresstest",  bst_insertions_removal_stresstest },
+        {"bst_predecessor_search_stresstest",  bst_predecessor_search_stresstest },
+        {"bst_successor_search_stresstest",    bst_successor_search_stresstest   },
+        {"bst_min_search_stresstest",          bst_min_search_stresstest         },
+        {"bst_max_search_stresstest",          bst_max_search_stresstest         },
+        {"bst_copy_move_stresstest",           bst_copy_move_stresstest          },
+        {"bst_removal_coherence_stresstest",   bst_removal_coherence_stresstest  },
+        {"bst_remove_exists_stresstest",       bst_remove_exists_stresstest      },
+    });
 }

@@ -3,7 +3,7 @@
 
 #include "hashtable.hpp"
 #include <string>
-#include <concepts>
+#include <cmath>
 
 namespace lasd {
 
@@ -35,8 +35,10 @@ namespace lasd {
     }
  
     template<> inline sizetype HashTable<double>::HashFunction(const double& decimal_floating_point_value) const noexcept {
-        double square = (decimal_floating_point_value * decimal_floating_point_value);
-        return ((sizetype)square + seed) % buckets;
+        double whole = decimal_floating_point_value;
+        double fractional = std::modf(decimal_floating_point_value, &whole);
+        sizetype encoding = (whole * whole) - (fractional * fractional * fractional);
+        return encoding % buckets;
     }
 
 

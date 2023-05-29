@@ -14,32 +14,25 @@ namespace lasd {
 
     template <typename Data> void HashTableClsAdr<Data>::AllocStorage(sizetype size){
         buckets = std::max(CLOSED_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT, RoundupPower2(size));
-        storage = new ConcreteDictionaryType*[buckets] (nullptr);
-    }
-
-    template <typename Data> void HashTableClsAdr<Data>::DeallocStorage(){
-        assert (storage != nullptr);
-        for (sizetype i = 0; i < buckets; i++) delete storage[i];
-        delete[] storage;
+        storage.Resize(buckets);
+        storage.Map([](List<Data>& bucket){ bucket.Clear(); });
     }
 
     template <typename Data> void HashTableClsAdr<Data>::Clear() noexcept {
-        DeallocStorage();
         AllocStorage(CLOSED_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT);
         size = 0;
     }
 
     template <typename Data> void HashTableClsAdr<Data>::Resize(sizetype newsize) noexcept {
         if (buckets == std::max(RoundupPower2(newsize),CLOSED_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT)) return;
-        auto resized = HashTableClsAdr<Data>(newsize);
-        for (sizetype i = 0; i < buckets; i++) if (storage[i] != nullptr) resized.InsertAll(*(storage[i]));
+        auto resized = HashTableClsAdr<Data>(newsize, *this);
         this->operator=(std::move(resized)); 
     }
 
 
 
 
-    /**************************************** CONSTRUCTORS AND DISTRUCTORS **********************************/
+    /************************************************ CONSTRUCTORS ********************************************/
 
     template <typename Data> HashTableClsAdr<Data>::HashTableClsAdr() noexcept {
         AllocStorage(CLOSED_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT);
@@ -76,9 +69,6 @@ namespace lasd {
         this->operator=(std::move(other));
     }
 
-    template <typename Data> HashTableClsAdr<Data>::~HashTableClsAdr() noexcept {
-        DeallocStorage();
-    }
 
 
 
@@ -86,7 +76,6 @@ namespace lasd {
     /**************************************************** ASSIGNMENTS *****************************************/
 
     template <typename Data> HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(const HashTableClsAdr<Data>& other) noexcept {
-        DeallocStorage();
         AllocStorage(other.buckets);
         DictionaryContainer<Data>::InsertAll(other);
         size = other.size;
@@ -94,7 +83,7 @@ namespace lasd {
     }
 
     template <typename Data> HashTableClsAdr<Data>& HashTableClsAdr<Data>::operator=(HashTableClsAdr<Data>&& other) noexcept {
-        std::swap(storage, other.storage);
+        storage = std::move(other.storage);
         std::swap(buckets, other.buckets);
         std::swap(size, other.size);
         std::swap(seed, other.seed);
@@ -107,17 +96,18 @@ namespace lasd {
     /*********************************************** COMPARISON OPERATORS *************************************/
 
     template <typename Data> bool HashTableClsAdr<Data>::operator==(const HashTableClsAdr<Data>& other) const noexcept {
-        if (size != other.Size()) return false;
-        if (size == 0) return true;
-        HashTableClsAdr<Data>& ccother = const_cast<HashTableClsAdr<Data>&>(other);
-        for (sizetype i = 0; i < buckets; i++){
-            if (storage[i] != nullptr) {
-                bool success = true;
-                storage[i]->Map([&ccother, &success](const Data& value){ success &= ccother.Exists(value); });
-                if (not success) return false;
-            }
+        try {
+            if (size != other.Size()) return false;
+            if (size == 0) return true;
+            storage.Map([&other](const List<Data>& bucket){
+                bucket.Map([&other](const Data& value){
+                    if (not other.Exists(value)) throw "hashtables are different!";
+                });
+            });
+            return true;
+        } catch(...) { 
+            return false;
         }
-        return true;
     }
 
     template <typename Data> bool HashTableClsAdr<Data>::operator!=(const HashTableClsAdr<Data>& other) const noexcept {
@@ -131,39 +121,28 @@ namespace lasd {
 
     template <typename Data> bool HashTableClsAdr<Data>::Exists(const Data& target) const noexcept {
         sizetype index = HashFunction(target);
-        if (storage[index] == nullptr) return false;
-        return storage[index]->Exists(target);
+        return storage[index].Exists(target);
     }
 
     template <typename Data> bool HashTableClsAdr<Data>::Remove(const Data& target) noexcept {
         sizetype index = HashFunction(target);
-        if (storage[index] == nullptr) return false;
-        if (not storage[index]->Remove(target)) return false;
-        size--;
-        return true;
+        bool item_was_removed = storage[index].Remove(target);
+        if (item_was_removed) size--;
+        return item_was_removed;
     }
 
-    template <typename Data> bool HashTableClsAdr<Data>::Insert(const Data& target) noexcept {
-        return InsertHelper(target);
+    template <typename Data> bool HashTableClsAdr<Data>::Insert(const Data& value) noexcept {
+        sizetype index = HashFunction(value);
+        bool item_was_inserted = storage[index].Insert(value);
+        if (item_was_inserted) size++;
+        return item_was_inserted;
     }
     
-    template <typename Data> bool HashTableClsAdr<Data>::Insert(Data&& target) noexcept {
-        return InsertHelper(std::move(target));
-    }
-
-    template <typename Data> template<typename ValueType> bool HashTableClsAdr<Data>::InsertHelper(ValueType&& target) {
-        sizetype index = HashFunction(target);
-        if (storage[index] != nullptr) {
-            if (storage[index]->Insert(std::forward<ValueType>(target))){
-                size++;
-                return true;
-            }
-            return false;
-        } 
-        storage[index] = new ConcreteDictionaryType();
-        storage[index]->Insert(std::forward<ValueType>(target));
-        size++;
-        return true;
+    template <typename Data> bool HashTableClsAdr<Data>::Insert(Data&& value) noexcept {
+        sizetype index = HashFunction(value);
+        bool item_was_inserted = storage[index].Insert(std::move(value));
+        if (item_was_inserted) size++;
+        return item_was_inserted;
     }
 
 
@@ -178,8 +157,6 @@ namespace lasd {
     }
 
     template <typename Data> void HashTableClsAdr<Data>::Map(MapFunctor functor) const {
-        for (sizetype i = 0; i < buckets; i++){
-            if (storage[i] != nullptr) static_cast<ConcreteDictionaryType const*>(storage[i])->Map(functor);
-        }
+        for (sizetype i = 0; i < buckets; i++) storage[i].Map(functor);
     }
 }

@@ -11,40 +11,39 @@ namespace lasd {
     /****************************************** INTERNAL STORAGE HANDLERS *************************************/
 
     sizetype constexpr OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT = 128;
+    
+    double constexpr CRITICAL_SIZE_LOWERBOUND_TRESHOLD_RATEO = 0.4;
+    double constexpr CRITICAL_SIZE_UPPERBOUND_TRESHOLD_RATEO = 0.7;
+    double constexpr CRITICAL_UNUSED_BUCKET_TRESHOLD_RATEO   = 0.3;
+
 
     template <typename Data> void HashTableOpnAdr<Data>::AllocStorage(sizetype size){
         buckets = std::max(OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT, RoundupPower2(size));
-        storage = new HashNode[buckets]();
-    }
-
-    template <typename Data> void HashTableOpnAdr<Data>::DeallocStorage(){
-        assert (storage != nullptr);
-        for (sizetype i = 0; i < buckets; i++) delete storage[i].value;
-        delete[] storage;
+        values_storage.Resize(buckets);
+        state_storage.Resize(buckets);
+        state_storage.Map([](State& state){ state = State::EMPTY; });
     }
 
     template <typename Data> void HashTableOpnAdr<Data>::Clear() noexcept {
-        DeallocStorage();
         AllocStorage(OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT);
         size = 0;
     }
 
     template <typename Data> void HashTableOpnAdr<Data>::Resize(sizetype newsize) noexcept {
         if (buckets == std::max(RoundupPower2(newsize),OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT)) return;
-        auto resized = HashTableOpnAdr<Data>(newsize);
-        for (sizetype i = 0; i < buckets; i++) if (storage[i].value != nullptr) resized.Insert(*(storage[i].value));
+        auto resized = HashTableOpnAdr<Data>(newsize, *this);
         this->operator=(std::move(resized)); 
     }
 
     template <typename Data> void HashTableOpnAdr<Data>::Reset(){
-        HashTableOpnAdr<Data> resetted = HashTableOpnAdr<Data>(this->Size(), static_cast<MappableContainer<Data>&&>(std::move(*this)));
+        auto resetted = HashTableOpnAdr<Data>(*this);
         this->operator=(std::move(resetted));
     }
 
 
 
 
-    /**************************************** CONSTRUCTORS AND DISTRUCTORS **********************************/
+    /************************************************* CONSTRUCTORS **********************************************/
 
     template <typename Data> HashTableOpnAdr<Data>::HashTableOpnAdr() noexcept {
         AllocStorage(OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT);
@@ -81,17 +80,12 @@ namespace lasd {
         this->operator=(std::move(other));
     }
 
-    template <typename Data> HashTableOpnAdr<Data>::~HashTableOpnAdr() noexcept {
-        DeallocStorage();
-    }
-
 
 
 
     /**************************************************** ASSIGNMENTS *****************************************/
 
     template <typename Data> HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(const HashTableOpnAdr<Data>& other) noexcept {
-        DeallocStorage();
         AllocStorage(other.buckets);
         DictionaryContainer<Data>::InsertAll(other);
         size = other.size;
@@ -99,7 +93,8 @@ namespace lasd {
     }
 
     template <typename Data> HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(HashTableOpnAdr<Data>&& other) noexcept {
-        std::swap(storage, other.storage);
+        state_storage = std::move(other.state_storage);
+        values_storage = std::move(other.values_storage);
         std::swap(buckets, other.buckets);
         std::swap(size, other.size);
         std::swap(seed, other.seed);
@@ -116,7 +111,7 @@ namespace lasd {
         if (size != other.size) return false;
         if (size == 0) return true;
         for (sizetype i = 0; i < buckets; i++) {
-            if (storage[i].value != nullptr and not other.Exists(*(storage[i].value))) return false;
+            if (state_storage[i] == State::OCCUPIED and !other.Exists(values_storage[i])) return false;
         }
         return true;
     }
@@ -131,47 +126,60 @@ namespace lasd {
     /****************************************** DICTIONARY FUNCTIONALITIES ****************************************/
 
     template <typename Data> bool HashTableOpnAdr<Data>::Exists(const Data& target) const noexcept {
-        return const_cast<HashTableOpnAdr<Data>*>(this)->LocateTargetBucket(target).value != nullptr;
+        auto [ search_index, insertion_index ] = LocateBucket(target);
+        return state_storage[search_index] == State::OCCUPIED;
+        auto const_casted = const_cast<HashTableOpnAdr<Data>*>(this);
+        std::swap(const_casted->values_storage[search_index], const_casted->values_storage[insertion_index]);
+        std::swap(const_casted->state_storage[search_index], const_casted->state_storage[insertion_index]);
     }
 
     template <typename Data> bool HashTableOpnAdr<Data>::Remove(const Data& target) noexcept {
-        HashNode& targetbucket = LocateTargetBucket(target);
-        if (targetbucket.value == nullptr) return false;
-        delete targetbucket.value;
-        targetbucket.value = nullptr;
-        targetbucket.removed = true;
-        if (--size <= 0.3*buckets) Resize(size);
-        if (++removed_data_counter + size >= 0.3*buckets) Reset();
-        return true;
+        auto [ search_index, insertion_index ] = LocateBucket(target);
+        return RemoveAtIndex(target, search_index);
     }
 
-    template <typename Data> bool HashTableOpnAdr<Data>::Insert(const Data& target) noexcept {
-        HashNode& location = LocateTargetBucket(target);
-        if (location.value != nullptr) return false;
-        location.value = new Data(target);
-        location.removed = false;
-        if (++size >= 0.7*buckets) Resize(buckets+100);
+    template <typename Data> bool HashTableOpnAdr<Data>::RemoveAtIndex(const Data& target, sizetype index) noexcept {
+        if (state_storage[index] != State::OCCUPIED) return false;
+        state_storage[index] = State::CLEARED;
+        if (--size <= CRITICAL_SIZE_LOWERBOUND_TRESHOLD_RATEO * buckets) Resize(buckets/2);
+        else if (++removed_data_counter >= CRITICAL_UNUSED_BUCKET_TRESHOLD_RATEO * buckets) Reset();
         return true;
     }
     
-    template <typename Data> bool HashTableOpnAdr<Data>::Insert(Data&& target) noexcept {
-        HashNode& location = LocateTargetBucket(target);
-        if (location.value != nullptr) return false;
-        location.value = new Data(target);
-        location.removed = false;
-        if (++size >= 0.7*buckets) Resize(buckets+100);
-        return true;
+    template <typename Data> bool HashTableOpnAdr<Data>::Insert(const Data& value) noexcept { 
+        return InsertHelper(value); 
     }
 
-    template <typename Data> HashTableOpnAdr<Data>::HashNode& HashTableOpnAdr<Data>::LocateTargetBucket(const Data& value) {
-        sizetype index = HashFunction(value);
-        while (storage[index].value != nullptr or storage[index].removed){
-            if (not storage[index].removed and value == *(storage[index].value)) break;
+    template <typename Data> bool HashTableOpnAdr<Data>::Insert(Data&& value) noexcept { 
+        return InsertHelper(std::move(value)); 
+    }
+
+    template <typename Data> template<typename ValueType> bool HashTableOpnAdr<Data>::InsertHelper(ValueType&& value) noexcept {
+        auto [ search_index, insertion_index ] = LocateBucket(value);
+        if (state_storage[insertion_index] == State::OCCUPIED) return false;
+        bool item_was_removed = RemoveAtIndex(value, search_index);
+        state_storage[insertion_index] = State::OCCUPIED;
+        values_storage[insertion_index] = std::forward<ValueType>(value);
+        if (++size >= CRITICAL_SIZE_UPPERBOUND_TRESHOLD_RATEO * buckets) Resize(buckets*2);
+        return not item_was_removed;
+    }
+
+    template <typename Data> std::pair<sizetype, sizetype> HashTableOpnAdr<Data>::LocateBucket(const Data& target) const noexcept {
+        sizetype index = HashFunction(target);
+        long long first_cleared_bucket = -1;
+        for (sizetype i = 0; i < buckets; i++) {
+            if (state_storage[index] != State::OCCUPIED and first_cleared_bucket == -1) first_cleared_bucket = index;
+            if (state_storage[index] == State::OCCUPIED and values_storage[index] == target) break;
+            if (state_storage[index] == State::EMPTY) break;
             ++index %= buckets;
         }
-        assert(storage != nullptr);
-        return storage[index];
+        if (first_cleared_bucket == -1) first_cleared_bucket = index;
+        return {index, static_cast<sizetype>(first_cleared_bucket)};
     }
+    
+
+
+
 
 
 
@@ -185,8 +193,6 @@ namespace lasd {
     }
 
     template <typename Data> void HashTableOpnAdr<Data>::Map(MapFunctor functor) const {
-        for (sizetype i = 0; i < buckets; i++){
-            if (storage[i].value != nullptr) functor(*(storage[i].value));
-        }
+        for (sizetype i = 0; i < buckets; i++) if (state_storage[i] == State::OCCUPIED) functor(values_storage[i]);
     }
 }

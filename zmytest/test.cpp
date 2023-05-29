@@ -20,6 +20,7 @@ std::string bold_green(const std::string& text) { return std::string("\e[1;32m")
 std::string purple(const std::string& text)     { return std::string("\e[0;35m") + text + std::string("\e[0;0m"); }
 std::string blue(const std::string& text)       { return std::string("\e[0;34m") + text + std::string("\e[0;0m"); }
 std::string yellow(const std::string& text)     { return std::string("\e[0;33m") + text + std::string("\e[0;0m"); }
+std::string bold_yellow(const std::string& text){ return std::string("\e[1;33m") + text + std::string("\e[0;0m"); }
 
 
 void execute_student_test(){

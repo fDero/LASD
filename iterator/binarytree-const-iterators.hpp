@@ -16,7 +16,7 @@ namespace lasd {
     protected:
       using Node = typename BinaryTree<Data>::Node;
       Node const* current;
-      Node const* root; 
+      Node const* root;
 
     public:
       BinaryTreeIterator() = default;
