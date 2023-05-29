@@ -2,8 +2,10 @@
 #pragma once
 
 #include "hashtable.hpp"
+#include <random>
 #include <string>
 #include <cmath>
+#include <limits>
 
 namespace lasd {
 
@@ -57,5 +59,18 @@ namespace lasd {
         nx |= nx >> 16;
         nx |= nx >> 32;
         return ++nx;
+    }
+
+
+
+    /****************************************** GET A RANDOMIZED SEED **************************************/
+    // the 'seed' is a random generated short integer wich is used to compute the hashfunction of a given value,
+    // every instance has its own random generated seed so hashfunctions from different hashtables give different results
+
+    template <typename Data> unsigned short HashTable<Data>::GenerateRandomizedSeed() const noexcept {
+        std::random_device dev;
+        std::mt19937 rng(dev());
+        std::uniform_int_distribution<std::mt19937::result_type> dist(1, std::numeric_limits<unsigned short>::max());
+        return dist(rng);
     }
 }

@@ -45,8 +45,13 @@ namespace lasd {
 
     template <typename Data> inline bool BST<Data>::operator==(const BST<Data>& other) const noexcept { 
         if (size != other.size) return false;
-        for (BTBreadthIterator<Data> it (*this); not it.Terminated(); ++it){
-            if (not other.Exists(*it)) return false;
+        if (size == 0) return true;
+        BTInOrderIterator thisit (*this);
+        BTInOrderIterator thatit (other);
+        for (sizetype i = 0; i < size; i++){
+            if (*thisit != *thatit) return false;
+            ++thisit;
+            ++thatit;
         }
         return true;
     }

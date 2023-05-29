@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <cstdlib>
 #include "../container/dictionary.hpp"
 
 namespace lasd {
@@ -15,7 +14,7 @@ namespace lasd {
   {
     protected:
       using Container::size;
-      unsigned short seed = rand();
+      unsigned short seed = GenerateRandomizedSeed();
       sizetype buckets;
 
     public:
@@ -33,6 +32,7 @@ namespace lasd {
     protected:
       sizetype HashFunction(const Data&) const noexcept;
       sizetype RoundupPower2(sizetype size) const noexcept;
+      unsigned short GenerateRandomizedSeed() const noexcept;
   };
 }
 
