@@ -6,7 +6,10 @@
 #include "zstresstest/stresstest.hpp"
 #include "zcli/menu.hpp"
 
+#include "list/list.hpp"
+
 int main() {
+    
     display_fancy_asciiart();
 
     for (int choice = 0; choice != 4; choice = (choice == 0)? -1 : choice) {

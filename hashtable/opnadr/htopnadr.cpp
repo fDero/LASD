@@ -160,6 +160,7 @@ namespace lasd {
         bool item_was_removed = RemoveAtIndex(value, search_index);
         state_storage[insertion_index] = State::OCCUPIED;
         values_storage[insertion_index] = std::forward<ValueType>(value);
+        if (state_storage[insertion_index] == State::CLEARED) removed_data_counter--;
         if (++size >= CRITICAL_SIZE_UPPERBOUND_TRESHOLD_RATEO * buckets) Resize(buckets*2);
         return not item_was_removed;
     }
