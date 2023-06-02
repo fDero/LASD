@@ -86,7 +86,7 @@ namespace lasd {
     /**************************************************** ASSIGNMENTS *****************************************/
 
     template <typename Data> HashTableOpnAdr<Data>& HashTableOpnAdr<Data>::operator=(const HashTableOpnAdr<Data>& other) noexcept {
-        AllocStorage(other.buckets);
+        this->Clear();
         DictionaryContainer<Data>::InsertAll(other);
         size = other.size;
         return *this;
@@ -166,18 +166,19 @@ namespace lasd {
     }
 
     template <typename Data> std::pair<sizetype, sizetype> HashTableOpnAdr<Data>::LocateBucket(const Data& target) const noexcept {
-        sizetype index = HashFunction(target);
+        sizetype encoding = HashFunction(target);
+        sizetype index = encoding;
         long long first_cleared_bucket = -1;
-        for (sizetype i = 0; i < buckets; i++) {
+        for (sizetype attempt = 1; attempt < buckets; attempt++) {
             if (state_storage[index] != State::OCCUPIED and first_cleared_bucket == -1) first_cleared_bucket = index;
             if (state_storage[index] == State::OCCUPIED and values_storage[index] == target) break;
             if (state_storage[index] == State::EMPTY) break;
-            ++index %= buckets;
+            index = attempt*attempt + attempt;
+            index = (index/2 + encoding) % buckets; 
         }
         if (first_cleared_bucket == -1) first_cleared_bucket = index;
         return {index, static_cast<sizetype>(first_cleared_bucket)};
     }
-    
 
 
 

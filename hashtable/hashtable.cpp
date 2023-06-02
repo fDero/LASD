@@ -4,7 +4,6 @@
 #include "hashtable.hpp"
 #include <random>
 #include <string>
-#include <cmath>
 #include <limits>
 
 namespace lasd {
@@ -37,8 +36,8 @@ namespace lasd {
     }
  
     template<> inline sizetype HashTable<double>::HashFunction(const double& decimal_floating_point_value) const noexcept {
-        double whole = decimal_floating_point_value;
-        double fractional = std::modf(decimal_floating_point_value, &whole);
+        long whole = floor(decimal_floating_point_value);
+        long fractional = decimal_floating_point_value - whole;
         sizetype encoding = (whole * whole) - (fractional * fractional * fractional);
         return encoding % buckets;
     }

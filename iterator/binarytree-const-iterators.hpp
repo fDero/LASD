@@ -21,7 +21,11 @@ namespace lasd {
     public:
       BinaryTreeIterator() = default;
       BinaryTreeIterator(const BinaryTreeIterator&) = default;
-      BinaryTreeIterator(BinaryTreeIterator&&) = default;
+      BinaryTreeIterator(BinaryTreeIterator&&);
+
+      BinaryTreeIterator& operator=(const BinaryTreeIterator&) = default;
+      BinaryTreeIterator& operator=(BinaryTreeIterator&&);
+
       virtual ~BinaryTreeIterator() = default;
 
       virtual inline bool Terminated() const noexcept override;

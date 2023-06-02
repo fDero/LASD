@@ -6,8 +6,6 @@
 #include "zstresstest/stresstest.hpp"
 #include "zcli/menu.hpp"
 
-#include "list/list.hpp"
-
 int main() {
     
     display_fancy_asciiart();

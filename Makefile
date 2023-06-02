@@ -41,6 +41,10 @@ build:
 sanitize-build:
 	@ g++ -std=c++20 -fsanitize=address -o sanitizedmain -O3 ${ZMYTEST} ${ZLASDTEST} ${ZSTRESSTEST} zcli/menu.cpp main.cpp
 
+clang-build:
+	@ clang++ -std=c++20 -o main -O1 ${ZMYTEST} ${ZLASDTEST} ${ZSTRESSTEST} zcli/menu.cpp main.cpp
+
+
 deploy:
 	@ make build 
 	@ make sanitize-build

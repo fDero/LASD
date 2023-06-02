@@ -40,6 +40,48 @@ void emptytree_iterator_tests(){
 
 
 
+
+void moveassignment_iterator_t1(){
+    auto empty_tree = lasd::BST<int>();
+    auto preit = lasd::BTPreOrderIterator<int>(empty_tree);
+    auto postit = lasd::BTPostOrderIterator<int>(empty_tree);
+    auto init = lasd::BTInOrderIterator<int>(empty_tree);
+    auto brit = lasd::BTBreadthIterator<int>(empty_tree);
+    
+    auto mvdpreit  = lasd::BTPreOrderIterator<int>(std::move(preit));
+    auto mvdpostit = lasd::BTPostOrderIterator<int>(std::move(postit));
+    auto mvdinit   = lasd::BTInOrderIterator<int>(std::move(init));
+    auto mvdbrit   = lasd::BTBreadthIterator<int>(std::move(brit));
+    
+    expect(preit.Terminated());
+    expect(postit.Terminated());
+    expect(init.Terminated());
+    expect(brit.Terminated());
+}
+
+
+
+
+void moveassignment_iterator_t2(){
+    auto tree = lasd::BinaryTreeVec<char>(generate_sample_vector(2));
+    auto preit = lasd::BTPreOrderIterator<char>(tree);
+    auto postit = lasd::BTPostOrderIterator<char>(tree);
+    auto init = lasd::BTInOrderIterator<char>(tree);
+    auto brit = lasd::BTBreadthIterator<char>(tree);
+    
+    auto mvdpreit  = lasd::BTPreOrderIterator<char>(std::move(preit));
+    auto mvdpostit = lasd::BTPostOrderIterator<char>(std::move(postit));
+    auto mvdinit   = lasd::BTInOrderIterator<char>(std::move(init));
+    auto mvdbrit   = lasd::BTBreadthIterator<char>(std::move(brit));
+    
+    expect(preit.Terminated());
+    expect(postit.Terminated());
+    expect(init.Terminated());
+    expect(brit.Terminated());
+}
+
+
+
 void preorder_iterator_t1(){
     auto tree = lasd::BinaryTreeLnk<char>(generate_sample_vector(3));
     auto it = lasd::BTPreOrderIterator<char>(tree);
@@ -413,6 +455,8 @@ void execute_iterator_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for the all iterators on trees ↓↓↓ \n");
     UnitTest iterator_test_procedures {
         {"emptytree_iterator_tests",  emptytree_iterator_tests},
+        {"move_assignment_iter_t1",   moveassignment_iterator_t1},
+        {"move_assignment_iter_t2",   moveassignment_iterator_t2},
         {"preorder_iterator_t1",      preorder_iterator_t1},
         {"preorder_iterator_t2",      preorder_iterator_t2},
         {"preorder_iterator_t3",      preorder_iterator_t3},

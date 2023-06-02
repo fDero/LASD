@@ -14,6 +14,17 @@ namespace lasd {
         return current == nullptr;
     }
 
+    template <typename Data> BinaryTreeIterator<Data>::BinaryTreeIterator(BinaryTreeIterator&& other) {
+        std::swap(current, other.current);
+        std::swap(root, other.root);
+    }
+    
+    template <typename Data> BinaryTreeIterator<Data>& BinaryTreeIterator<Data>::operator=(BinaryTreeIterator&& other) {
+        std::swap(current, other.current);
+        std::swap(root, other.root);
+        return *this;
+    }
+
     template <typename Data> const Data& BinaryTreeIterator<Data>::operator*() const {
         if (current == nullptr) throw std::out_of_range("attempt to read a value from a terminated iterator");
         return current->Element();

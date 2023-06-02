@@ -542,7 +542,7 @@ void successors_t8(){
 
 
 
-void successorNremove(){
+void successorNremove_t1(){
     auto bst = lasd::BST<int>();
     bst.Insert(100);
     bst.Insert(150);
@@ -560,7 +560,7 @@ void successorNremove(){
 
 
 
-void predecessorNremove(){
+void predecessorNremove_t1(){
     auto bst = lasd::BST<int>();
     bst.Insert(100);
     bst.Insert(50);
@@ -571,6 +571,52 @@ void predecessorNremove(){
     expect(bst.PredecessorNRemove(45) == 30);
     expect(bst.PredecessorNRemove(60) == 50);
     expect(bst.Size() == 2);
+}
+
+
+
+
+void predecessorNremove_t2(){
+    lasd::BST<double> bst;
+
+    bst.Insert(0.0);
+    bst.Insert(-5.5);
+    bst.Insert(-8.2);
+    bst.Insert(-2.8);
+    bst.Insert(-2.3);
+    bst.Insert(-3.7);
+    bst.Insert(-6.4);
+    bst.Insert(-9.1);
+
+    bst.Insert(5.5);
+    bst.Insert(8.2);
+    bst.Insert(2.8);
+    bst.Insert(2.3);
+    bst.Insert(3.7);
+    bst.Insert(9.1);
+    bst.Insert(6.4);
+
+    expect(bst.PredecessorNRemove(-9) == -9.1);
+    expect(bst.PredecessorNRemove(-8.1) == -8.2);
+
+    lasd::BST<double> bst2;
+
+    bst2.Insert(0.0);
+    bst2.Insert(-5.5);
+    bst2.Insert(-2.8);
+    bst2.Insert(-2.3);
+    bst2.Insert(-3.7);
+    bst2.Insert(-6.4);
+
+    bst2.Insert(5.5);
+    bst2.Insert(8.2);
+    bst2.Insert(2.8);
+    bst2.Insert(2.3);
+    bst2.Insert(3.7);
+    bst2.Insert(9.1);
+    bst2.Insert(6.4);
+
+    expect(bst == bst2);
 }
 
 
@@ -715,6 +761,7 @@ void bst_copyassignment_t2(){
 
 
 
+
 void execute_bst_tests(){
     std::cout << blue("\n\t ↓↓↓ tests for lasd::BST<T> ↓↓↓ \n");
     UnitTest bst_test_procedures {
@@ -757,9 +804,9 @@ void execute_bst_tests(){
         {"maxNremove_t3",               maxNremove_t3}, 
         {"bst_copyassignment_t1",       bst_copyassignment_t1},
         {"bst_copyassignment_t2",       bst_copyassignment_t2},  
-        {"predecessorNremove",          predecessorNremove},
-        {"successorNremove",            successorNremove},
-        
+        {"predecessorNremove_t1",       predecessorNremove_t1},
+        {"predecessorNremove_t2",       predecessorNremove_t2},
+        {"successorNremove_t1",         successorNremove_t1},
     };
     execute_tests(bst_test_procedures);  
 }
