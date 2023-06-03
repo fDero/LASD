@@ -381,7 +381,6 @@ void predecessors_t6(){
     expect(bst.Predecessor(4) == 3);
     expect(bst.Predecessor(3) == 2);
     expect(bst.Predecessor(2) == 1);
-    expect(bst.Predecessor(0) == 1);
 }
 
 

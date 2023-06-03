@@ -229,28 +229,28 @@ namespace lasd {
     template<typename Data> const Data& BST<Data>::Successor(const Data& value) const { 
         auto* const_casted = const_cast<BST<Data>*>(this);
         auto succ = const_casted->FindSuccessorPointer(value, const_casted->root);
-        if (succ == nullptr or succ->value == value) throw std::length_error("attempt to get successor failed");
+        if (succ == nullptr or succ->value <= value) throw std::length_error("attempt to get successor failed");
         return succ->value;
     }
 
     template<typename Data> const Data& BST<Data>::Predecessor(const Data& value) const {
         auto* const_casted = const_cast<BST<Data>*>(this);
         auto pred = const_casted->FindPredecessorPointer(value, const_casted->root);
-        if (pred == nullptr or pred->value == value) throw std::length_error("attempt to get predecessor failed");
+        if (pred == nullptr or pred->value >= value) throw std::length_error("attempt to get predecessor failed");
         return pred->value;
     }
 
     template<typename Data> void BST<Data>::RemoveSuccessor(const Data& value) { 
         auto* const_casted = const_cast<BST<Data>*>(this);
         NodeLnk*& succ = const_casted->FindSuccessorPointer(value, const_casted->root);
-        if (succ == nullptr or succ->value == value) throw std::length_error("attempt to remove successor failed");
+        if (succ == nullptr or succ->value <= value) throw std::length_error("attempt to remove successor failed");
         Detach(succ);
     }
 
     template<typename Data> void BST<Data>::RemovePredecessor(const Data& value) {
         auto* const_casted = const_cast<BST<Data>*>(this);
         NodeLnk*& pred = const_casted->FindPredecessorPointer(value, const_casted->root);
-        if (pred == nullptr or pred->value == value) throw std::length_error("attempt to remove predecessor failed");
+        if (pred == nullptr or pred->value >= value) throw std::length_error("attempt to remove predecessor failed");
         Detach(pred);
     }
 
@@ -258,7 +258,7 @@ namespace lasd {
     template<typename Data> Data BST<Data>::SuccessorNRemove(const Data& value) { 
         auto* const_casted = const_cast<BST<Data>*>(this);
         NodeLnk*& succ = const_casted->FindSuccessorPointer(value, const_casted->root);
-        if (succ == nullptr or succ->value == value) throw std::length_error("attempt to remove successor failed");
+        if (succ == nullptr or succ->value <= value) throw std::length_error("attempt to remove successor failed");
         Data succvalue = std::move(succ->value);
         Detach(succ);
         return succvalue;
@@ -267,7 +267,7 @@ namespace lasd {
     template<typename Data> Data BST<Data>::PredecessorNRemove(const Data& value) {
         auto* const_casted = const_cast<BST<Data>*>(this);
         NodeLnk*& pred = const_casted->FindPredecessorPointer(value, const_casted->root);
-        if (pred == nullptr or pred->value == value) throw std::length_error("attempt to remove predecessor failed");
+        if (pred == nullptr or pred->value >= value) throw std::length_error("attempt to remove predecessor failed");
         Data predvalue = std::move(pred->value);
         Detach(pred);
         return predvalue;

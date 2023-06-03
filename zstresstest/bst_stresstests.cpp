@@ -5,6 +5,9 @@
 #include "../binarytree/binarytree.hpp"
 #include "../bst/bst.hpp"
 #include "../list/list.hpp"
+#include <random>
+#include <algorithm>
+#include <utility>
 
 bool correct_bst_tree(const lasd::BinaryTree<int>::Node& root){
     if (root.HasRightChild() and not correct_bst_tree(root.RightChild())) return false;
@@ -37,45 +40,32 @@ void bst_insertions_removal_stresstest(){
     }
 }
 
-void bst_predecessor_search_stresstest(){
-    lasd::BST<int> tree;
-    for (long attempt = 1; attempt <= 300; attempt++){
-        while (tree.Size() < 200) tree.Insert(get_random_value());
-        for (int i = 0; i < 100; i++) {
-            int randvalue = get_random_value();
-            int predecessor = randvalue;
-            tree.BreadthMap([&predecessor, &randvalue](const int& x){
-                if (x < randvalue and x > predecessor) predecessor = x;
-            });
-            if (predecessor != randvalue){
-                expect(tree.Exists(predecessor));
-                expect(tree.PredecessorNRemove(randvalue) == predecessor);
-                expect(not tree.Exists(predecessor));
-            }
-        }
-        expect(correct_bst_tree(tree.Root()));
-        tree.Clear();
+void bst_successor_predecessor_search_stresstest1(){
+    lasd::BST<int> bst;
+    for (int attempt = 1; attempt <= 30; attempt++){
+        std::vector<int> vector (600);
+        std::iota(vector.begin(),vector.end(), 0);
+        std::shuffle(vector.begin(),vector.end(), std::default_random_engine());
+        for (const int x : vector) bst.Insert(x);
+        for (int i = 0; i < 600; i++) expect(bst.Exists(i));
+        for (int i = 1; i < 600; i++) expect(bst.Predecessor(i) == (i-1));
+        for (int i = 0; i < 599; i++) expect(bst.Successor(i) == (i+1));
+        expect_exception<std::length_error>([&bst](){ bst.Predecessor(bst.Min()); });
+        expect_exception<std::length_error>([&bst](){ bst.Successor(bst.Max()); });
     }
 }
 
-void bst_successor_search_stresstest(){
-    lasd::BST<int> tree;
-    for (long attempt = 1; attempt <= 300; attempt++){
-        while (tree.Size() < 200) tree.Insert(get_random_value());
-        for (int i = 0; i < 100; i++) {
-            int randvalue = get_random_value();
-            int successor = randvalue;
-            tree.BreadthMap([&successor, &randvalue](const int& x){
-                if (x > randvalue and x < successor) successor = x;
-            });
-            if (successor != randvalue){
-                expect(tree.Exists(successor));
-                expect(tree.PredecessorNRemove(randvalue) == successor);
-                expect(not tree.Exists(successor));
-            }
-        }
-        expect(correct_bst_tree(tree.Root()));
-        tree.Clear();
+void bst_successor_predecessor_search_stresstest2(){
+    lasd::BST<int> bst;
+    for (int attempt = 1; attempt <= 30; attempt++){
+        std::vector<int> vector (600);
+        for (int i = 0; i < 600; i++) vector.push_back(i*2);
+        std::shuffle(vector.begin(),vector.end(), std::default_random_engine());
+        for (const int x : vector) bst.Insert(x);
+        for (int i = 1; i < 600; i++) expect(bst.Predecessor(2*i) == 2*(i-1) and bst.Predecessor(2*i-1) == 2*(i-1));
+        for (int i = 0; i < 599; i++) expect(bst.Successor(2*i) == 2*(i+1) and bst.Successor(2*i+1) == 2*(i+1));
+        expect_exception<std::length_error>([&bst](){ bst.Predecessor(bst.Min()); });
+        expect_exception<std::length_error>([&bst](){ bst.Successor(bst.Max()); });
     }
 }
 
@@ -167,14 +157,14 @@ void bst_remove_exists_stresstest(){
 
 void execute_bst_stresstests() {
     execute_stresstests({
-        {"bst_correctness_stresstest",         bst_correctness_stresstest        },
-        {"bst_insertions_removal_stresstest",  bst_insertions_removal_stresstest },
-        {"bst_predecessor_search_stresstest",  bst_predecessor_search_stresstest },
-        {"bst_successor_search_stresstest",    bst_successor_search_stresstest   },
-        {"bst_min_search_stresstest",          bst_min_search_stresstest         },
-        {"bst_max_search_stresstest",          bst_max_search_stresstest         },
-        {"bst_copy_move_stresstest",           bst_copy_move_stresstest          },
-        {"bst_removal_coherence_stresstest",   bst_removal_coherence_stresstest  },
-        {"bst_remove_exists_stresstest",       bst_remove_exists_stresstest      },
+        {"bst_correctness_stresstest",                     bst_correctness_stresstest                   },
+        {"bst_insertions_removal_stresstest",              bst_insertions_removal_stresstest            },
+        {"bst_successor_predecessor_search_stresstest#1",  bst_successor_predecessor_search_stresstest1 },
+        {"bst_successor_predecessor_search_stresstest#2",  bst_successor_predecessor_search_stresstest2 },
+        {"bst_min_search_stresstest",                      bst_min_search_stresstest                    },
+        {"bst_max_search_stresstest",                      bst_max_search_stresstest                    },
+        {"bst_copy_move_stresstest",                       bst_copy_move_stresstest                     },
+        {"bst_removal_coherence_stresstest",               bst_removal_coherence_stresstest             },
+        {"bst_remove_exists_stresstest",                   bst_remove_exists_stresstest                 },
     });
 }
