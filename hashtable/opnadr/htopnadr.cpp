@@ -77,6 +77,7 @@ namespace lasd {
         : HashTableOpnAdr(static_cast<const MappableContainer<Data>&>(other)) { size = other.size; }
 
     template <typename Data> HashTableOpnAdr<Data>::HashTableOpnAdr(HashTableOpnAdr<Data>&& other) noexcept {
+        AllocStorage(OPEN_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT);
         this->operator=(std::move(other));
     }
 
@@ -127,10 +128,11 @@ namespace lasd {
 
     template <typename Data> bool HashTableOpnAdr<Data>::Exists(const Data& target) const noexcept {
         auto [ search_index, insertion_index ] = LocateBucket(target);
-        return state_storage[search_index] == State::OCCUPIED;
+        if (state_storage[search_index] != State::OCCUPIED) return false;
         auto const_casted = const_cast<HashTableOpnAdr<Data>*>(this);
         std::swap(const_casted->values_storage[search_index], const_casted->values_storage[insertion_index]);
         std::swap(const_casted->state_storage[search_index], const_casted->state_storage[insertion_index]);
+        return true;
     }
 
     template <typename Data> bool HashTableOpnAdr<Data>::Remove(const Data& target) noexcept {

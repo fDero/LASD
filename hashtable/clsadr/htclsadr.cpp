@@ -66,6 +66,7 @@ namespace lasd {
         : HashTableClsAdr(static_cast<const MappableContainer<Data>&>(other)) { size = other.size; }
 
     template <typename Data> HashTableClsAdr<Data>::HashTableClsAdr(HashTableClsAdr<Data>&& other) noexcept {
+        AllocStorage(CLOSED_ADDRESSING_HASHTABLE_MINIMUM_BUCKET_AMOUNT);
         this->operator=(std::move(other));
     }
 
